@@ -3,7 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class ChatDisplay {
+public class ChatDisplay extends JFrame {
 
     private JFrame newFrame;
     private JFrame displayFrame;

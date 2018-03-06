@@ -3,7 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class LogInFrame {
+public class LogInFrame extends JFrame {
 
     private JFrame preFrame;
     private JTextField enterUsername;

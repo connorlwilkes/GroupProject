@@ -3,7 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class RegisterFrame {
+public class RegisterFrame extends JFrame {
 
     private JFrame registerFrame;
     private JTextField enterUsername;

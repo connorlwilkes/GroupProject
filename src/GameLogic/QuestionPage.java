@@ -1,4 +1,4 @@
-package src.softwareProject;
+package GameLogic;
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JTextArea;
@@ -6,11 +6,8 @@ import javax.swing.JTextField;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Arrays;
 
-import javax.swing.SwingConstants;
 import javax.swing.Timer;
-import javax.swing.JButton;
 import java.awt.Color;
 
 

@@ -1,4 +1,4 @@
-package src.softwareProject;
+package GameLogic;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -23,7 +23,7 @@ public class QuestionClass {
         String[] questions = new String[3];
         for (int i = 0; i < 3; i++) {
             int questionId = result[i];
-            questions[i] = softwareProject.localQuestionBase.questionBase().get(questionId);
+            questions[i] = localQuestionBase.questionBase().get(questionId);
         }
         return questions;
     }

@@ -1,4 +1,4 @@
-package Server;
+package Server.GameLogic;
 
 import java.util.ArrayList;
 import java.util.List;

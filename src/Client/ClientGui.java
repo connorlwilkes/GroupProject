@@ -1,4 +1,4 @@
-import Server.Client;
+package Client;
 
 import javax.swing.*;
 import java.awt.*;
@@ -43,6 +43,7 @@ public class ClientGui extends JFrame {
                 try {
                     gui = new ClientGui();
                     gui.setVisible(true);
+                    gui.client.connect();
                 } catch (Exception e) {
                     System.err.println(e);
                 }

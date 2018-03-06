@@ -1,4 +1,4 @@
-package GameLogic;
+package Server.GameLogic;
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JTextArea;

@@ -1,4 +1,4 @@
-package Login;
+package Server.Login;
 
 import Server.User;
 

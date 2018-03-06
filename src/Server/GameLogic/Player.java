@@ -1,16 +1,18 @@
-package Server;
+package Server.GameLogic;
+
+import Server.Server;
 
 public class Player {
 
-    private ServerThread client;
+    private Server.ServerThread client;
     private int score;
 
-    public Player (ServerThread client) {
+    public Player (Server.ServerThread client) {
         this.client = client;
         this.score = 0;
     }
 
-    public ServerThread getClient() {
+    public Server.ServerThread getClient() {
         return client;
     }
 

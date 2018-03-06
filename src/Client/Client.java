@@ -6,9 +6,9 @@
  * @version 1/3/2018s
  */
 
-package Server;
+package Client;
 
-import Login.ServerRequest;
+import Server.Login.ServerRequest;
 
 import java.io.*;
 import java.net.InetAddress;

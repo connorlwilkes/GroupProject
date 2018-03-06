@@ -11,9 +11,7 @@ public class DatabaseAccess implements DatabaseConnection {
     private final String password = "kx7t40vm7v";
 
     public static void main(String[] args) {
-
         DatabaseAccess a = new DatabaseAccess();
-
         try {
             Connection b = a.connect();
             b.close();

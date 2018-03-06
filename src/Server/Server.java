@@ -47,11 +47,12 @@ public class Server {
     public void start() {
         serverConnectionLogger.info("Starting server on port " + port);
         lobbies = new ArrayList<>();
+        threadPool = Executors.newFixedThreadPool(50);
         try (ServerSocket server = new ServerSocket(port)) {
             while (true) {
                 try {
                     Socket connection = server.accept();
-                    Callable<Void> task = new ServerThread(connection, this);
+                    ServerThread task = new ServerThread(connection, this);
                     threadPool.submit(task);
                 } catch (IOException ex) {
                     serverErrorLogger.log(Level.SEVERE, "accept error", ex);

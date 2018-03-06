@@ -1,4 +1,3 @@
-package GroupProjGUI.src;
 
 import javax.swing.*;
 import java.awt.*;
@@ -7,18 +6,18 @@ import java.awt.event.ActionListener;
 
 public class GameGUI {
 
-    GameGUI chatRoomGUI;
-    JFrame newFrame = new JFrame("NO EYE DEAR");
-    JButton sendMessage;            //send message button
-    JTextField messageBox;        //box to type message
-    JTextArea chatBox;
-    JTextField enterUsername;    //box to type username
-    JTextField enterPassword;    //box to type password
-    JTextField reEnterPassword;    //box to re-type password
-    JFrame preFrame;                //the first frame that is for user/pass entry
-    JFrame registerFrame;
-    JFrame lobbyFrame;            //the second frame that is for lobby choice
-    JFrame displayFrame;            //the third frame that is where the game is played
+    private GameGUI chatRoomGUI;
+    private JFrame newFrame = new JFrame("NO EYE DEAR");
+    private JButton sendMessage;            //send message button
+    private JTextField messageBox;        //box to type message
+    private JTextArea chatBox;
+    private JTextField enterUsername;    //box to type username
+    private JTextField enterPassword;    //box to type password
+    private JTextField reEnterPassword;    //box to re-type password
+    private JFrame preFrame;                //the first frame that is for user/pass entry
+    private JFrame registerFrame;
+    private JFrame lobbyFrame;            //the second frame that is for lobby choice
+    private JFrame displayFrame;            //the third frame that is where the game is played
 
     public static void main(String[] args) {
         //set cross-platform Java Look & Feel ("Metal")
@@ -176,7 +175,7 @@ public class GameGUI {
      * | |								   ||           |_____________|
      * | |								   ||
      * | |								   ||           _______________
-     * | |       JPanel = lobbyPanel       |	| ===>      |   Lobby 2   |
+     * | |       JPanel = lobbyPanel       || ===>      |   Lobby 2   |
      * | |                                 ||           |_____________|
      * | |								   ||
      * | |								   ||           _______________
@@ -281,7 +280,7 @@ public class GameGUI {
 
     // BUTTON LISTENERS ---------------------------------------------------------------------------------------------------
 
-    String username;
+    private String username;
 
     /**
      * 'Register' button that takes users from the log-in page to the registration page

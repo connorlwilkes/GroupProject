@@ -18,7 +18,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-public class ServerThread implements Callable<Void> {
+public class ServerThread implements Runnable {
 
     private Socket connection;
     private Server server;
@@ -59,7 +59,7 @@ public class ServerThread implements Callable<Void> {
      * @return null
      */
     @Override
-    public Void call() {
+    public void run() {
         try {
             auditLogger.info("Connected to: " + connection.getRemoteSocketAddress() + " on " + new Date());
             in = connection.getInputStream();
@@ -67,14 +67,7 @@ public class ServerThread implements Callable<Void> {
             dos = new DataOutputStream(out);
             dis = new DataInputStream(in);
             dos.writeByte(ServerRequest.welcome);
-            while (true) {
-                byte b = dis.readByte();
-                if (b == ServerRequest.login) {
-                    loginUser();
-                } if (b == ServerRequest.endConnection) {
-                    break;
-                }
-            }
+            processRequests();
         } catch (IOException ex) {
             System.err.println(ex);
         } finally {
@@ -84,7 +77,6 @@ public class ServerThread implements Callable<Void> {
 
             }
         }
-        return null;
     }
 
 
@@ -114,24 +106,28 @@ public class ServerThread implements Callable<Void> {
     /**
      * Processes network requests
      */
-    private void processRequests() {
-        try {
-            if (in.read() == ServerRequest.createLobby) {
+    private void processRequests() throws IOException {
+        while (true) {
+            byte b = dis.readByte();
+            if (b == ServerRequest.createLobby) {
                 GameOwner owner = new GameOwner(this);
                 GameLobby lobby = new GameLobby("testLobby", "password", owner);
                 owner.setGameLobby(lobby);
                 server.addLobby(lobby);
                 new Thread(lobby).start();
-            } else if (in.read() == ServerRequest.joinLobby) {
+            } else if (b == ServerRequest.joinLobby) {
                 joinLobby("testLobby", "password");
-            } else if (in.read() == ServerRequest.quit) {
+            } else if (b == ServerRequest.quit) {
                 connection.close();
+            } else if (b == ServerRequest.login) {
+                loginUser();
+            } else if (b == ServerRequest.endConnection) {
+                break;
             } else {
                 System.err.println("Not a valid request");
             }
-        } catch (IOException ex) {
-            errorLogger.log(Level.SEVERE, "could not process request", ex);
         }
+
     }
 
     private void joinLobby(String lobbyName, String lobbyPassword) {

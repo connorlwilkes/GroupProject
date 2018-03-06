@@ -1,0 +1,61 @@
+package Testing;
+
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+public class Server {
+
+    private final static Logger serverErrorLogger = Logger.getLogger("ServerErrors");
+    private final static Logger serverConnectionLogger = Logger.getLogger("ServerConnections");
+    private final int port = 4000;
+    private ExecutorService threadPool;
+
+    public void start() {
+        threadPool = Executors.newFixedThreadPool(50);
+        serverConnectionLogger.info("Starting server on port " + port);
+        try (ServerSocket server = new ServerSocket(port)) {
+            while (true) {
+                try {
+                    Socket connection = server.accept();
+                    Callable<Void> task = new ServerThread(connection);
+                    threadPool.submit(task);
+                } catch (IOException ex) {
+                    serverErrorLogger.log(Level.SEVERE, "accept error", ex);
+                } catch (RuntimeException ex) {
+                    serverErrorLogger.log(Level.SEVERE, "unexpected error" + ex.getMessage(), ex);
+                }
+            }
+        } catch (IOException ex) {
+            serverErrorLogger.log(Level.SEVERE, "Couldn't start server", ex);
+        } catch (RuntimeException ex) {
+            serverErrorLogger.log(Level.SEVERE, "Couldn't start server", ex);
+        }
+    }
+
+    public void stop() {
+        threadPool.shutdown();
+        try {
+            if (!threadPool.awaitTermination(60, TimeUnit.SECONDS)) {
+                threadPool.shutdownNow();
+                if (!threadPool.awaitTermination(60, TimeUnit.SECONDS)) {
+                    serverErrorLogger.log(Level.SEVERE, "Server Threads failed to shutdown");
+                }
+            }
+        } catch (InterruptedException ex) {
+            serverErrorLogger.log(Level.SEVERE, "Server Thread shutdown interrupted");
+        }
+    }
+
+    public static void main(String[] args) {
+        Server testServer = new Server();
+        testServer.start();
+    }
+
+}

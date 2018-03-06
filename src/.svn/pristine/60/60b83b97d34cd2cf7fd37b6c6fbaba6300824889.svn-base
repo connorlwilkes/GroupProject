@@ -1,0 +1,76 @@
+package Login;
+
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
+
+public class TCPServer implements Cloneable, Runnable {
+
+    List<TCPServer> list = new ArrayList<>();
+
+    Thread runner = null;
+    ServerSocket server = null;
+    Socket data = null;
+
+    private boolean parentServer = false;
+    private boolean done = false;
+
+    public synchronized void startServer(int port) throws IOException {
+
+        if (runner == null) {
+            parentServer = true;
+            server = new ServerSocket(port);
+            runner = new Thread(this);
+            runner.start();
+            list.add(this);
+        }
+    }
+
+    public synchronized void stopServer(boolean allServer) {
+        done = true;
+
+        if (parentServer && allServer) {
+            for (TCPServer clientThread : list) {
+                clientThread.stopServer(false);
+            }
+        }
+        runner.interrupt();
+    }
+
+    protected synchronized boolean getDone() {
+        return done;
+    }
+
+    @Override
+    public void run() {
+
+        if (server != null) {
+            while (!(getDone())) {
+
+                try {
+                    Socket datasocket = server.accept();
+                    TCPServer newSocket = (TCPServer) clone();
+
+                    newSocket.server = null;
+                    newSocket.data = datasocket;
+                    newSocket.runner = new Thread(newSocket);
+                    newSocket.runner.start();
+                    list.add(newSocket);
+
+                } catch (Exception e) {
+
+                }
+
+            }
+        } else {
+            run(data);
+        }
+
+    }
+
+    public void run(Socket data) {
+
+    }
+}

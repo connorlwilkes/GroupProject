@@ -1,0 +1,10 @@
+package Login;
+
+public class Task implements Runnable {
+
+    // Log in process for each user will run here. User will create account or enter in already present account details
+    @Override
+    public void run() {
+
+    }
+}

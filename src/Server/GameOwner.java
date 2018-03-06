@@ -1,4 +1,4 @@
-package Server.GameLogic;
+package Server;
 
 import Server.Server;
 

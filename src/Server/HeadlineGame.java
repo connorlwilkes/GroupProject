@@ -1,4 +1,4 @@
-package Server.GameLogic;
+package Server;package
 
 public class HeadlineGame extends Minigame {
 }

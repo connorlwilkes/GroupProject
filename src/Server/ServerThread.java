@@ -7,12 +7,9 @@
 
 package Server;
 
-import Server.Login.ServerRequest;
-
 import java.io.*;
 import java.net.Socket;
 import java.util.Date;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -23,8 +20,9 @@ public class ServerThread implements Runnable {
     private Server server;
     private InputStream in;
     private OutputStream out;
-    private DataOutputStream dos;
-    private DataInputStream dis;
+    private BufferedReader reader;
+    private BufferedWriter writer;
+    private User currentUser;
     private final static Logger auditLogger = Logger.getLogger("requests");
     private final static Logger errorLogger = Logger.getLogger("errors");
 
@@ -61,16 +59,45 @@ public class ServerThread implements Runnable {
     public void run() {
         try {
             auditLogger.info("Connected to: " + connection.getRemoteSocketAddress() + " on " + new Date());
-            in = connection.getInputStream();
-            out = connection.getOutputStream();
-            dos = new DataOutputStream(out);
-            dis = new DataInputStream(in);
-            dos.writeByte(ServerRequest.welcome);
-            processRequests();
+            setUp();
+            while (true) {
+                System.out.println(connection.isConnected());
+                String line = reader.readLine();
+                while (line == null) {
+                    line = reader.readLine();
+                }
+                String password = null;
+                String username = null;
+                switch (line) {
+                    case "hello":
+                        System.out.println("hello");
+                    case "login":
+                        writer.write("username");
+                        writer.flush();
+                        username = reader.readLine();
+                        writer.write("password");
+                        writer.flush();
+                        password = reader.readLine();
+                        loginUser(username, password);
+                        processRequests();
+                        break;
+                    case "createAccount":
+                        username = reader.readLine();
+                        password = reader.readLine();
+                        setUpAccount(username, password);
+                        auditLogger.info("Created account: " + currentUser.getUsername() + "\n Closing connection");
+                        connection.close();
+                        break;
+                }
+            }
         } catch (IOException ex) {
             System.err.println(ex);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         } finally {
             try {
+                System.out.println("here");
+                auditLogger.info("Closing connection to " + connection.getRemoteSocketAddress() + " on " + new Date());
                 connection.close();
             } catch (IOException e) {
 
@@ -78,79 +105,46 @@ public class ServerThread implements Runnable {
         }
     }
 
-
-    private void loginUser() throws IOException {
-        out.write(ServerRequest.requestUsername);
-        out.flush();
-        String username = dis.readUTF();
-        out.write(ServerRequest.requestPassword);
-        out.flush();
-        String password = dis.readUTF();
-        User currentUser = new User(username, password);
-        Session session = new Session(currentUser, this);
-        out.write(ServerRequest.finish);
-        out.flush();
-    }
-
-    /**
-     * Sends a string to the client with confirmation of connection to the server
-     *
-     * @throws IOException if connection fails
-     */
-    public void sendConfirmationOfConnection() throws IOException {
-        out.write(ServerRequest.welcome);
-        out.flush();
+    public void setUp() throws IOException {
+        in = connection.getInputStream();
+        out = connection.getOutputStream();
+        reader = new BufferedReader(new InputStreamReader(in));
+        writer = new BufferedWriter(new OutputStreamWriter(out));
     }
 
     /**
      * Processes network requests
      */
-    private void processRequests() throws IOException {
-        while (true) {
-            byte b = dis.readByte();
-            if (b == ServerRequest.createLobby) {
-                GameOwner owner = new GameOwner(this);
-                GameLobby lobby = new GameLobby("testLobby", "password", owner);
-                owner.setGameLobby(lobby);
-                server.addLobby(lobby);
-                new Thread(lobby).start();
-            } else if (b == ServerRequest.joinLobby) {
-                joinLobby("testLobby", "password");
-            } else if (b == ServerRequest.quit) {
-                connection.close();
-            } else if (b == ServerRequest.login) {
-                loginUser();
-            } else if (b == ServerRequest.endConnection) {
-                break;
-            } else {
-                System.err.println("Not a valid request");
-            }
-        }
+    private void processRequests() throws IOException, ClassNotFoundException {
+    }
 
+    private void loginUser(String username, String password) throws IOException {
+        if (!(server.checkPassword(username, password))) {
+            writer.write("Error: Username or password incorrect");
+            writer.flush();
+        } else {
+            currentUser = new User(username, password);
+            writer.write("success");
+            writer.flush();
+            writer.write("Success: User " + username + " logged in");
+            writer.flush();
+        }
+    }
+
+    private void setUpAccount(String username, String password) throws IOException {
+        if (server.checkUsername(username)) {
+            ServerProtocol error = new ServerProtocol("error", "User with that username already exists");
+        } else if (!(isValidLength(username) && isValidLength(password))) {
+            ServerProtocol error = new ServerProtocol("error", "Username and password must be between 5" +
+                    "and 20 characters long inclusive");
+        } else {
+            currentUser = new User(username, password);
+            ServerProtocol success = new ServerProtocol("success", "Successfully created account with " +
+                    "username: " + username);
+        }
     }
 
     private void joinLobby(String lobbyName, String lobbyPassword) {
-        List<GameLobby> allLobbies = server.getLobbies();
-        for (GameLobby lobby : allLobbies) {
-            if (lobby.getLobbyName().equals(lobbyName) && lobby.getPassword().equals(lobbyPassword)) {
-                lobby.addPlayer(new Player(this));
-                return;
-            }
-        }
-        System.err.println("No server with that name exists and/or the password is incorrect");
-    }
-
-    private void writeOut(String toWrite) throws IOException {
-        Writer writer = new OutputStreamWriter(out, "ASCII");
-        writer = new BufferedWriter(writer);
-        writer.write(toWrite + "\r\n");
-        writer.flush();
-    }
-
-    private String readFromInput() throws IOException {
-        StringBuilder message = new StringBuilder();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(in, "ASCII"));
-        return reader.readLine();
     }
 
     /**
@@ -167,5 +161,10 @@ public class ServerThread implements Runnable {
             }
         }
     }
+
+    public static boolean isValidLength(String word) {
+        return (word.length() >= 5 && word.length() <= 20);
+    }
+
 }
 

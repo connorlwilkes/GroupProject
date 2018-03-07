@@ -23,7 +23,7 @@ public class Server {
 
     private final static Logger serverErrorLogger = Logger.getLogger("ServerErrors");
     private final static Logger serverConnectionLogger = Logger.getLogger("ServerConnections");
-    private final int port = 4000;
+    private final int port = 5000;
     private ExecutorService threadPool;
     private List<GameLobby> lobbies;
     private List<User> activeUsers;
@@ -44,15 +44,17 @@ public class Server {
      * Starts the server
      */
     public void start() {
-        serverConnectionLogger.info("Starting server on port " + port);
         lobbies = new ArrayList<>();
+        activeUsers = new ArrayList<>();
+        addUser(new User("connor", "password"));    // for testing, remove!
         threadPool = Executors.newFixedThreadPool(50);
         try (ServerSocket server = new ServerSocket(port)) {
             while (true) {
                 try {
+                    serverConnectionLogger.info("Starting server on port " + port);
                     Socket connection = server.accept();
                     ServerThread task = new ServerThread(connection, this);
-                    threadPool.submit(task);
+                    threadPool.execute(task);
                 } catch (IOException ex) {
                     serverErrorLogger.log(Level.SEVERE, "accept error", ex);
                 } catch (RuntimeException ex) {

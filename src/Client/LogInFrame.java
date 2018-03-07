@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 public class LogInFrame extends JFrame {
 
@@ -11,6 +12,7 @@ public class LogInFrame extends JFrame {
     private JTextField enterUsername;
     private JTextField enterPassword;
     private String username;
+    private String password;
 
     /**
      * logInDisplay is the username and password entry display, the first dispay that appears when the programme runs.
@@ -35,9 +37,8 @@ public class LogInFrame extends JFrame {
      * | ___________________________________|
      * ______________________________________
      */
-    public void logInFrame() {
-        //newFrame.setVisible(false);
-        preFrame = new JFrame("LOG-IN");                                // creates a new frame
+    public LogInFrame() {
+        this.setBounds(0, 0, 500, 300);
 
         JLabel enterUsernameLabel = new JLabel("Enter username:");    // the 'Enter Username' label
         JLabel enterPasswordLabel = new JLabel("Enter password:");    //the 'Enter password' label
@@ -68,12 +69,12 @@ public class LogInFrame extends JFrame {
         prePanel2.add(registerNewUser);                                // adds the 'Register' button to prePanel2
         prePanel2.add(enterLobby);                                    // adds the 'Find a lobby' button to prePanel2
 
-        preFrame.add(BorderLayout.CENTER, prePanel1);                    // positions prePanel1 in the center of the frame
-        preFrame.add(BorderLayout.SOUTH, prePanel2);                    // positions prePanel2 at the bottom of the frame
+        this.add(BorderLayout.CENTER, prePanel1);                    // positions prePanel1 in the center of the frame
+        this.add(BorderLayout.SOUTH, prePanel2);                    // positions prePanel2 at the bottom of the frame
 
-        preFrame.setVisible(true);                                    // makes logInDisplay() visible
-        preFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);        // closes the JFrame when the display is exitted
-        preFrame.setSize(500, 300);                                    // sets the size of the frame to 500px x 300px (x, y)
+        this.setVisible(true);                                    // makes logInDisplay() visible
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);        // closes the JFrame when the display is exitted
+        this.setSize(500, 300);                                    // sets the size of the frame to 500px x 300px (x, y)
 
         enterLobby.addActionListener(new enterLobbyButtonListener());    // adds action listener on the enterLobby button
         registerNewUser.addActionListener(new registerNewUserButtonListener());    // adds action listener on the register button
@@ -82,25 +83,36 @@ public class LogInFrame extends JFrame {
     /**
      * 'Enter Lobby' button saves the users username as a variable and takes the user to the lobby page
      */
-    class enterLobbyButtonListener implements ActionListener {
+    private class enterLobbyButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent event) {
             username = enterUsername.getText();
-            if (username.length() < 1) {
-                System.out.println("Don't mess with me.");
-            } else {
-                preFrame.setVisible(false);
-                new LobbyFrame();
+            password = enterPassword.getText();
+            ClientGui.gui.client.connect();
+            if (username.length() < 1 || password.length() < 1) {
+                JOptionPane.showMessageDialog(ClientGui.gui, "Don't mess with me!", "Warning",
+                        JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            try {
+                ClientGui.gui.client.login(username, password);
+//                    ClientGui.gui.setBounds(ClientGui.gui.getX(), ClientGui.gui.getY(), 300, 200);
+//                    ClientGui.gui.setContentPane(ClientGui.gui.lobby);
+//                    ClientGui.gui.setTitle("Lobby");
+            } catch (IOException e) {
+                e.printStackTrace();
+                ClientGui.gui.client.stop();
+                ClientGui.gui.setVisible(false);
             }
         }
     }
 
-    /**
-     * 'Register' button that takes users from the log-in page to the registration page
-     */
-    class registerNewUserButtonListener implements ActionListener {
-        public void actionPerformed(ActionEvent event) {
-            preFrame.setVisible(false);
-            new RegisterFrame();
-        }
+/**
+ * 'Register' button that takes users from the log-in page to the registration page
+ */
+class registerNewUserButtonListener implements ActionListener {
+    public void actionPerformed(ActionEvent event) {
+        preFrame.setVisible(false);
+        new RegisterFrame();
     }
+}
 }

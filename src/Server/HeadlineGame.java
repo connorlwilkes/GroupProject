@@ -1,4 +1,4 @@
-package Server;package
+package Server;
 
 public class HeadlineGame extends Minigame {
 }

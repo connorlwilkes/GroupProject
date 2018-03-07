@@ -8,33 +8,38 @@
 
 package Client;
 
-import Server.Login.ServerRequest;
+import Server.ServerProtocol;
 
 import java.io.*;
-import java.net.InetAddress;
 import java.net.Socket;
-import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Client {
 
-    final private int port = 4000;
+    final private int port = 5000;
     private Socket connection;
-    private InetAddress destination;
+    private String host;
     private InputStream in;
     private OutputStream out;
-    private DataInputStream dis;
+    private BufferedWriter writer;
+    private BufferedReader reader;
     private DataOutputStream dos;
+    private ObjectInputStream objectInputStream;
+    private ObjectOutputStream objectOutputStream;
     private final static Logger errorLogger = Logger.getLogger("errors");
 
     /**
      * Constructor for the Client class
      *
-     * @param destination destination of the connection (IP address or DSN)
+     * @param host destination of the connection (IP address or DSN)
      */
-    public Client(InetAddress destination) {
-        this.destination = destination;
+    public Client(String host) {
+        this.host = host;
+    }
+
+    public void setHost(String host) {
+        this.host = host;
     }
 
     public Socket getConnection() {
@@ -45,91 +50,73 @@ public class Client {
      * Connects to a server
      */
     public void connect() {
-        try (Socket socket = new Socket(destination, port)) {
+        try (Socket socket = new Socket(host, port)) {
             connection = socket;
-            in = connection.getInputStream();
-            out = connection.getOutputStream();
-            dis = new DataInputStream(in);
-            dos = new DataOutputStream(out);
-            dos.write(ServerRequest.login);
+            dos = new DataOutputStream(connection.getOutputStream());
+            reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            dos.writeBytes("hello\r\n");
             dos.flush();
-            login();
-            dos.write(ServerRequest.endConnection);
-            dos.flush();
-            connection.close();
         } catch (IOException ex) {
             errorLogger.log(Level.SEVERE, "Could not connect", ex);
         }
     }
 
+//    private void setUp() throws IOException, ClassNotFoundException {
+//        in = connection.getInputStream();
+//        out = connection.getOutputStream();
+//        objectInputStream = new ObjectInputStream(in);
+//        objectOutputStream = new ObjectOutputStream(out);
+//        writer = new BufferedWriter(new OutputStreamWriter(out));
+//        reader = new BufferedReader(new InputStreamReader(in));
+//    }
+
+
     /**
-     * Helper method to read Strings from a server
+     * Stops the connection to the server
+     */
+    public void stop() {
+        try {
+            connection.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Method allows the server to log in
      *
-     * @return
+     * @param username username of the user
+     * @param password password of the user
      * @throws IOException
      */
-    private String readFromServer() throws IOException {
-        if (in == null) {
-            System.err.println("No inputstream");
-            return " ";
-        } else if (connection == null) {
-            System.err.println("No connection");
-            return " ";
-        } else {
-            StringBuilder message = new StringBuilder();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(in, "ASCII"));
-            message.append(reader.readLine());
-            return message.toString();
-        }
-    }
-
-    private void writeOut(String toWrite) throws IOException {
-        Writer writer = new OutputStreamWriter(out, "ASCII");
-        writer = new BufferedWriter(writer);
-        writer.write(toWrite + "\r\n");
-        writer.flush();
-    }
-
-    private void processRequests() throws IOException {
-        if (in.read() == ServerRequest.login) {
-            login();
-        } else if (in.read() == ServerRequest.welcome) {
-            System.out.println("Connected to server");
-        }
-    }
-
-    private void login() throws IOException {
-        Scanner scanner = new Scanner(System.in);
-
-        byte b = dis.readByte();
-        while (b != ServerRequest.finish) {
-            b = dis.readByte();
-            if (b == ServerRequest.requestUsername) {
-                System.out.println("Username:");
-                dos.writeUTF(scanner.nextLine());
+    public void login(String username, String password) throws IOException {
+        dos.writeBytes("login\r\n");
+        dos.flush();
+        while (true) {
+            String line = reader.readLine();
+            if (line.equals("username")) {
+                dos.writeBytes(username + "\r\n");
                 dos.flush();
-            } else if (b == ServerRequest.requestPassword) {
-                System.out.println("Password");
-                dos.writeUTF(scanner.nextLine());
+            } else if (line.equals("password")) {
+                dos.writeBytes(password + "\r\n");
                 dos.flush();
+            } else if (line.equals("error") || line.equals("success")) {
+                break;
             }
         }
+//        ServerProtocol login = new ServerProtocol("login", username, password);
+//        objectOutputStream.writeObject(login);
+//        objectOutputStream.flush();
     }
 
-    /**
-     * Main method to start the client connection
-     *
-     * @param args command line arguments z
-     */
     public static void main(String[] args) {
+        Client test = new Client("localhost");
+        test.connect();
+        System.out.println("connected");
         try {
-            Client testClient = new Client(InetAddress.getLocalHost());
-            testClient.connect();
-        } catch (IOException ex) {
-
+            test.login("connor", "password");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
     }
-
-
 }

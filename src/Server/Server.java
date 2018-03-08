@@ -50,6 +50,15 @@ public class Server {
         activeUsers.add(user);
     }
 
+    public void removeUser(User userToRemove) {
+       String toRemove = userToRemove.getUsername();
+        for (User user : activeUsers) {
+            if (user.getUsername().equals(toRemove)) {
+                activeUsers.remove(user);
+            }
+        }
+    }
+
     /**
      * Starts the server
      */

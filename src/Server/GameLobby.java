@@ -1,8 +1,6 @@
 package Server;
 
-import java.io.BufferedWriter;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 public class GameLobby implements Runnable {
@@ -16,6 +14,7 @@ public class GameLobby implements Runnable {
     private List<Minigame> games;
     private ChatRoom room;
     private boolean isFull;
+    private boolean isRunning;
 
     public GameLobby(int id) {
         this.lobbyName = "Lobby " + id;
@@ -24,6 +23,8 @@ public class GameLobby implements Runnable {
         players = new ArrayList<>();
         games = new ArrayList<>();
         this.isFull = false;
+        this.isRunning = false;
+        room = new ChatRoom();
     }
 
     public String getLobbyName() {
@@ -36,6 +37,10 @@ public class GameLobby implements Runnable {
 
     public void addPlayer(Player playerToAdd) {
         players.add(playerToAdd);
+        if (players.size() == 4) {
+            isFull = true;
+            this.run();
+        }
     }
 
     public void removePlayer(Player playerToRemove) {
@@ -53,6 +58,15 @@ public class GameLobby implements Runnable {
     public List<Player> getPlayers() {
         return players;
     }
+
+    public boolean isFull() {
+        return isFull;
+    }
+
+    public boolean isRunning() {
+        return isRunning;
+    }
+
 
     @Override
     public void run() {

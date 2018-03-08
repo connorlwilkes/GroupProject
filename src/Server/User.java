@@ -1,13 +1,12 @@
 package Server;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class User implements Serializable {
 
-    private int userID;
     private String username;
     private String password;
-    private String email;
     private ServerThread thread;
 
     public User(String username, String password) {
@@ -35,19 +34,13 @@ public class User implements Serializable {
         return this.password.equals(password);
     }
 
-    public String getEmail() {
-        return email;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(username, user.username) &&
+                Objects.equals(password, user.password);
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public int getUserID() {
-        return userID;
-    }
-
-    public void setUserID(int userID) {
-        this.userID = userID;
-    }
 }

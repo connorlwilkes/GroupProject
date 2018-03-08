@@ -8,8 +8,6 @@
 
 package Client;
 
-import Server.ServerProtocol;
-
 import java.io.*;
 import java.net.Socket;
 import java.util.logging.Level;
@@ -17,6 +15,7 @@ import java.util.logging.Logger;
 
 public class Client {
 
+    private final static Logger errorLogger = Logger.getLogger("errors");
     final private int port = 5000;
     private Socket connection;
     private String host;
@@ -28,7 +27,6 @@ public class Client {
     private DataInputStream dis;
     private ObjectInputStream objectInputStream;
     private ObjectOutputStream objectOutputStream;
-    private final static Logger errorLogger = Logger.getLogger("errors");
 
     /**
      * Constructor for the Client class
@@ -39,6 +37,17 @@ public class Client {
         this.host = host;
     }
 
+    public static void main(String[] args) {
+        Client test = new Client("localhost");
+        test.connect();
+        System.out.println("connected");
+        try {
+            test.login("connor", "password");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void setHost(String host) {
         this.host = host;
     }
@@ -46,6 +55,15 @@ public class Client {
     public Socket getConnection() {
         return connection;
     }
+
+//    private void setUp() throws IOException, ClassNotFoundException {
+//        in = connection.getInputStream();
+//        out = connection.getOutputStream();
+//        objectInputStream = new ObjectInputStream(in);
+//        objectOutputStream = new ObjectOutputStream(out);
+//        writer = new BufferedWriter(new OutputStreamWriter(out));
+//        reader = new BufferedReader(new InputStreamReader(in));
+//    }
 
     /**
      * Connects to a server
@@ -62,16 +80,6 @@ public class Client {
             errorLogger.log(Level.SEVERE, "Could not connect", ex);
         }
     }
-
-//    private void setUp() throws IOException, ClassNotFoundException {
-//        in = connection.getInputStream();
-//        out = connection.getOutputStream();
-//        objectInputStream = new ObjectInputStream(in);
-//        objectOutputStream = new ObjectOutputStream(out);
-//        writer = new BufferedWriter(new OutputStreamWriter(out));
-//        reader = new BufferedReader(new InputStreamReader(in));
-//    }
-
 
     /**
      * Stops the connection to the server
@@ -111,16 +119,5 @@ public class Client {
 //        ServerProtocol login = new ServerProtocol("login", username, password);
 //        objectOutputStream.writeObject(login);
 //        objectOutputStream.flush();
-    }
-
-    public static void main(String[] args) {
-        Client test = new Client("localhost");
-        test.connect();
-        System.out.println("connected");
-        try {
-            test.login("connor", "password");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }

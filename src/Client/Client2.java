@@ -9,12 +9,17 @@ import java.util.logging.Logger;
 
 public class Client2 {
 
+    private final static Logger logger = Logger.getLogger("Client Logger");
     final private int port = 5000;
     final private String host = "localhost";
     private Socket connection;
     private DataOutputStream out;
     private BufferedReader in;
-    private final static Logger logger = Logger.getLogger("Client Logger");
+
+    public static void main(String[] args) {
+        Client2 test = new Client2();
+        test.connect();
+    }
 
     public void connect() {
         try {
@@ -45,10 +50,5 @@ public class Client2 {
         out.flush();
         String line = in.readLine();
         System.out.println(line);
-    }
-
-    public static void main(String[] args) {
-        Client2 test = new Client2();
-        test.connect();
     }
 }

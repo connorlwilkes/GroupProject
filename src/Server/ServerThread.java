@@ -16,13 +16,13 @@ import java.util.logging.Logger;
 
 public class ServerThread implements Runnable {
 
+    private final static Logger auditLogger = Logger.getLogger("requests");
+    private final static Logger errorLogger = Logger.getLogger("errors");
     private Socket connection;
     private Server server;
     private BufferedReader reader;
     private BufferedWriter writer;
     private User currentUser;
-    private final static Logger auditLogger = Logger.getLogger("requests");
-    private final static Logger errorLogger = Logger.getLogger("errors");
 
     /**
      * Constructor for testing purposes
@@ -42,6 +42,25 @@ public class ServerThread implements Runnable {
     public ServerThread(Socket connection, Server server) {
         this.connection = connection;
         this.server = server;
+    }
+
+    /**
+     * Helper function to close the server
+     *
+     * @param socket socket to close
+     */
+    public static void closeSilently(Socket socket) {
+        if (socket != null) {
+            try {
+                socket.close();
+            } catch (IOException ex) {
+                errorLogger.log(Level.SEVERE, "could not close connection", ex);
+            }
+        }
+    }
+
+    public static boolean isValidLength(String word) {
+        return (word.length() >= 5 && word.length() <= 20);
     }
 
     public Socket getConnection() {
@@ -130,25 +149,6 @@ public class ServerThread implements Runnable {
     }
 
     private void joinLobby(String lobbyName, String lobbyPassword) {
-    }
-
-    /**
-     * Helper function to close the server
-     *
-     * @param socket socket to close
-     */
-    public static void closeSilently(Socket socket) {
-        if (socket != null) {
-            try {
-                socket.close();
-            } catch (IOException ex) {
-                errorLogger.log(Level.SEVERE, "could not close connection", ex);
-            }
-        }
-    }
-
-    public static boolean isValidLength(String word) {
-        return (word.length() >= 5 && word.length() <= 20);
     }
 
 }

@@ -106,13 +106,13 @@ public class LogInFrame extends JFrame {
         }
     }
 
-/**
- * 'Register' button that takes users from the log-in page to the registration page
- */
-class registerNewUserButtonListener implements ActionListener {
-    public void actionPerformed(ActionEvent event) {
-        preFrame.setVisible(false);
-        new RegisterFrame();
+    /**
+     * 'Register' button that takes users from the log-in page to the registration page
+     */
+    class registerNewUserButtonListener implements ActionListener {
+        public void actionPerformed(ActionEvent event) {
+            preFrame.setVisible(false);
+            new RegisterFrame();
+        }
     }
-}
 }

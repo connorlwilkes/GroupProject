@@ -8,12 +8,10 @@
 
 package Server;
 
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -29,6 +27,16 @@ public class Server {
     private ExecutorService threadPool;
     private List<GameLobby> lobbies;
     private List<User> activeUsers;
+
+    /**
+     * Main method to begin the server
+     *
+     * @param args
+     */
+    public static void main(String[] args) {
+        Server testServer = new Server();
+        testServer.start();
+    }
 
     public List<GameLobby> getLobbies() {
         return lobbies;
@@ -112,16 +120,6 @@ public class Server {
             }
         }
         return null;
-    }
-
-    /**
-     * Main method to begin the server
-     *
-     * @param args
-     */
-    public static void main(String[] args) {
-        Server testServer = new Server();
-        testServer.start();
     }
 
 }

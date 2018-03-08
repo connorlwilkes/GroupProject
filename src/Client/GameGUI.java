@@ -19,6 +19,7 @@ public class GameGUI {
     private JFrame registerFrame;
     private JFrame lobbyFrame;            //the second frame that is for lobby choice
     private JFrame displayFrame;            //the third frame that is where the game is played
+    private String username;
 
     public static void main(String[] args) {
         //set cross-platform Java Look & Feel ("Metal")
@@ -55,7 +56,7 @@ public class GameGUI {
      * ______________________________________
      */
     public void logInDisplay() {
-        //newFrame.setVisible(false);		
+        //newFrame.setVisible(false);
         preFrame = new JFrame("LOG-IN");                                // creates a new frame
 
         JLabel enterUsernameLabel = new JLabel("Enter username:");    // the 'Enter Username' label
@@ -225,6 +226,8 @@ public class GameGUI {
 
     }
 
+    // BUTTON LISTENERS ---------------------------------------------------------------------------------------------------
+
     /**
      * chatDisplay is the game chat display that appears once the user has chosen a lobby in lobbyDisplay.
      * <p>
@@ -278,10 +281,6 @@ public class GameGUI {
         newFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);            // closes the JFrame when the display is exitted
         newFrame.setSize(470, 300);                                        // sets the size of the chat box to 470px x 300px (x, y)
     }
-
-    // BUTTON LISTENERS ---------------------------------------------------------------------------------------------------
-
-    private String username;
 
     /**
      * 'Register' button that takes users from the log-in page to the registration page

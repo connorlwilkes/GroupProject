@@ -1,13 +1,11 @@
 package Server;
 
-import Server.Server;
-
 public class Player {
 
     private ServerThread client;
     private int score;
 
-    public Player (ServerThread client) {
+    public Player(ServerThread client) {
         this.client = client;
         this.score = 0;
     }

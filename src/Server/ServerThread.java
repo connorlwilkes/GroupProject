@@ -58,49 +58,28 @@ public class ServerThread implements Runnable {
         try {
             auditLogger.info("Connected to: " + connection.getRemoteSocketAddress() + " on " + new Date());
             setUp();
+            String line;
             while (true) {
-                String line = reader.readLine();
+                line = reader.readLine();
                 System.out.println(line);
-                if (line == null) {
-                    connection.close();
-                    return;
+                while (line == null) {
+                    line = reader.readLine();
                 }
                 String password;
                 String username;
-                switch (line) {
-                    case "hello\r\n":
-                        writer.write("hello\r\n");
-                        writer.flush();
-                        System.out.println(reader.readLine());
-                    case "login\r\n":
-                        writer.write("username");
-                        writer.flush();
-                        username = reader.readLine();
-                        writer.write("password");
-                        writer.flush();
-                        password = reader.readLine();
-                        loginUser(username, password);
-                        processRequests();
-                        break;
-                    case "createAccount\r\n":
-                        username = reader.readLine();
-                        password = reader.readLine();
-                        setUpAccount(username, password);
-                        auditLogger.info("Created account: " + currentUser.getUsername() + "\n Closing connection");
-                        connection.close();
-                        break;
-                    default:
-                        connection.close();
-                        break;
-                }
-                if (connection.isClosed()) {
-                    return;
+                if (line.startsWith("hello")) {
+                    System.out.println("hello client");
+                } else if (line.startsWith("login")) {
+                    username = reader.readLine();
+                    password = reader.readLine();
+                    loginUser(username, password);
+                } else {
+                    connection.close();
+                    break;
                 }
             }
         } catch (IOException ex) {
             System.err.println(ex);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
         } finally {
             try {
                 System.out.println("here");
@@ -127,13 +106,12 @@ public class ServerThread implements Runnable {
 
     private void loginUser(String username, String password) throws IOException {
         if (!(server.checkPassword(username, password))) {
-            writer.write("Error: Username or password incorrect");
+            writer.write("Error: Username or password incorrect\r\n");
             writer.flush();
         } else {
             currentUser = new User(username, password);
-            writer.write("success");
-            writer.flush();
-            writer.write("Success: User " + username + " logged in");
+
+            writer.write("Success: User " + username + " logged in\r\n");
             writer.flush();
         }
     }

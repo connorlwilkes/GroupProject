@@ -1,6 +1,8 @@
 package Server;
 
+import java.io.BufferedWriter;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 public class GameLobby implements Runnable {
@@ -12,6 +14,7 @@ public class GameLobby implements Runnable {
     private GameOwner owner;
     private List<Player> players;
     private List<Minigame> games;
+    private HashSet<BufferedWriter> writers;
 
     public GameLobby(String lobbyName, String password, GameOwner owner) {
         this.password = password;
@@ -41,6 +44,10 @@ public class GameLobby implements Runnable {
                 players.remove(i);
             }
         }
+    }
+
+    public void addWriter(BufferedWriter writer) {
+        writers.add(writer);
     }
 
     @Override

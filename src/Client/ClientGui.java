@@ -7,7 +7,7 @@ import java.net.UnknownHostException;
 
 public class ClientGui extends JFrame {
 
-    public LoginFrameTest login = new LoginFrameTest();
+    public LogInFrame login = new LogInFrame();
     public LobbyFrame lobby = new LobbyFrame();
     public RegisterFrame register = new RegisterFrame();
     public ChatDisplay chat = new ChatDisplay();

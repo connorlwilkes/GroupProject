@@ -4,6 +4,7 @@ import java.util.Calendar;
 
 public class Message {
 
+
     private String message;
     private String time;
     private String sender;
@@ -43,3 +44,4 @@ public class Message {
         this.sender = sender;
     }
 }
+

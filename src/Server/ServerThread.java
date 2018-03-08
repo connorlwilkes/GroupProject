@@ -26,6 +26,7 @@ public class ServerThread implements Runnable {
     private BufferedWriter writer;
     private User currentUser;
 
+
     /**
      * Constructor for testing purposes
      *
@@ -91,7 +92,7 @@ public class ServerThread implements Runnable {
                 auditLogger.info("Closing connection to " + connection.getRemoteSocketAddress() + " on " + new Date());
                 connection.close();
             } catch (IOException e) {
-
+                System.err.println(e);
             }
         }
     }
@@ -182,12 +183,18 @@ public class ServerThread implements Runnable {
             return;
         }
         GameLobby lobby = server.getLobbies().get(lobbyNumber - 1);
-        if (lobby.isFull()) {
-            System.err.println("lobby is full");
-        } else {
-            Player player = new Player(this, lobby);
-            lobby.addPlayer(player);
+        synchronized (lobby) {
+            if (lobby.isFull()) {
+                System.err.println("lobby is full");
+            } else {
+                Player player = new Player(this, lobby);
+                lobby.addPlayer(player);
+            }
         }
+        processLobbyRequests(lobby);
+    }
+
+    private void processLobbyRequests(GameLobby lobby) throws IOException {
         while (lobby.isRunning()) {
             String line = reader.readLine();
             while (line == null) {
@@ -202,7 +209,7 @@ public class ServerThread implements Runnable {
             } else if (line.startsWith("getScores")) {
 
             } else if (line.startsWith("quitLobby")) {
-
+                break;
             } else {
                 System.err.println("unknown request");
                 connection.close();

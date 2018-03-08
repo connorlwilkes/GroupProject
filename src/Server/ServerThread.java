@@ -7,6 +7,8 @@
 
 package Server;
 
+import Server.Login.RegisterUser;
+
 import java.io.*;
 import java.net.Socket;
 import java.util.Date;
@@ -77,21 +79,18 @@ public class ServerThread implements Runnable {
         try {
             auditLogger.info("Connected to: " + connection.getRemoteSocketAddress() + " on " + new Date());
             setUp();
-            String line;
+            logInOrSignUp();
+            processRequests();
             while (true) {
                 line = reader.readLine();
                 System.out.println(line);
                 while (line == null) {
                     line = reader.readLine();
                 }
-                String password;
-                String username;
                 if (line.startsWith("hello")) {
                     System.out.println("hello client");
                 } else if (line.startsWith("login")) {
-                    username = reader.readLine();
-                    password = reader.readLine();
-                    loginUser(username, password);
+                    loginUser();
                 } else {
                     connection.close();
                     break;
@@ -123,7 +122,9 @@ public class ServerThread implements Runnable {
     private void processRequests() throws IOException, ClassNotFoundException {
     }
 
-    private void loginUser(String username, String password) throws IOException {
+    private void loginUser() throws IOException {
+        String username = reader.readLine();
+        String password = reader.readLine();
         if (!(server.checkPassword(username, password))) {
             writer.write("Error: Username or password incorrect\r\n");
             writer.flush();
@@ -135,7 +136,9 @@ public class ServerThread implements Runnable {
         }
     }
 
-    private void setUpAccount(String username, String password) throws IOException {
+    private void setUpAccount() throws IOException {
+        String username = reader.readLine();
+        String password = reader.readLine();
         if (server.checkUsername(username)) {
             ServerProtocol error = new ServerProtocol("error", "User with that username already exists");
         } else if (!(isValidLength(username) && isValidLength(password))) {
@@ -146,6 +149,8 @@ public class ServerThread implements Runnable {
             ServerProtocol success = new ServerProtocol("success", "Successfully created account with " +
                     "username: " + username);
         }
+        writer.write(RegisterUser.checkUser(new User(username, password)));
+        writer.flush();
     }
 
     private void joinLobby(String lobbyName, String lobbyPassword) {

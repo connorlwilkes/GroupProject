@@ -18,8 +18,6 @@ public class ServerThread implements Runnable {
 
     private Socket connection;
     private Server server;
-    private InputStream in;
-    private OutputStream out;
     private BufferedReader reader;
     private BufferedWriter writer;
     private User currentUser;
@@ -61,17 +59,20 @@ public class ServerThread implements Runnable {
             auditLogger.info("Connected to: " + connection.getRemoteSocketAddress() + " on " + new Date());
             setUp();
             while (true) {
-                System.out.println(connection.isConnected());
                 String line = reader.readLine();
-                while (line == null) {
-                    line = reader.readLine();
+                System.out.println(line);
+                if (line == null) {
+                    connection.close();
+                    return;
                 }
-                String password = null;
-                String username = null;
+                String password;
+                String username;
                 switch (line) {
-                    case "hello":
-                        System.out.println("hello");
-                    case "login":
+                    case "hello\r\n":
+                        writer.write("hello\r\n");
+                        writer.flush();
+                        System.out.println(reader.readLine());
+                    case "login\r\n":
                         writer.write("username");
                         writer.flush();
                         username = reader.readLine();
@@ -81,13 +82,19 @@ public class ServerThread implements Runnable {
                         loginUser(username, password);
                         processRequests();
                         break;
-                    case "createAccount":
+                    case "createAccount\r\n":
                         username = reader.readLine();
                         password = reader.readLine();
                         setUpAccount(username, password);
                         auditLogger.info("Created account: " + currentUser.getUsername() + "\n Closing connection");
                         connection.close();
                         break;
+                    default:
+                        connection.close();
+                        break;
+                }
+                if (connection.isClosed()) {
+                    return;
                 }
             }
         } catch (IOException ex) {
@@ -106,10 +113,10 @@ public class ServerThread implements Runnable {
     }
 
     public void setUp() throws IOException {
-        in = connection.getInputStream();
-        out = connection.getOutputStream();
-        reader = new BufferedReader(new InputStreamReader(in));
-        writer = new BufferedWriter(new OutputStreamWriter(out));
+        reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+        writer = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));
+        writer.write("hello\r\n");
+        writer.flush();
     }
 
     /**

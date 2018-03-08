@@ -25,6 +25,7 @@ public class Client {
     private BufferedWriter writer;
     private BufferedReader reader;
     private DataOutputStream dos;
+    private DataInputStream dis;
     private ObjectInputStream objectInputStream;
     private ObjectOutputStream objectOutputStream;
     private final static Logger errorLogger = Logger.getLogger("errors");
@@ -54,6 +55,7 @@ public class Client {
             connection = socket;
             dos = new DataOutputStream(connection.getOutputStream());
             reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            dis = new DataInputStream(connection.getInputStream());
             dos.writeBytes("hello\r\n");
             dos.flush();
         } catch (IOException ex) {
@@ -90,6 +92,8 @@ public class Client {
      * @throws IOException
      */
     public void login(String username, String password) throws IOException {
+        dos = new DataOutputStream(connection.getOutputStream());
+        reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
         dos.writeBytes("login\r\n");
         dos.flush();
         while (true) {

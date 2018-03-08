@@ -1,5 +1,9 @@
 package Client;
 
+import Server.GameLobby;
+import Server.Login.RegisterUser;
+import Server.User;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -7,7 +11,7 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 import java.util.logging.Logger;
 
-public class Client2 {
+public class Client {
 
     private final static Logger logger = Logger.getLogger("Client Logger");
     final private int port = 5000;
@@ -17,7 +21,7 @@ public class Client2 {
     private BufferedReader in;
 
     public static void main(String[] args) {
-        Client2 test = new Client2();
+        Client.Client test = new Client.Client();
         test.connect();
     }
 
@@ -50,16 +54,25 @@ public class Client2 {
     }
 
     private void logIn(String username, String password) throws IOException {
-
-        System.out.println("here");
         out.writeBytes("login\r\n");
         out.flush();
-        System.out.println("Sent login request");
         out.writeBytes(username + "\r\n");
         out.flush();
         out.writeBytes(password + "\r\n");
         out.flush();
-        String line = in.readLine();
-        System.out.println(line);
     }
+
+    private void createAccount(String username, String password) throws IOException {
+        out.writeBytes("createAccount\r\n");
+        out.flush();
+        out.writeBytes(username + "\r\n");
+        out.flush();
+        out.writeBytes(password + "\r\n");
+        out.flush();
+    }
+
+    private void joinLobby(GameLobby lobby) {
+
+    }
+
 }

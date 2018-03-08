@@ -14,16 +14,16 @@ public class GameLobby implements Runnable {
     private GameOwner owner;
     private List<Player> players;
     private List<Minigame> games;
-    private HashSet<BufferedWriter> writers;
+    private ChatRoom room;
+    private boolean isFull;
 
-    public GameLobby(String lobbyName, String password, GameOwner owner) {
-        this.password = password;
-        this.owner = owner;
-        id = System.identityHashCode(this);
+    public GameLobby(int id) {
+        this.lobbyName = "Lobby " + id;
+        this.id = id;
         totalScore = 0;
         players = new ArrayList<>();
-        players.add(owner);
         games = new ArrayList<>();
+        this.isFull = false;
     }
 
     public String getLobbyName() {
@@ -46,8 +46,12 @@ public class GameLobby implements Runnable {
         }
     }
 
-    public void addWriter(BufferedWriter writer) {
-        writers.add(writer);
+    public void setOwner(GameOwner owner) {
+        this.owner = owner;
+    }
+
+    public List<Player> getPlayers() {
+        return players;
     }
 
     @Override

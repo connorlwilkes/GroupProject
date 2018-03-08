@@ -80,21 +80,8 @@ public class ServerThread implements Runnable {
             auditLogger.info("Connected to: " + connection.getRemoteSocketAddress() + " on " + new Date());
             setUp();
             logInOrSignUp();
-            processRequests();
-            while (true) {
-                line = reader.readLine();
-                System.out.println(line);
-                while (line == null) {
-                    line = reader.readLine();
-                }
-                if (line.startsWith("hello")) {
-                    System.out.println("hello client");
-                } else if (line.startsWith("login")) {
-                    loginUser();
-                } else {
-                    connection.close();
-                    break;
-                }
+            if (!(connection.isClosed())) {
+                processRequests();
             }
         } catch (IOException ex) {
             System.err.println(ex);
@@ -116,10 +103,38 @@ public class ServerThread implements Runnable {
         writer.flush();
     }
 
+    private void logInOrSignUp() throws IOException {
+        while (true) {
+            String line = reader.readLine();
+            while (line == null) {
+                line = reader.readLine();
+            }
+            if (line.startsWith("login")) {
+                loginUser();
+                break;
+            } else if (line.startsWith("createAccount")) {
+                setUpAccount();
+                connection.close();
+            } else if (connection.isClosed()) {
+                System.out.println("closed connection");
+                break;
+            }
+        }
+    }
+
     /**
      * Processes network requests
      */
-    private void processRequests() throws IOException, ClassNotFoundException {
+    private void processRequests() throws IOException {
+        while (true) {
+            String line = reader.readLine();
+            while (line == null) {
+                line = reader.readLine();
+            }
+            if (line.startsWith("enterLobby")) {
+                joinLobby();
+            }
+        }
     }
 
     private void loginUser() throws IOException {
@@ -130,10 +145,10 @@ public class ServerThread implements Runnable {
             writer.flush();
         } else {
             currentUser = new User(username, password);
-
             writer.write("Success: User " + username + " logged in\r\n");
             writer.flush();
         }
+
     }
 
     private void setUpAccount() throws IOException {
@@ -153,7 +168,15 @@ public class ServerThread implements Runnable {
         writer.flush();
     }
 
-    private void joinLobby(String lobbyName, String lobbyPassword) {
+    private void joinLobby() throws IOException {
+        int lobbyNumber = reader.read();
+        if (lobbyNumber > 4 || 1 > lobbyNumber) {
+            System.err.println("lobby does not exist");
+            return;
+        }
+        GameLobby lobby = server.getLobbies().get(lobbyNumber - 1);
+        Player player = new Player(this, lobby);
+        if(lobby.)
     }
 
 }

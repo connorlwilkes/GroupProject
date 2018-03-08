@@ -58,6 +58,7 @@ public class Server {
         activeUsers = new ArrayList<>();
         addUser(new User("connor", "password"));    // for testing, remove!
         threadPool = Executors.newFixedThreadPool(50);
+        setUpGameLobbies();
         try (ServerSocket server = new ServerSocket(port)) {
             while (true) {
                 try {
@@ -104,6 +105,7 @@ public class Server {
         return false;
     }
 
+
     public boolean checkPassword(String username, String password) {
         for (User user : activeUsers) {
             if (user.getUsername().equals(username) && user.verifyPassword(password)) {
@@ -120,6 +122,12 @@ public class Server {
             }
         }
         return null;
+    }
+
+    private void setUpGameLobbies() {
+        for(int i = 1; i < 5; i++) {
+            lobbies.add(new GameLobby(i));
+        }
     }
 
 }

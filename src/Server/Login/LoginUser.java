@@ -16,10 +16,10 @@ public class LoginUser {
         if (username.equals("") || password.equals("")) {
 
             return LoginUserResponses.invalidInput;
-        } else if (checkUsername(user) == false) {
+        } else if (!checkUsername(user)) {
 
             return LoginUserResponses.userDoesNotExist;
-        } else if (password.equals(getPassword(user))) {
+        } else if (password.equals(user.getPassword())) {
 
             return LoginUserResponses.success;
         } else {

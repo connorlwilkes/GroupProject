@@ -94,7 +94,7 @@ public class LogInFrame extends JFrame {
                 return;
             }
             try {
-                ClientGui.gui.client.login(username, password);
+                ClientGui.gui.client.logIn(username, password);
 //                    ClientGui.gui.setBounds(ClientGui.gui.getX(), ClientGui.gui.getY(), 300, 200);
 //                    ClientGui.gui.setContentPane(ClientGui.gui.lobby);
 //                    ClientGui.gui.setTitle("Lobby");

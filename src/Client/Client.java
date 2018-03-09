@@ -19,7 +19,7 @@ public class Client {
     private BufferedReader in;
 
     public static void main(String[] args) {
-        Client.Client test = new Client.Client();
+        Client test = new Client();
         test.connect();
     }
 
@@ -51,7 +51,7 @@ public class Client {
         }
     }
 
-    private void logIn(String username, String password) throws IOException {
+    public void logIn(String username, String password) throws IOException {
         out.writeBytes("login\r\n");
         out.flush();
         out.writeBytes(username + "\r\n");
@@ -60,7 +60,7 @@ public class Client {
         out.flush();
     }
 
-    private void createAccount(String username, String password) throws IOException {
+    public void createAccount(String username, String password) throws IOException {
         out.writeBytes("createAccount\r\n");
         out.flush();
         out.writeBytes(username + "\r\n");

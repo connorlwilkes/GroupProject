@@ -2,7 +2,15 @@ package Server;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
+/**
+ * GameLobby class for the game. Players enter the lobby and play rounds of minigames. The GameLobby class keeps track
+ * of the scores and moderates user input.
+ *
+ * @author Florence
+ * @version 9/3/2018
+ */
 public class GameLobby implements Runnable {
 
     private String lobbyName;
@@ -15,6 +23,11 @@ public class GameLobby implements Runnable {
     private boolean isFull;
     private boolean isRunning;
 
+    /**
+     * Constructor for the GameLobby class
+     *
+     * @param id id of the GameLobby
+     */
     public GameLobby(int id) {
         this.lobbyName = "Lobby " + id;
         this.id = id;
@@ -26,6 +39,29 @@ public class GameLobby implements Runnable {
         room = new ChatRoom();
     }
 
+    /**
+     * Getter for the isFull boolean
+     *
+     * @return true if lobby is full or false if not
+     */
+    public boolean isFull() {
+        return isFull;
+    }
+
+    /**
+     * Getter for the isRunning boolean
+     *
+     * @return isRunning if the game is in progress
+     */
+    public boolean isRunning() {
+        return isRunning;
+    }
+
+    /**
+     * Adds a player to the players list
+     *
+     * @param playerToAdd the player to add
+     */
     public synchronized void addPlayer(Player playerToAdd) {
         players.add(playerToAdd);
         if (players.size() == maxPlayers) {
@@ -34,6 +70,11 @@ public class GameLobby implements Runnable {
         }
     }
 
+    /**
+     * Removes a player from the game
+     *
+     * @param playerToRemove the player to remove
+     */
     public synchronized void removePlayer(Player playerToRemove) {
         for (int i = 0; i < players.size(); i++) {
             if (players.get(i).equals(playerToRemove)) {
@@ -42,20 +83,13 @@ public class GameLobby implements Runnable {
         }
     }
 
-    public synchronized List<Player> getPlayers() {
-        return players;
-    }
-
-    public synchronized boolean isFull() {
-        return isFull;
-    }
-
-    public synchronized boolean isRunning() {
-        return isRunning;
-    }
-
-    public synchronized void addGame(Minigame game){
-        games.add(game);
+    /**
+     * Gets the player/players with the highest score
+     * @return a list of the players with the highest scoress
+     */
+    public synchronized List<Player> getWinningPlayers() {
+        int maxScore = players.stream().mapToInt(player -> (player.getScore())).sum();
+        return players.stream().filter(player -> (player.getScore() == maxScore)).collect(Collectors.toList());
     }
 
     @Override
@@ -63,19 +97,4 @@ public class GameLobby implements Runnable {
 
     }
 
-    public synchronized List<Player> getWinningPlayers() {
-        List<Player> winningPlayers = new ArrayList<>();
-        int maxScore = 0;
-        for (Player player : players) {
-            if (player.getScore() > maxScore) {
-                maxScore = player.getScore();
-            }
-        }
-        for (Player player : players) {
-            if (player.getScore() == maxScore) {
-                winningPlayers.add(player);
-            }
-        }
-        return winningPlayers;
-    }
 }

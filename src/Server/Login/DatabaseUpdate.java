@@ -55,8 +55,6 @@ public class DatabaseUpdate extends DatabaseAccess {
              PreparedStatement psmt = connection.prepareStatement(SQL)) {
 
             psmt.setString(1, columnToUpdate);
-            psmt.setInt(2, user.getUserID());
-
             psmt.executeUpdate();
 
         } catch (SQLException e) {

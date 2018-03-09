@@ -50,8 +50,10 @@ public class QuestionPage {
      * @throws SQLException 
      * @wbp.parser.entryPoint
      */
-    private void initialize() throws ClassNotFoundException, SQLException {
-        String[] questions = QuestionClass.QuestionHeader();
+    private void initialize() throws ClassNotFoundException {
+
+        String[] questions = new String[10];
+                // = QuestionClass.getQuestionHeader();
 
         for (int i = 0; i < 3; i++) {
             frame = new JFrame();
@@ -106,7 +108,7 @@ public class QuestionPage {
             });
 
             timer.start();
-            if (txtCountdown.getText() == "end") {
+            if (txtCountdown.getText().startsWith("end")) {
                 timer.stop();
             }
             continue;

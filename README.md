@@ -1,1 +1,1 @@
-# javaGroupProject
+# Java Group Project: A quiz based multiplayer game

@@ -26,7 +26,7 @@ public class DatabaseInsert extends DatabaseAccess {
 
                 try (ResultSet rs = psmt.getGeneratedKeys()) {
                     if (rs.next()) {
-                        //user.setUserID(rs.getInt(1));
+//                        user.setUserID(rs.getInt(1));
                     }
                 }
 

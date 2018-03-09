@@ -1,9 +1,8 @@
-package Server;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 
 public class QuestionPage {
@@ -17,9 +16,10 @@ public class QuestionPage {
      * Create the application.
      *
      * @throws ClassNotFoundException
+     * @throws SQLException 
      * @wbp.parser.entryPoint
      */
-    public QuestionPage() throws ClassNotFoundException {
+    public QuestionPage() throws ClassNotFoundException, SQLException {
         initialize();
     }
 
@@ -47,10 +47,11 @@ public class QuestionPage {
      * Initialize the contents of the frame.
      *
      * @throws ClassNotFoundException
+     * @throws SQLException 
      * @wbp.parser.entryPoint
      */
-    private void initialize() throws ClassNotFoundException {
-        String[] questions = QuestionClass.getQuestionHeader();
+    private void initialize() throws ClassNotFoundException, SQLException {
+        String[] questions = QuestionClass.QuestionHeader();
 
         for (int i = 0; i < 3; i++) {
             frame = new JFrame();
@@ -113,4 +114,3 @@ public class QuestionPage {
     }
 
 }
-

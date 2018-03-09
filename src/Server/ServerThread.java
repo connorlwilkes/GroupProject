@@ -1,10 +1,3 @@
-/**
- * ServerThread class for the Server of the minigame game. Takes an incoming connection and creates a new thread.
- *
- * @author Connor Wilkes
- * @version 1/3/2018
- */
-
 package Server;
 
 import Server.Login.RegisterUser;
@@ -15,7 +8,12 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
+/**
+ * ServerThread class for the Server of the minigame game. Takes an incoming connection and creates a new thread.
+ *
+ * @author Connor Wilkes
+ * @version 1/3/2018
+ */
 public class ServerThread implements Runnable {
 
     private final static Logger auditLogger = Logger.getLogger("requests");
@@ -72,8 +70,6 @@ public class ServerThread implements Runnable {
 
     /**
      * Run method for the thread
-     *
-     * @return null
      */
     @Override
     public void run() {
@@ -134,8 +130,6 @@ public class ServerThread implements Runnable {
             }
             if (line.startsWith("enterLobby")) {
                 joinLobby();
-            } else if (line.startsWith("leaveLobby")) {
-
             } else if (line.startsWith("logout")) {
                 logOut();
                 break;
@@ -161,16 +155,6 @@ public class ServerThread implements Runnable {
     private synchronized void setUpAccount() throws IOException {
         String username = reader.readLine();
         String password = reader.readLine();
-        if (server.checkUsername(username)) {
-            ServerProtocol error = new ServerProtocol("error", "User with that username already exists");
-        } else if (!(isValidLength(username) && isValidLength(password))) {
-            ServerProtocol error = new ServerProtocol("error", "Username and password must be between 5" +
-                    "and 20 characters long inclusive");
-        } else {
-            currentUser = new User(username, password);
-            ServerProtocol success = new ServerProtocol("success", "Successfully created account with " +
-                    "username: " + username);
-        }
         writer.write(RegisterUser.checkUser(new User(username, password)));
         writer.flush();
         connection.close();
@@ -183,14 +167,12 @@ public class ServerThread implements Runnable {
             return;
         }
         GameLobby lobby = server.getLobbies().get(lobbyNumber - 1);
-        synchronized (lobby) {
             if (lobby.isFull()) {
                 System.err.println("lobby is full");
             } else {
                 Player player = new Player(this, lobby);
                 lobby.addPlayer(player);
             }
-        }
         processLobbyRequests(lobby);
     }
 

@@ -10,7 +10,7 @@ public class ClientGui extends JFrame {
     public LobbyFrame lobby = new LobbyFrame();
     public RegisterFrame register = new RegisterFrame();
     public ChatDisplay chat = new ChatDisplay();
-    public Client client = new Client("localhost");
+    public Client client = new Client();
 
     public ClientGui() {
         setTitle("Log In");

@@ -5,12 +5,11 @@ import java.util.List;
 
 public class GameLobby implements Runnable {
 
-    private String password;
     private String lobbyName;
     private int id;
     private int totalScore;
-    private GameOwner owner;
     private List<Player> players;
+    private final int maxPlayers = 4;
     private List<Minigame> games;
     private ChatRoom room;
     private boolean isFull;
@@ -27,23 +26,15 @@ public class GameLobby implements Runnable {
         room = new ChatRoom();
     }
 
-    public String getLobbyName() {
-        return lobbyName;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void addPlayer(Player playerToAdd) {
+    public synchronized void addPlayer(Player playerToAdd) {
         players.add(playerToAdd);
-        if (players.size() == 4) {
+        if (players.size() == maxPlayers) {
             isFull = true;
-            this.run();
+            run();
         }
     }
 
-    public void removePlayer(Player playerToRemove) {
+    public synchronized void removePlayer(Player playerToRemove) {
         for (int i = 0; i < players.size(); i++) {
             if (players.get(i).equals(playerToRemove)) {
                 players.remove(i);
@@ -51,29 +42,28 @@ public class GameLobby implements Runnable {
         }
     }
 
-    public void setOwner(GameOwner owner) {
-        this.owner = owner;
-    }
-
-    public List<Player> getPlayers() {
+    public synchronized List<Player> getPlayers() {
         return players;
     }
 
-    public boolean isFull() {
+    public synchronized boolean isFull() {
         return isFull;
     }
 
-    public boolean isRunning() {
+    public synchronized boolean isRunning() {
         return isRunning;
     }
 
+    public synchronized void addGame(Minigame game){
+        games.add(game);
+    }
 
     @Override
     public void run() {
 
     }
 
-    public List<Player> getWinningPlayers() {
+    public synchronized List<Player> getWinningPlayers() {
         List<Player> winningPlayers = new ArrayList<>();
         int maxScore = 0;
         for (Player player : players) {

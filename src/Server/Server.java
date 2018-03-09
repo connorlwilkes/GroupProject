@@ -51,7 +51,7 @@ public class Server {
     }
 
     public void removeUser(User userToRemove) {
-       String toRemove = userToRemove.getUsername();
+        String toRemove = userToRemove.getUsername();
         for (User user : activeUsers) {
             if (user.getUsername().equals(toRemove)) {
                 activeUsers.remove(user);
@@ -62,6 +62,7 @@ public class Server {
     /**
      * Starts the server
      */
+    @SuppressWarnings("InfiniteLoopStatement")
     public void start() {
         lobbies = new ArrayList<>();
         activeUsers = new ArrayList<>();
@@ -134,7 +135,7 @@ public class Server {
     }
 
     private void setUpGameLobbies() {
-        for(int i = 1; i < 5; i++) {
+        for (int i = 1; i < 5; i++) {
             lobbies.add(new GameLobby(i));
         }
     }

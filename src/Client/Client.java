@@ -1,8 +1,6 @@
 package Client;
 
 import Server.GameLobby;
-import Server.Login.RegisterUser;
-import Server.User;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;

@@ -1,38 +1,24 @@
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
-
+import static DatabaseQueries.connect;
 
 
 
 public class QuestionClass {
 
+	
 	//generates 5 ids from 1-20, then grabs the question at these ids in the question_table,
 	//then adds them to an array which is finally printed out
-    public static void main(String[] args) throws ClassNotFoundException {
+    public static String[] QuestionHeader() throws SQLException {
     	
     	 int[] result = ThreadLocalRandom.current().ints(1, 20).distinct().limit(5).toArray();
          String[] questions = new String[5];
-		try {
-
-			Class.forName("org.postgresql.Driver");
-
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-			return;
-
-		}
-		Connection connection = null;
-
-		try {
-
-			connection = DriverManager.getConnection(
-					"jdbc:postgresql://mod-msc-sw1.cs.bham.ac.uk:5432/florence", "florence", "kx7t40vm7v");	
-			
+         		
+         	  Connection connection = DatabaseQueries.connect();
 			  Statement stmt = connection.createStatement();
 	          ResultSet rs;
 	          
@@ -49,20 +35,13 @@ public class QuestionClass {
 	              questions[i] = s;
 	              }
 	          }
-	          connection.close();
 	            
-		} catch (SQLException e) {
-
-			System.out.println("Connection Failed! Check output console");
-			e.printStackTrace();
-			return;
-
-		}
-
-		if (connection != null) {
-		}
-
-		System.out.println(Arrays.toString(questions));
+		return questions;
+    }
+    
+ public static void main(String[] args) throws SQLException {
+    	String[] test = QuestionHeader();
+    	System.out.println(Arrays.toString(test));
     }
 
 }

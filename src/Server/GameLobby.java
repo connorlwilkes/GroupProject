@@ -58,6 +58,24 @@ public class GameLobby implements Runnable {
     }
 
     /**
+     * Getter for the players
+     *
+     * @return the players
+     */
+    public List<Player> getPlayers() {
+        return players;
+    }
+
+    /**
+     * Setters for players
+     *
+     * @param players list of players to set players to
+     */
+    public void setPlayers(List<Player> players) {
+        this.players = players;
+    }
+
+    /**
      * Adds a player to the players list
      *
      * @param playerToAdd the player to add

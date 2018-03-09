@@ -19,6 +19,12 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Server class for the minigame game. Sets up a server on port 5000 on a host.
+ *
+ * @author Florence
+ * @version 9/3/2018
+ */
 public class Server {
 
     private final static Logger serverErrorLogger = Logger.getLogger("ServerErrors");
@@ -29,27 +35,56 @@ public class Server {
     private List<User> activeUsers;
 
     /**
-     * Main method to begin the server
+     * Getter for the lobbies list
      *
-     * @param args
+     * @return lobbies
      */
-    public static void main(String[] args) {
-        Server testServer = new Server();
-        testServer.start();
-    }
-
     public List<GameLobby> getLobbies() {
         return lobbies;
     }
 
+    /**
+     * Adds a lobby to the lobby list
+     *
+     * @param lobby lobby to add
+     */
     public void addLobby(GameLobby lobby) {
         lobbies.add(lobby);
     }
 
+    /**
+     * Adds a user to the list of currently active users
+     *
+     * @param user user to add
+     */
     public void addUser(User user) {
         activeUsers.add(user);
     }
 
+    // Testing purposes - will perform same function as database call
+    public boolean checkUsername(String toCheck) {
+        return activeUsers.stream()
+                .anyMatch(user -> (user.getUsername().equals(toCheck)));
+    }
+
+    // Testing purposes - will perform same function as database call
+    public boolean checkPassword(String username, String password) {
+        return activeUsers.stream()
+                .anyMatch(user -> (user.getUsername().equals(username) && user.verifyPassword(password)));
+    }
+
+    // Testing purposes - will perform same function as database call
+    public User findUser(String username) {
+        return activeUsers.stream()
+                .filter(user -> (user.getUsername().equals(username)))
+                .findFirst().orElse(null);
+    }
+
+    /**
+     * Removes a user from the currently active users list
+     *
+     * @param userToRemove the user to remove
+     */
     public void removeUser(User userToRemove) {
         String toRemove = userToRemove.getUsername();
         for (User user : activeUsers) {
@@ -106,27 +141,23 @@ public class Server {
         }
     }
 
-    public boolean checkUsername(String toCheck) {
-        return activeUsers.stream()
-                .anyMatch(user -> (user.getUsername().equals(toCheck)));
-    }
-
-
-    public boolean checkPassword(String username, String password) {
-        return activeUsers.stream()
-                .anyMatch(user -> (user.getUsername().equals(username) && user.verifyPassword(password)));
-    }
-
-    public User findUser(String username) {
-        return activeUsers.stream()
-                .filter(user -> (user.getUsername().equals(username)))
-                .findFirst().orElse(null);
-    }
-
+    /**
+     * Sets up the lobbies for the server. Creating 3 lobbies with ids 1, 2 and 3 respectively.
+     */
     private void setUpGameLobbies() {
-        for (int i = 1; i < 5; i++) {
+        for (int i = 1; i <= 3; i++) {
             lobbies.add(new GameLobby(i));
         }
+    }
+
+    /**
+     * Main method to begin the server
+     *
+     * @param args
+     */
+    public static void main(String[] args) {
+        Server testServer = new Server();
+        testServer.start();
     }
 
 }

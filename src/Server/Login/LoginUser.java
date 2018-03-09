@@ -2,8 +2,6 @@ package Server.Login;
 
 import Server.User;
 
-
-import static Server.Login.DatabaseQueries.getPassword;
 import static Server.Login.DatabaseQueries.checkUsername;
 
 public class LoginUser {

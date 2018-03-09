@@ -2,6 +2,7 @@ package Server;
 
 /**
  * Player class for the game. A player object is created when a User class enters a lobby
+ *
  * @author Connor Wilkes
  * @version 9/3/2018
  */
@@ -14,8 +15,9 @@ public class Player {
 
     /**
      * Constructor for the player class
+     *
      * @param client client associated with the player
-     * @param lobby lobby the player is a part of
+     * @param lobby  lobby the player is a part of
      */
     public Player(ServerThread client, GameLobby lobby) {
         this.client = client;
@@ -26,6 +28,7 @@ public class Player {
 
     /**
      * Getter for the client variable
+     *
      * @return client
      */
     public ServerThread getClient() {
@@ -34,6 +37,7 @@ public class Player {
 
     /**
      * Getter for the score variable
+     *
      * @return the score
      */
     public int getScore() {
@@ -41,21 +45,19 @@ public class Player {
     }
 
     /**
-     * Setter for the
-     * @param client
+     * Getter for the questionMaster boolean
+     *
+     * @return the questionMaster boolean
      */
-    public void setClient(ServerThread client) {
-        this.client = client;
-    }
-
-    public void setScore(int score) {
-        this.score = score;
-    }
-
-    public boolean isQuestionMaster() {
+    public boolean getQuestionMaster() {
         return isQuestionMaster;
     }
 
+    /**
+     * Setter for the questionMaster boolean
+     *
+     * @param questionMaster the state to set the questionMaster boolean to
+     */
     public void setQuestionMaster(boolean questionMaster) {
         isQuestionMaster = questionMaster;
     }

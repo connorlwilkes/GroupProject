@@ -13,8 +13,8 @@ import java.util.logging.Logger;
 /**
  * ServerThread class for the Server of the minigame game. Takes an incoming connection and creates a new thread.
  *
- * @author Connor Wilkes
- * @version 1/3/2018
+ * @author Florence
+ * @version 9/3/2018
  */
 public class ServerThread implements Runnable {
 
@@ -48,29 +48,6 @@ public class ServerThread implements Runnable {
     }
 
     /**
-     * Helper function to close the server
-     *
-     * @param socket socket to close
-     */
-    public static void closeSilently(Socket socket) {
-        if (socket != null) {
-            try {
-                socket.close();
-            } catch (IOException ex) {
-                errorLogger.log(Level.SEVERE, "could not close connection", ex);
-            }
-        }
-    }
-
-    public static boolean isValidLength(String word) {
-        return (word.length() >= 5 && word.length() <= 20);
-    }
-
-    public Socket getConnection() {
-        return connection;
-    }
-
-    /**
      * Run method for the thread
      */
     @Override
@@ -95,6 +72,10 @@ public class ServerThread implements Runnable {
         }
     }
 
+    /**
+     * Sets up the server's variables
+     * @throws IOException
+     */
     public void setUp() throws IOException {
         reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
         writer = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));
@@ -102,6 +83,10 @@ public class ServerThread implements Runnable {
         writer.flush();
     }
 
+    /**
+     * Processes log in or sign up requests
+     * @throws IOException
+     */
     private void logInOrSignUp() throws IOException {
         while (true) {
             String line = reader.readLine();
@@ -143,6 +128,10 @@ public class ServerThread implements Runnable {
         }
     }
 
+    /**
+     * Logs in a client
+     * @throws IOException
+     */
     private synchronized void loginUser() throws IOException {
         String username = reader.readLine();
         String password = reader.readLine();
@@ -158,6 +147,10 @@ public class ServerThread implements Runnable {
 
     }
 
+    /**
+     * Sets up an account
+     * @throws IOException
+     */
     private synchronized void setUpAccount() throws IOException {
         String username = reader.readLine();
         String password = reader.readLine();
@@ -166,6 +159,10 @@ public class ServerThread implements Runnable {
         connection.close();
     }
 
+    /**
+     * Joins a lobby
+     * @throws IOException
+     */
     private void joinLobby() throws IOException {
         int lobbyNumber = reader.read();
         if (lobbyNumber > 4 || 1 > lobbyNumber) {
@@ -181,6 +178,7 @@ public class ServerThread implements Runnable {
             }
         processLobbyRequests(lobby);
     }
+
 
     private void processLobbyRequests(GameLobby lobby) throws IOException {
         while (lobby.isRunning()) {
@@ -207,9 +205,28 @@ public class ServerThread implements Runnable {
         }
     }
 
+    /**
+     * Logs out a user
+     * @throws IOException
+     */
     private synchronized void logOut() throws IOException {
         server.removeUser(currentUser);
         connection.close();
+    }
+
+    /**
+     * Helper function to close the server
+     *
+     * @param socket socket to close
+     */
+    public static void closeSilently(Socket socket) {
+        if (socket != null) {
+            try {
+                socket.close();
+            } catch (IOException ex) {
+                errorLogger.log(Level.SEVERE, "could not close connection", ex);
+            }
+        }
     }
 }
 

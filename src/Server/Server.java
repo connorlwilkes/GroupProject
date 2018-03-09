@@ -107,31 +107,20 @@ public class Server {
     }
 
     public boolean checkUsername(String toCheck) {
-        for (User user : activeUsers) {
-            if (user.getUsername().equals(toCheck)) {
-                return true;
-            }
-        }
-        return false;
+        return activeUsers.stream()
+                .anyMatch(user -> (user.getUsername().equals(toCheck)));
     }
 
 
     public boolean checkPassword(String username, String password) {
-        for (User user : activeUsers) {
-            if (user.getUsername().equals(username) && user.verifyPassword(password)) {
-                return true;
-            }
-        }
-        return false;
+        return activeUsers.stream()
+                .anyMatch(user -> (user.getUsername().equals(username) && user.verifyPassword(password)));
     }
 
     public User findUser(String username) {
-        for (User user : activeUsers) {
-            if (user.getUsername().equals(username)) {
-                return user;
-            }
-        }
-        return null;
+        return activeUsers.stream()
+                .filter(user -> (user.getUsername().equals(username)))
+                .findFirst().orElse(null);
     }
 
     private void setUpGameLobbies() {

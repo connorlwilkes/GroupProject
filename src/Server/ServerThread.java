@@ -2,9 +2,11 @@ package Server;
 
 import Server.Login.RegisterUser;
 
+import java.awt.*;
 import java.io.*;
 import java.net.Socket;
 import java.util.Date;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -103,13 +105,14 @@ public class ServerThread implements Runnable {
     private void logInOrSignUp() throws IOException {
         while (true) {
             String line = reader.readLine();
-            while (line == null) {
+            Optional<String> optional = Optional.ofNullable(line);
+            while (!(optional.isPresent())) {
                 line = reader.readLine();
             }
-            if (line.startsWith("login")) {
+            if ("login".startsWith(line)) {
                 loginUser();
                 break;
-            } else if (line.startsWith("createAccount")) {
+            } else if ("createAccount".startsWith(line)) {
                 setUpAccount();
                 break;
             } else if (connection.isClosed()) {
@@ -125,12 +128,15 @@ public class ServerThread implements Runnable {
     private void processRequests() throws IOException {
         while (true) {
             String line = reader.readLine();
-            while (line == null) {
+            Optional<String> optional = Optional.ofNullable(line);
+            while (!(optional.isPresent())) {
                 line = reader.readLine();
             }
-            if (line.startsWith("enterLobby")) {
+            if ("enterLobby".startsWith(line)) {
                 joinLobby();
-            } else if (line.startsWith("logout")) {
+            } else if ("leaveLobby".startsWith(line)) {
+
+            } else if ("logout".startsWith(line)) {
                 logOut();
                 break;
             }
@@ -179,7 +185,8 @@ public class ServerThread implements Runnable {
     private void processLobbyRequests(GameLobby lobby) throws IOException {
         while (lobby.isRunning()) {
             String line = reader.readLine();
-            while (line == null) {
+            Optional<String> optional = Optional.ofNullable(line);
+            while (!(optional.isPresent())) {
                 line = reader.readLine();
             }
             if (line.startsWith("getMessage")) {

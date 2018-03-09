@@ -1,4 +1,4 @@
-package Server.Login;
+package Testing;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

@@ -85,13 +85,17 @@ public class GameLobby implements Runnable {
 
     /**
      * Gets the player/players with the highest score
-     * @return a list of the players with the highest scoress
+     *
+     * @return a list of the players with the highest scores
      */
     public synchronized List<Player> getWinningPlayers() {
         int maxScore = players.stream().mapToInt(player -> (player.getScore())).sum();
         return players.stream().filter(player -> (player.getScore() == maxScore)).collect(Collectors.toList());
     }
 
+    /**
+     * Runs a new GameLobby on a new thread
+     */
     @Override
     public void run() {
 

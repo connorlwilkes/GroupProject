@@ -1,5 +1,8 @@
 package Server;
 
+/**
+ * GameOwner class for the game.
+ */
 public class GameOwner extends Player {
 
     private GameLobby gameLobby;

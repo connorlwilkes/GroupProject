@@ -4,7 +4,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
-//import static DatabaseQueries.connect;
+import static DatabaseQueries.connect;
 
 
 

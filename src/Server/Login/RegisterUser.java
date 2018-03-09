@@ -20,7 +20,8 @@ public class RegisterUser {
         String password = user.getPassword();
 
         if (username.equals("") || password.equals("")) {
-            return 2;
+
+            return RegisterUserResponses.invalidInput;
             //JOptionPane.showMessageDialog(null,"invalid name or password","Error",JOptionPane.ERROR_MESSAGE);
             //this creates a pop up if both the password or usernames' are left empty, prevents the database from storing invalid
             //entries by a user and allows the user to rectify their mistake
@@ -28,7 +29,7 @@ public class RegisterUser {
             return RegisterUserResponses.userAlreadyExists;
         }
 
-        String query = "INSERT INTO userDB (username, password) VALUES (?, ?))";
+        String query = "INSERT INTO userdb (username, password) VALUES (?, ?))";
 
 
         try (Connection connection = connect()) {
@@ -36,13 +37,15 @@ public class RegisterUser {
 
             pmst.setString(1, username);
             pmst.setString(2, password);
-            return 0;
+
+            return RegisterUserResponses.success;
 
         } catch (SQLException ex) {
             System.err.println(ex);
         }
-        return 4;
+        return RegisterUserResponses.failure;
     }
+
 }
 
 

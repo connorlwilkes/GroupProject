@@ -22,7 +22,6 @@ public class QuestionClass {
 			Class.forName("org.postgresql.Driver");
 
 		} catch (ClassNotFoundException e) {
-
 			e.printStackTrace();
 			return;
 

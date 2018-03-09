@@ -18,7 +18,7 @@ public class DatabaseInsert extends DatabaseAccess {
 
             psmt.setString(1, user.getUsername());
             psmt.setString(2, user.getPassword());
-            psmt.setString(3, user.getEmail());
+
 
             int affectedRows = psmt.executeUpdate();
 
@@ -26,7 +26,7 @@ public class DatabaseInsert extends DatabaseAccess {
 
                 try (ResultSet rs = psmt.getGeneratedKeys()) {
                     if (rs.next()) {
-                        user.setUserID(rs.getInt(1));
+                        //user.setUserID(rs.getInt(1));
                     }
                 }
 

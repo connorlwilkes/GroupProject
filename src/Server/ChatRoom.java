@@ -14,13 +14,34 @@ public class ChatRoom {
 
     private HashSet<BufferedWriter> writers;
     private List<Message> messages;
-    private HashSet<User> users;
+    private List<Player> players;
+    private GameLobby lobby;
 
     /**
      * Constructor for the ChatRoom class
+     * @param lobby lobby associated with the chat
      */
-    public ChatRoom() {
+    public ChatRoom(GameLobby lobby) {
         messages = new ArrayList<>();
-        users = new HashSet<>();
+        players = new ArrayList<>();
+        this.lobby = lobby;
     }
+
+    public void addPlayer(Player player) {
+        players.add(player);
+        writers.add(player.getClient().getWriter());
+    }
+
+    public void setPlayers(List<Player> players) {
+        this.players = players;
+        updateWriters();
+    }
+
+    public void updateWriters() {
+        writers.clear();
+        for (Player player : players) {
+            writers.add(player.getClient().getWriter());
+        }
+    }
+
 }

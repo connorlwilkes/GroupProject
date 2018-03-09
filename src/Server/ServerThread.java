@@ -47,6 +47,10 @@ public class ServerThread implements Runnable {
         this.server = server;
     }
 
+    public BufferedWriter getWriter() {
+        return writer;
+    }
+
     /**
      * Run method for the thread
      */

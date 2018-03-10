@@ -1,11 +1,9 @@
 package Client;
 
 import Server.GameLobby;
+import Server.ServerProtocol;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.Socket;
 import java.util.logging.Logger;
 
@@ -17,25 +15,29 @@ public class Client {
     private Socket connection;
     private DataOutputStream out;
     private BufferedReader in;
-
-    public static void main(String[] args) {
-        Client test = new Client();
-        test.connect();
-    }
+    private ObjectInputStream inputStream;
+    private ObjectOutputStream outputStream;
 
     public void connect() {
         try {
             connection = new Socket(host, port);
             out = new DataOutputStream(connection.getOutputStream());
             in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            String serverSent = in.readLine();
-            if (serverSent.startsWith("hello")) {
-                System.out.println("hi there server");
-                out.writeBytes("hello\r\n");
-                out.flush();
+            outputStream = new ObjectOutputStream(connection.getOutputStream());
+            inputStream = new ObjectInputStream(connection.getInputStream());
+            ServerProtocol in = (ServerProtocol) inputStream.readObject();
+            if (in.type.startsWith("welcome")) {
+                System.out.println(in.message[0]);
+                ServerProtocol hello = new ServerProtocol("hello", "oh hi there!");
+                outputStream.writeObject(hello);
+                outputStream.flush();
+                System.out.println("it worked!");
+            } else {
+                System.out.println("Something has gone wrong here");
             }
-            logIn("connor", "password");
         } catch (IOException e) {
+            System.err.println(e);
+        } catch (ClassNotFoundException e) {
             System.err.println(e);
         }
     }
@@ -51,13 +53,20 @@ public class Client {
         }
     }
 
-    public void logIn(String username, String password) throws IOException {
-        out.writeBytes("login\r\n");
-        out.flush();
-        out.writeBytes(username + "\r\n");
-        out.flush();
-        out.writeBytes(password + "\r\n");
-        out.flush();
+    public ServerProtocol logIn(String username, String password) {
+        try {
+            ServerProtocol message = new ServerProtocol("login", username, password);
+            outputStream.writeObject(message);
+            outputStream.flush();
+            ServerProtocol response = null;
+            response = (ServerProtocol) inputStream.readObject();
+            return response;
+        } catch (IOException e) {
+            System.err.println(e);
+        } catch (ClassNotFoundException e) {
+            System.err.println(e);
+        }
+        return null;
     }
 
     public void createAccount(String username, String password) throws IOException {
@@ -73,4 +82,8 @@ public class Client {
 
     }
 
+    public static void main(String[] args) {
+        Client test = new Client();
+        test.connect();
+    }
 }

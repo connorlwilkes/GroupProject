@@ -36,7 +36,7 @@ public class GameLobby implements Runnable {
         games = new ArrayList<>();
         this.isFull = false;
         this.isRunning = false;
-        room = new ChatRoom();
+        room = new ChatRoom(this);
     }
 
     /**

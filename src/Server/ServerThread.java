@@ -16,6 +16,7 @@ import java.util.logging.Logger;
  * @author Florence
  * @version 9/3/2018
  */
+@SuppressWarnings("InfiniteLoopStatement")
 public class ServerThread implements Runnable {
 
     private final static Logger auditLogger = Logger.getLogger("requests");
@@ -24,6 +25,8 @@ public class ServerThread implements Runnable {
     private Server server;
     private BufferedReader reader;
     private BufferedWriter writer;
+    private ObjectOutputStream outputStream;
+    private ObjectInputStream inputStream;
     private User currentUser;
 
 
@@ -65,9 +68,10 @@ public class ServerThread implements Runnable {
             }
         } catch (IOException ex) {
             System.err.println(ex);
+        } catch (ClassNotFoundException ex) {
+            System.err.println(ex);
         } finally {
             try {
-                System.out.println("here");
                 auditLogger.info("Closing connection to " + connection.getRemoteSocketAddress() + " on " + new Date());
                 connection.close();
             } catch (IOException e) {
@@ -80,35 +84,56 @@ public class ServerThread implements Runnable {
      * Sets up the server's variables
      * @throws IOException
      */
-    public void setUp() throws IOException {
+    public void setUp() throws IOException, ClassNotFoundException {
         reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
         writer = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));
-        writer.write("hello\r\n");
-        writer.flush();
+        outputStream = new ObjectOutputStream(connection.getOutputStream());
+        inputStream = new ObjectInputStream(connection.getInputStream());
+        ServerProtocol welcome = new ServerProtocol("welcome", "welcome to the server");
+        System.out.println(welcome);
+        outputStream.writeObject(welcome);
+        outputStream.flush();
+        ServerProtocol response = (ServerProtocol) inputStream.readObject();
+        System.out.println(response.message[0]);
     }
 
     /**
      * Processes log in or sign up requests
      * @throws IOException
      */
-    private void logInOrSignUp() throws IOException {
+    private void logInOrSignUp() throws IOException, ClassNotFoundException {
         while (true) {
-            String line = reader.readLine();
-            Optional<String> optional = Optional.ofNullable(line);
-            while (!(optional.isPresent())) {
-                line = reader.readLine();
-            }
-            if ("login".startsWith(line)) {
-                loginUser();
-                break;
-            } else if ("createAccount".startsWith(line)) {
-                setUpAccount();
-                break;
+            ServerProtocol request = (ServerProtocol) inputStream.readObject();
+            String requestType = request.type;
+            System.out.println(requestType);
+            if (requestType.startsWith("login")) {
+                loginUser(request.message[0], request.message[1]);
+                processRequests();
+            } else if (requestType.startsWith("create-account")) {
+                setUpAccount(request.message[0], request.message[1]);
+                connection.close();
             } else if (connection.isClosed()) {
-                System.out.println("closed connection");
                 break;
             }
         }
+
+//        while (true) {
+//            String line = reader.readLine();
+//            Optional<String> optional = Optional.ofNullable(line);
+//            while (!(optional.isPresent())) {
+//                line = reader.readLine();
+//            }
+//            if ("login".startsWith(line)) {
+//                loginUser();
+//                break;
+//            } else if ("createAccount".startsWith(line)) {
+//                setUpAccount();
+//                break;
+//            } else if (connection.isClosed()) {
+//                System.out.println("closed connection");
+//                break;
+//            }
+//        }
     }
 
     /**
@@ -136,31 +161,30 @@ public class ServerThread implements Runnable {
      * Logs in a client
      * @throws IOException
      */
-    private synchronized void loginUser() throws IOException {
-        String username = reader.readLine();
-        String password = reader.readLine();
-        if (!(server.checkPassword(username, password))) {
-            writer.write("Error: Username or password incorrect\r\n");
-            writer.flush();
+    private synchronized void loginUser(String username, String password) throws IOException {
+        if (!(server.checkUsername(username))) {
+            ServerProtocol response = new ServerProtocol("false", "User does not exist");
+            outputStream.writeObject(response);
+            outputStream.flush();
+        } else if (!(server.checkPassword(username, password))) {
+            ServerProtocol response = new ServerProtocol("false", "Username or password does not match");
+            outputStream.writeObject(response);
+            outputStream.flush();
         } else {
             currentUser = new User(username, password);
-            server.addUser(currentUser);
-            writer.write("Success: User " + username + " logged in\r\n");
-            writer.flush();
+            server.addActiveUser(currentUser);
+            ServerProtocol response = new ServerProtocol("true", "Success: User " + username + " logged in");
+            outputStream.writeObject(response);
+            outputStream.flush();
         }
-
     }
 
     /**
      * Sets up an account
      * @throws IOException
      */
-    private synchronized void setUpAccount() throws IOException {
-        String username = reader.readLine();
-        String password = reader.readLine();
-        writer.write(RegisterUser.checkUser(new User(username, password)));
-        writer.flush();
-        connection.close();
+    private synchronized void setUpAccount(String username, String password) throws IOException {
+
     }
 
     /**

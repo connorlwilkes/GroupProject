@@ -12,7 +12,7 @@ public class ClientGui extends JFrame {
     public ChatDisplay chat = new ChatDisplay();
     public Client client = new Client();
 
-    public ClientGui() {
+    private ClientGui() {
         setTitle("Log In");
         setResizable(false);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -25,15 +25,12 @@ public class ClientGui extends JFrame {
     }
 
     public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    gui = new ClientGui();
-                    gui.setVisible(true);
-                } catch (Exception e) {
-                    System.err.println(e);
-                }
+        EventQueue.invokeLater(() -> {
+            try {
+                gui = new ClientGui();
+                gui.setVisible(true);
+            } catch (Exception e) {
+                System.err.println(e);
             }
         });
     }

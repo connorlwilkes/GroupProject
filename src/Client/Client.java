@@ -4,7 +4,6 @@ import Server.ServerProtocol;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.logging.Logger;
 
 public class Client {
 
@@ -24,18 +23,7 @@ public class Client {
             outputStream = new ObjectOutputStream(connection.getOutputStream());
             inputStream = new ObjectInputStream(connection.getInputStream());
             ServerProtocol in = (ServerProtocol) inputStream.readObject();
-            if (in.type.startsWith("welcome")) {
-                System.out.println(in.message[0]);
-                ServerProtocol hello = new ServerProtocol("hello", "oh hi there!");
-                outputStream.writeObject(hello);
-                outputStream.flush();
-                System.out.println("it worked!");
-            } else {
-                System.out.println("Something has gone wrong here");
-            }
-        } catch (IOException e) {
-            System.err.println(e);
-        } catch (ClassNotFoundException e) {
+        } catch (IOException | ClassNotFoundException e) {
             System.err.println(e);
         }
     }
@@ -58,9 +46,7 @@ public class Client {
             outputStream.flush();
             ServerProtocol response = (ServerProtocol) inputStream.readObject();
             return response;
-        } catch (IOException e) {
-            System.err.println(e);
-        } catch (ClassNotFoundException e) {
+        } catch (IOException | ClassNotFoundException e) {
             System.err.println(e);
         }
         return new ServerProtocol("false", "Server error");
@@ -71,7 +57,6 @@ public class Client {
             ServerProtocol message = new ServerProtocol("create-account", username, password);
             outputStream.writeObject(message);
             outputStream.flush();
-            connection.close();
             return (ServerProtocol) inputStream.readObject();
         } catch (IOException | ClassNotFoundException ex) {
             System.err.println(ex);
@@ -84,8 +69,7 @@ public class Client {
             ServerProtocol message = new ServerProtocol("join-lobby", String.valueOf(lobbyNumber));
             outputStream.writeObject(message);
             outputStream.flush();
-            ServerProtocol response = (ServerProtocol) inputStream.readObject();
-            return response;
+            return (ServerProtocol) inputStream.readObject();
         } catch (IOException | ClassNotFoundException ex) {
             System.err.println(ex);
         }

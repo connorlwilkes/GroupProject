@@ -1,8 +1,5 @@
 package Server;
 
-import Server.Login.RegisterUser;
-
-import java.awt.*;
 import java.io.*;
 import java.net.Socket;
 import java.util.Date;
@@ -66,9 +63,7 @@ public class ServerThread implements Runnable {
                 logInOrSignUp();
                 processRequests();
             }
-        } catch (IOException ex) {
-            System.err.println(ex);
-        } catch (ClassNotFoundException ex) {
+        } catch (IOException | ClassNotFoundException ex) {
             System.err.println(ex);
         } finally {
             try {
@@ -82,7 +77,7 @@ public class ServerThread implements Runnable {
 
     /**
      * Sets up the server's variables
-     * @throws IOException
+     * @throws IOException ClassNotFoundException
      */
     public void setUp() throws IOException, ClassNotFoundException {
         reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
@@ -93,19 +88,16 @@ public class ServerThread implements Runnable {
         System.out.println(welcome);
         outputStream.writeObject(welcome);
         outputStream.flush();
-        ServerProtocol response = (ServerProtocol) inputStream.readObject();
-        System.out.println(response.message[0]);
     }
 
     /**
      * Processes log in or sign up requests
-     * @throws IOException
+     * @throws IOException ClassNotFoundException
      */
     private void logInOrSignUp() throws IOException, ClassNotFoundException {
         while (true) {
             ServerProtocol request = (ServerProtocol) inputStream.readObject();
             String requestType = request.type;
-            System.out.println(requestType);
             if (requestType.startsWith("login")) {
                 loginUser(request.message[0], request.message[1]);
                 processRequests();
@@ -141,6 +133,7 @@ public class ServerThread implements Runnable {
 
     /**
      * Logs in a client
+     *
      * @throws IOException
      */
     private synchronized void loginUser(String username, String password) throws IOException {
@@ -168,7 +161,7 @@ public class ServerThread implements Runnable {
     private synchronized void setUpAccount(String username, String password) throws IOException {
         //TODO: add database add and check for adding a new user - Sophia
         if (username.startsWith("fail") || password.startsWith("fail")) {
-            ServerProtocol response = new ServerProtocol("false", "error");
+            ServerProtocol response = new ServerProtocol("false", " test error");
             outputStream.writeObject(response);
             outputStream.flush();
         } else {

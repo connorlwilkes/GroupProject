@@ -124,5 +124,6 @@ Temporary Items
 .project
 
 /bin/
+./src/.svn
 
 # End of https://www.gitignore.io/api/osx,java,intellij

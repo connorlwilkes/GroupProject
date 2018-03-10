@@ -18,8 +18,8 @@ public class ClientGui extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setBounds(100, 100, 450, 450);
         add(login);
-//        add(lobby);
-//        add(register);
+        add(lobby);
+        add(register);
 //        add(chat);
         setContentPane(login);
     }

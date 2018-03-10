@@ -116,24 +116,6 @@ public class ServerThread implements Runnable {
                 break;
             }
         }
-
-//        while (true) {
-//            String line = reader.readLine();
-//            Optional<String> optional = Optional.ofNullable(line);
-//            while (!(optional.isPresent())) {
-//                line = reader.readLine();
-//            }
-//            if ("login".startsWith(line)) {
-//                loginUser();
-//                break;
-//            } else if ("createAccount".startsWith(line)) {
-//                setUpAccount();
-//                break;
-//            } else if (connection.isClosed()) {
-//                System.out.println("closed connection");
-//                break;
-//            }
-//        }
     }
 
     /**
@@ -184,7 +166,16 @@ public class ServerThread implements Runnable {
      * @throws IOException
      */
     private synchronized void setUpAccount(String username, String password) throws IOException {
-
+        //TODO: add database add and check for adding a new user - Sophia
+        if (username.startsWith("fail") || password.startsWith("fail")) {
+            ServerProtocol response = new ServerProtocol("false", "error");
+            outputStream.writeObject(response);
+            outputStream.flush();
+        } else {
+            ServerProtocol response = new ServerProtocol("true", "User: " + username + " created");
+            outputStream.writeObject(response);
+            outputStream.flush();
+        }
     }
 
     /**

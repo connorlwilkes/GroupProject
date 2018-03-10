@@ -12,8 +12,6 @@ public class LogInFrame extends JPanel {
 
     private JTextField enterUsername;
     private JTextField enterPassword;
-    // private String username;
-    // private String password;
 
     public LogInFrame() {
         setLayout(null);
@@ -52,7 +50,9 @@ public class LogInFrame extends JPanel {
                     if (response.type.startsWith("true")) {
                         JOptionPane.showMessageDialog(ClientGui.gui,
                                 "Signed in: " + username,
-                                "Sign-in success", JOptionPane.WARNING_MESSAGE);
+                                "Sign-in success", JOptionPane.INFORMATION_MESSAGE);
+                        ClientGui.gui.setContentPane(ClientGui.gui.lobby);
+                        ClientGui.gui.setTitle("Lobby Room");
                     } else if (response.type.startsWith("false")) {
                         JOptionPane.showMessageDialog(ClientGui.gui,
                                 response.message[0],
@@ -64,22 +64,31 @@ public class LogInFrame extends JPanel {
         btnSignIn.setBounds(175, 190, 91, 29);
         add(btnSignIn);
 
-        JLabel lblNoAccount = new JLabel("Don't have an account?");
-        lblNoAccount.setBounds(150, 250, 180, 16);
-        add(lblNoAccount);
+//        JLabel lblNoAccount = new JLabel("Don't have an account?");
+//        lblNoAccount.setBounds(150, 250, 180, 16);
+//        add(lblNoAccount);
 
         JButton btnSignUp = new JButton("Sign Up");
         btnSignUp.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                // ClientGui.gui.setContentPane(
-                //		ClientGui.gui.guiSignUp);
+                ClientGui.gui.setContentPane(
+                        ClientGui.gui.register);
                 ClientGui.gui.setTitle("Sign up");
             }
         });
-        btnSignUp.setBounds(175, 280, 91, 29);
+        btnSignUp.setBounds(175, 230, 91, 29);
         add(btnSignUp);
 
-
+//        JButton test = new JButton("lobby");
+//        test.addActionListener(new ActionListener() {
+//            public void actionPerformed(ActionEvent e) {
+//                ClientGui.gui.setContentPane(
+//                        ClientGui.gui.lobby);
+//                ClientGui.gui.setTitle("Lobby");
+//            }
+//        });
+//        test.setBounds(175, 230, 91, 29);
+//        add(test);
+//    }
     }
-
 }

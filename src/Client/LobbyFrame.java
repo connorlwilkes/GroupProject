@@ -1,13 +1,13 @@
 package Client;
 
+import Server.ServerProtocol;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class LobbyFrame extends JFrame {
-
-    private JFrame lobbyFrame;
+public class LobbyFrame extends JPanel {
 
     /**
      * lobbyDisplay is the display where the lobby to play in is chosen. It is the display that appears
@@ -34,51 +34,47 @@ public class LobbyFrame extends JFrame {
      * ______________________________________
      */
     public void lobbyFrame() {
-        lobbyFrame = new JFrame("CHOOSE A LOBBY");                    // create new frame
-        JPanel lobbyPanel = new JPanel(new GridBagLayout());            // create a panel with GridBagLayout
-        GridBagConstraints c = new GridBagConstraints();                // create 'c' as a GribBagConstraint
+        //TODO: Create lobby and game gui - Jack
+        setLayout(null);
+        this.setBounds(0, 0, 450, 278);
 
-        JButton button1 = new JButton("Lobby 1");                    // create 'Lobby 1' button
-        c.fill = GridBagConstraints.HORIZONTAL;                        // makes the button span to fit the width of the frame
-        c.weightx = 0;                                                // gives the button 0 weight so it doesn't fill the frame width
-        c.gridx = 3;                                                    // set x position of the button so all buttons in line
-        c.gridy = 0;                                                    // set y position of the button so buttons go down vertically
-        lobbyPanel.add(button1, c);                                    // adds button1 to the panel
+        JButton lobby1 = new JButton("Lobby 1");
+        lobby1.setBounds(150, 60, 90, 30);
+        add(lobby1);
 
-        JButton button2 = new JButton("Lobby 2");                    // create 'Lobby 2' button
-        c.fill = GridBagConstraints.HORIZONTAL;                        // makes the button span to fit the width of the frame
-        c.weightx = 0;                                                // gives the button 0 weight so it doesn't fill the frame width
-        c.gridx = 3;                                                    // set x position of the button so all buttons in line
-        c.gridy = 1;                                                    // set y position of the button so buttons go down vertically
-        lobbyPanel.add(button2, c);                                    // adds button2 to the panel
+        JButton lobby2 = new JButton("Lobby 2");
+        lobby1.setBounds(150, 120, 90, 30);
+        add(lobby2);
 
-        JButton button3 = new JButton("Lobby 3");                    // create 'Lobby 1' button
-        c.fill = GridBagConstraints.HORIZONTAL;                        // makes the button span to fit the width of the frame
-        c.weightx = 0;                                                // gives the button 0 weight so it doesn't fill the frame width
-        c.gridx = 3;                                                    // set x position of the button so all buttons in line
-        c.gridy = 2;                                                    // set y position of the button so buttons go down vertically
-        lobbyPanel.add(button3, c);                                    // adds button3 to the panel
+        JButton lobby3 = new JButton("Lobby 3");
+        lobby1.setBounds(150, 180, 90, 30);
+        add(lobby3);
 
-        lobbyFrame.add(BorderLayout.CENTER, lobbyPanel);                // adds the panel to the centre of the frame
-        lobbyFrame.setVisible(true);                                    // makes the frame visible
-        lobbyFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);    // closes the JFrame when the display is exitted
-        lobbyFrame.setSize(300, 200);                                // sets the size of the frame to 300px x 200px (x, y)
-
-        button1.addActionListener(new enterServerButtonListener());    // adds action listener to open lobby 1 chatDisplay when clicked
-        button2.addActionListener(new enterServerButtonListener());    // adds action listener to open lobby 2 chatDisplay when clicked
-        button3.addActionListener(new enterServerButtonListener());    // adds action listener to open lobby 3 chatDisplay when clicked
+        lobby1.addActionListener(new enterLobby1());    // adds action listener to open lobby 1 chatDisplay when clicked
+        lobby2.addActionListener(new enterLobby2());    // adds action listener to open lobby 2 chatDisplay when clicked
+        lobby3.addActionListener(new enterLobby3());    // adds action listener to open lobby 3 chatDisplay when clicked
 
     }
 
     /**
      * 'Lobby 1/2/3' button takes the user into the lobby they clicked
      */
-    class enterServerButtonListener implements ActionListener {
+    class enterLobby1 implements ActionListener {
         public void actionPerformed(ActionEvent event) {
-            //	username = enterUsername.getText();
-            lobbyFrame.setVisible(false);
-            new ChatDisplay();
+            //TODO: Logic for lobby joining - Connor
+            ServerProtocol response = ClientGui.gui.client.joinLobby(1);
+        }
+    }
 
+    class enterLobby2 implements ActionListener {
+        public void actionPerformed(ActionEvent event) {
+            ServerProtocol response = ClientGui.gui.client.joinLobby(2);
+        }
+    }
+
+    class enterLobby3 implements ActionListener {
+        public void actionPerformed(ActionEvent event) {
+            ServerProtocol response = ClientGui.gui.client.joinLobby(3);
         }
     }
 }

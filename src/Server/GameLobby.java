@@ -2,6 +2,7 @@ package Server;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 /**
@@ -16,10 +17,12 @@ public class GameLobby implements Runnable {
     private String lobbyName;
     private int id;
     private int totalScore;
+    private int roundNumber;
     private List<Player> players;
     private final int maxPlayers = 4;
     private List<Minigame> games;
-    private ChatRoom room;
+    private ChatRoom chatRoom;
+    private Player questionMaster;
     private boolean isFull;
     private boolean isRunning;
 
@@ -29,14 +32,15 @@ public class GameLobby implements Runnable {
      * @param id id of the GameLobby
      */
     public GameLobby(int id) {
-        this.lobbyName = "Lobby " + id;
         this.id = id;
+        lobbyName = "Lobby " + id;
         totalScore = 0;
         players = new ArrayList<>();
         games = new ArrayList<>();
-        this.isFull = false;
-        this.isRunning = false;
-        room = new ChatRoom(this);
+        isFull = false;
+        isRunning = false;
+        chatRoom = new ChatRoom(this);
+        roundNumber = 1;
     }
 
     /**
@@ -75,17 +79,8 @@ public class GameLobby implements Runnable {
         this.players = players;
     }
 
-    /**
-     * Adds a player to the players list
-     *
-     * @param playerToAdd the player to add
-     */
-    public synchronized void addPlayer(Player playerToAdd) {
-        players.add(playerToAdd);
-        if (players.size() == maxPlayers) {
-            isFull = true;
-            run();
-        }
+    public ChatRoom getChatRoom() {
+        return chatRoom;
     }
 
     /**
@@ -94,12 +89,26 @@ public class GameLobby implements Runnable {
      * @param playerToRemove the player to remove
      */
     public synchronized void removePlayer(Player playerToRemove) {
-        for (int i = 0; i < players.size(); i++) {
-            if (players.get(i).equals(playerToRemove)) {
-                players.remove(i);
-            }
+        players.remove(playerToRemove);
+        chatRoom.removePlayer(playerToRemove);
+    }
+
+    /**
+     * Adds a player to the players list
+     *
+     * @param playerToAdd the player to add
+     */
+    public synchronized void addPlayer(Player playerToAdd) {
+        players.add(playerToAdd);
+        chatRoom.addPlayer(playerToAdd);
+        if (players.size() == maxPlayers) {
+            isFull = true;
+            new Thread(this).start();
+        } else if (players.size() == 1) {
+            new Thread(chatRoom).start();
         }
     }
+
 
     /**
      * Gets the player/players with the highest score
@@ -112,10 +121,35 @@ public class GameLobby implements Runnable {
     }
 
     /**
+     * Chooses the next question master randomly from the list of players in the game. Will ensure that a new player is
+     * picked each round until the number of rounds exceed the number of players in which case each player will be
+     * eligible to be question master again
+     */
+    public synchronized void chooseQuestionMaster() {
+        questionMaster.setHasBeenQuestionMaster(true);
+        if (roundNumber == players.size()) {
+            for (Player player : players) {
+                player.setHasBeenQuestionMaster(false);
+            }
+        }
+        Random random = new Random();
+        int index = random.nextInt(players.size() - 1);
+        Player player = players.get(index);
+        while (player.isHasBeenQuestionMaster()) {
+            index = random.nextInt(players.size() - 1);
+            player = players.get(index);
+        }
+        questionMaster.setQuestionMaster(false);
+        player.setQuestionMaster(true);
+        questionMaster = player;
+    }
+
+    /**
      * Runs a new GameLobby on a new thread
      */
     @Override
     public void run() {
+        isRunning = true;
 
     }
 

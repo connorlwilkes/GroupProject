@@ -3,7 +3,6 @@ package Server;
 import java.io.*;
 import java.net.Socket;
 import java.util.Date;
-import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -25,6 +24,7 @@ public class ServerThread implements Runnable {
     private ObjectOutputStream outputStream;
     private ObjectInputStream inputStream;
     private User currentUser;
+    private Player player;
 
 
     /**
@@ -47,8 +47,22 @@ public class ServerThread implements Runnable {
         this.server = server;
     }
 
-    public BufferedWriter getWriter() {
-        return writer;
+    /**
+     * Getter for the objectOutputStream
+     *
+     * @return outputStream of the thread
+     */
+    public ObjectOutputStream getOutputStream() {
+        return outputStream;
+    }
+
+    /**
+     * Getter for the objectInputStream
+     *
+     * @return inputStream of the thread
+     */
+    public ObjectInputStream getInputStream() {
+        return inputStream;
     }
 
     /**
@@ -66,6 +80,12 @@ public class ServerThread implements Runnable {
         } catch (IOException | ClassNotFoundException ex) {
             System.err.println(ex);
         } finally {
+            if (currentUser != null) {
+                server.removeUser(currentUser);
+            }
+            if (player != null) {
+                player.getLobby().removePlayer(player);
+            }
             try {
                 auditLogger.info("Closing connection to " + connection.getRemoteSocketAddress() + " on " + new Date());
                 connection.close();
@@ -77,9 +97,10 @@ public class ServerThread implements Runnable {
 
     /**
      * Sets up the server's variables
+     *
      * @throws IOException ClassNotFoundException
      */
-    public void setUp() throws IOException, ClassNotFoundException {
+    public void setUp() throws IOException {
         reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
         writer = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));
         outputStream = new ObjectOutputStream(connection.getOutputStream());
@@ -92,6 +113,7 @@ public class ServerThread implements Runnable {
 
     /**
      * Processes log in or sign up requests
+     *
      * @throws IOException ClassNotFoundException
      */
     private void logInOrSignUp() throws IOException, ClassNotFoundException {
@@ -113,20 +135,17 @@ public class ServerThread implements Runnable {
     /**
      * Processes network requests
      */
-    private void processRequests() throws IOException {
+    private void processRequests() throws IOException, ClassNotFoundException {
         while (true) {
-            String line = reader.readLine();
-            Optional<String> optional = Optional.ofNullable(line);
-            while (!(optional.isPresent())) {
-                line = reader.readLine();
-            }
-            if ("enterLobby".startsWith(line)) {
-                joinLobby();
-            } else if ("leaveLobby".startsWith(line)) {
-
-            } else if ("logout".startsWith(line)) {
+            ServerProtocol request = (ServerProtocol) inputStream.readObject();
+            if (request.type.startsWith("join-lobby")) {
+                joinLobby(Integer.valueOf(request.message[0]));
+            } else if (request.type.startsWith("logout")) {
                 logOut();
-                break;
+            } else {
+                ServerProtocol message = new ServerProtocol("error", "unknown request");
+                outputStream.writeObject(message);
+                outputStream.flush();
             }
         }
     }
@@ -137,6 +156,7 @@ public class ServerThread implements Runnable {
      * @throws IOException
      */
     private synchronized void loginUser(String username, String password) throws IOException {
+        //TODO: Code for loginuser from database - Sophia
         if (!(server.checkUsername(username))) {
             ServerProtocol response = new ServerProtocol("false", "User does not exist");
             outputStream.writeObject(response);
@@ -156,6 +176,7 @@ public class ServerThread implements Runnable {
 
     /**
      * Sets up an account
+     *
      * @throws IOException
      */
     private synchronized void setUpAccount(String username, String password) throws IOException {
@@ -169,60 +190,46 @@ public class ServerThread implements Runnable {
             outputStream.writeObject(response);
             outputStream.flush();
         }
+        server.addActiveUser(new User(username, password));
     }
 
     /**
      * Joins a lobby
+     *
      * @throws IOException
      */
-    private void joinLobby() throws IOException {
-        int lobbyNumber = reader.read();
+    private void joinLobby(int lobbyNumber) throws IOException {
         if (lobbyNumber > 4 || 1 > lobbyNumber) {
-            System.err.println("lobby does not exist");
+            ServerProtocol message = new ServerProtocol("false", "Lobby does not exist");
+            outputStream.writeObject(message);
+            outputStream.flush();
             return;
         }
         GameLobby lobby = server.getLobbies().get(lobbyNumber - 1);
-            if (lobby.isFull()) {
-                System.err.println("lobby is full");
-            } else {
-                Player player = new Player(this, lobby);
-                lobby.addPlayer(player);
-            }
-        processLobbyRequests(lobby);
-    }
-
-
-    private void processLobbyRequests(GameLobby lobby) throws IOException {
-        while (lobby.isRunning()) {
-            String line = reader.readLine();
-            Optional<String> optional = Optional.ofNullable(line);
-            while (!(optional.isPresent())) {
-                line = reader.readLine();
-            }
-            if (line.startsWith("getMessage")) {
-
-            } else if (line.startsWith("sendAnswer")) {
-
-            } else if (line.startsWith("getQuestions")) {
-
-            } else if (line.startsWith("getScores")) {
-
-            } else if (line.startsWith("quitLobby")) {
-                break;
-            } else {
-                System.err.println("unknown request");
-                connection.close();
-                break;
-            }
+        if (lobby.isFull()) {
+            ServerProtocol message = new ServerProtocol("false", "Lobby is full");
+            outputStream.writeObject(message);
+            outputStream.flush();
+        } else {
+            this.player = new Player(this, lobby);
+            lobby.addPlayer(player);
+            ServerProtocol message = new ServerProtocol("true", "Successfully joined lobby");
+            outputStream.writeObject(message);
+            outputStream.flush();
+            player.processGameRequests();
         }
     }
 
     /**
      * Logs out a user
+     *
      * @throws IOException
      */
     private synchronized void logOut() throws IOException {
         server.removeUser(currentUser);
+        ServerProtocol message = new ServerProtocol("true", "logged out successfully");
+        outputStream.writeObject(message);
+        outputStream.flush();
         connection.close();
     }
 

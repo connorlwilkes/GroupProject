@@ -1,5 +1,7 @@
 package Client;
 
+import Server.User;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -11,6 +13,7 @@ public class ClientGui extends JFrame {
     public RegisterFrame register = new RegisterFrame();
     public ChatDisplay chat = new ChatDisplay();
     public Client client = new Client();
+    public User user;
 
     private ClientGui() {
         setTitle("Log In");

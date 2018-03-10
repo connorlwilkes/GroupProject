@@ -61,19 +61,19 @@ public class LobbyFrame extends JPanel {
     class enterLobby1 implements ActionListener {
         public void actionPerformed(ActionEvent event) {
             //TODO: Logic for lobby joining - Connor
-            ServerProtocol response = ClientGui.gui.client.joinLobby(1);
+            ServerProtocol response = ClientGui.gui.client.serverRequest("join-lobby", "1");
         }
     }
 
     class enterLobby2 implements ActionListener {
         public void actionPerformed(ActionEvent event) {
-            ServerProtocol response = ClientGui.gui.client.joinLobby(2);
+            ServerProtocol response = ClientGui.gui.client.serverRequest("join-lobby", "2");
         }
     }
 
     class enterLobby3 implements ActionListener {
         public void actionPerformed(ActionEvent event) {
-            ServerProtocol response = ClientGui.gui.client.joinLobby(3);
+            ServerProtocol response = ClientGui.gui.client.serverRequest("join-lobby", "3");
         }
     }
 }

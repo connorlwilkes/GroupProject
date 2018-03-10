@@ -41,7 +41,7 @@ public class LogInFrame extends JPanel {
                         "Warning", JOptionPane.WARNING_MESSAGE);
             } else {
                 ClientGui.gui.client.connect();
-                ServerProtocol response = ClientGui.gui.client.logIn(username, password);
+                ServerProtocol response = ClientGui.gui.client.serverRequest("login", username, password);
                 if (response.type.startsWith("true")) {
                     JOptionPane.showMessageDialog(ClientGui.gui,
                             "Signed in: " + username,

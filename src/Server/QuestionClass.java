@@ -40,9 +40,4 @@ public class QuestionClass {
         return questions;
     }
 
-    public static void main(String[] args) throws SQLException {
-        String[] test = QuestionHeader();
-        System.out.println(Arrays.toString(test));
-    }
-
 }

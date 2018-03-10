@@ -123,4 +123,6 @@ Temporary Items
 
 .project
 
+/bin/
+
 # End of https://www.gitignore.io/api/osx,java,intellij

@@ -7,9 +7,11 @@ import java.sql.*;
 public class DatabaseQueries {
 
     public static Connection connect() throws SQLException {
+
         String url = "jdbc:postgresql://mod-msc-sw1.cs.bham.ac.uk:5432/florence";
         String user = "florence";
         String password = "kx7t40vm7v";
+
         return DriverManager.getConnection(url, user, password);
 
     }

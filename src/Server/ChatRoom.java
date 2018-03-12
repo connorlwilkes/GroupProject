@@ -70,11 +70,7 @@ public class ChatRoom implements Runnable {
             objectOutputStreams.add(player.getClient().getOutputStream());
         }
     }
-
-    private void broadcastMessages() {
-
-    }
-
+     
     public synchronized void addMessage(Message message) {
         messages.add(message);
     }

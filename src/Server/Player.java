@@ -183,7 +183,10 @@ public class Player {
                 ServerProtocol message = new ServerProtocol(toReturn);
             }
         } else if (type.startsWith("leave")) {
-            //TODO: Remove the player from the lobby
+            lobby.removePlayer(this);
+            ServerProtocol message = new ServerProtocol("true", "Left " + lobby.toString() + " successfully");
+            out.writeObject(message);
+            out.flush();
         } else if (type.startsWith("question")) {
             if (isQuestionMaster) {
                 ServerProtocol message = new ServerProtocol("true", "qm", game.getCurrentQuestion());
@@ -196,6 +199,10 @@ public class Player {
             }
         } else if (type.startsWith("get-qm")) {
             ServerProtocol message = new ServerProtocol("true", game.getQuestionMaster().getUser().getUsername());
+            out.writeObject(message);
+            out.flush();
+        } else if (type.startsWith("getscores")) {
+            ServerProtocol message = new ServerProtocol(lobby.getScores());
             out.writeObject(message);
             out.flush();
         } else {

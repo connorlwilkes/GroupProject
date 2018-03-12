@@ -84,6 +84,10 @@ public class GameLobby implements Runnable {
         return chatRoom;
     }
 
+    public String toString() {
+        return lobbyName;
+    }
+
     /**
      * Removes a player from the game
      *

@@ -1,5 +1,7 @@
 package Client;
 
+import Server.User;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -11,29 +13,27 @@ public class ClientGui extends JFrame {
     public RegisterFrame register = new RegisterFrame();
     public ChatDisplay chat = new ChatDisplay();
     public Client client = new Client();
+    public User user;
 
-    public ClientGui() {
+    private ClientGui() {
         setTitle("Log In");
         setResizable(false);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setBounds(100, 100, 450, 450);
         add(login);
-//        add(lobby);
-//        add(register);
+        add(lobby);
+        add(register);
 //        add(chat);
         setContentPane(login);
     }
 
     public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    gui = new ClientGui();
-                    gui.setVisible(true);
-                } catch (Exception e) {
-                    System.err.println(e);
-                }
+        EventQueue.invokeLater(() -> {
+            try {
+                gui = new ClientGui();
+                gui.setVisible(true);
+            } catch (Exception e) {
+                System.err.println(e);
             }
         });
     }

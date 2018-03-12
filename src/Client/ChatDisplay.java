@@ -1,11 +1,15 @@
 package Client;
 
+import Server.Message;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
-public class ChatDisplay extends JFrame {
+@SuppressWarnings("Duplicates")
+public class ChatDisplay extends JPanel {
 
     private JFrame newFrame;
     private JFrame displayFrame;
@@ -13,6 +17,7 @@ public class ChatDisplay extends JFrame {
     private JButton sendMessage;
     private JTextArea chatBox;
     private String username;
+    private List<Message> messageList;
 
     /**
      * chatDisplay is the game chat display that appears once the user has chosen a lobby in lobbyDisplay.
@@ -69,24 +74,15 @@ public class ChatDisplay extends JFrame {
     }
 
     /**
-     * 'Send' button checks if the message exists (1 or more characters), cehcks if the text has a functionality,
+     * 'Send' button checks if the message exists (1 or more characters), checks if the text has a functionality,
      * and then sends the message with the users username preceding it
      */
     class sendMessageButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent event) {
             if (messageBox.getText().length() < 1) {
-                // do nothing
-            } else if (messageBox.getText().equals(".clear")) {
-                chatBox.setText("Cleared all messages\n");
-                messageBox.setText("");
-            } else if (messageBox.getText().equals(".leave")) {
-                displayFrame.setVisible(false);    // close the current game
-                new LobbyFrame();  // open the lobby
-            } else if (messageBox.getText().equals(".score")) {
-                // show scoreboard
+                return;
             } else {
-                chatBox.append("<" + username + ">:  " + messageBox.getText() + "\n");
-                messageBox.setText("");
+                Message messageToSend = new Message(messageBox.getText(), ClientGui.gui.user);
             }
         }
     }

@@ -32,6 +32,7 @@ public class Server {
     private final int port = 5000;
     private ExecutorService threadPool;
     private List<GameLobby> lobbies;
+    private List<User> userDatabase;
     private List<User> activeUsers;
 
     /**
@@ -58,26 +59,34 @@ public class Server {
      * @param user user to add
      */
     public void addUser(User user) {
-        activeUsers.add(user);
+        userDatabase.add(user);
     }
 
     // Testing purposes - will perform same function as database call
     public boolean checkUsername(String toCheck) {
-        return activeUsers.stream()
+        return userDatabase.stream()
                 .anyMatch(user -> (user.getUsername().equals(toCheck)));
     }
 
     // Testing purposes - will perform same function as database call
     public boolean checkPassword(String username, String password) {
-        return activeUsers.stream()
+        return userDatabase.stream()
                 .anyMatch(user -> (user.getUsername().equals(username) && user.verifyPassword(password)));
     }
 
     // Testing purposes - will perform same function as database call
     public User findUser(String username) {
-        return activeUsers.stream()
+        return userDatabase.stream()
                 .filter(user -> (user.getUsername().equals(username)))
                 .findFirst().orElse(null);
+    }
+
+    /**
+     * Adds a user to the active user list
+     * @param user user to add
+     */
+    public void addActiveUser(User user) {
+        activeUsers.add(user);
     }
 
     /**
@@ -87,9 +96,9 @@ public class Server {
      */
     public void removeUser(User userToRemove) {
         String toRemove = userToRemove.getUsername();
-        for (User user : activeUsers) {
+        for (User user : userDatabase) {
             if (user.getUsername().equals(toRemove)) {
-                activeUsers.remove(user);
+                userDatabase.remove(user);
             }
         }
     }
@@ -100,6 +109,7 @@ public class Server {
     @SuppressWarnings("InfiniteLoopStatement")
     public void start() {
         lobbies = new ArrayList<>();
+        userDatabase = new ArrayList<>();
         activeUsers = new ArrayList<>();
         addUser(new User("connor", "password"));    // for testing, remove!
         threadPool = Executors.newFixedThreadPool(50);

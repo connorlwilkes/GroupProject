@@ -1,7 +1,10 @@
 package Server;
 
+import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 /**
@@ -16,10 +19,11 @@ public class GameLobby implements Runnable {
     private String lobbyName;
     private int id;
     private int totalScore;
+    private int gameNumber;
     private List<Player> players;
     private final int maxPlayers = 4;
     private List<Minigame> games;
-    private ChatRoom room;
+    private ChatRoom chatRoom;
     private boolean isFull;
     private boolean isRunning;
 
@@ -29,14 +33,15 @@ public class GameLobby implements Runnable {
      * @param id id of the GameLobby
      */
     public GameLobby(int id) {
-        this.lobbyName = "Lobby " + id;
         this.id = id;
+        lobbyName = "Lobby " + id;
         totalScore = 0;
         players = new ArrayList<>();
         games = new ArrayList<>();
-        this.isFull = false;
-        this.isRunning = false;
-        room = new ChatRoom();
+        isFull = false;
+        isRunning = false;
+        chatRoom = new ChatRoom(this);
+        gameNumber = 1;
     }
 
     /**
@@ -75,17 +80,8 @@ public class GameLobby implements Runnable {
         this.players = players;
     }
 
-    /**
-     * Adds a player to the players list
-     *
-     * @param playerToAdd the player to add
-     */
-    public synchronized void addPlayer(Player playerToAdd) {
-        players.add(playerToAdd);
-        if (players.size() == maxPlayers) {
-            isFull = true;
-            run();
-        }
+    public ChatRoom getChatRoom() {
+        return chatRoom;
     }
 
     /**
@@ -94,11 +90,44 @@ public class GameLobby implements Runnable {
      * @param playerToRemove the player to remove
      */
     public synchronized void removePlayer(Player playerToRemove) {
-        for (int i = 0; i < players.size(); i++) {
-            if (players.get(i).equals(playerToRemove)) {
-                players.remove(i);
-            }
+        players.remove(playerToRemove);
+        chatRoom.removePlayer(playerToRemove);
+    }
+
+    /**
+     * Adds a player to the players list
+     *
+     * @param playerToAdd the player to add
+     */
+    public synchronized void addPlayer(Player playerToAdd) {
+        players.add(playerToAdd);
+        chatRoom.addPlayer(playerToAdd);
+        if (players.size() == maxPlayers) {
+            isFull = true;
+            new Thread(this).start();
+        } else if (players.size() == 1) {
+            new Thread(chatRoom).start();
         }
+    }
+
+    /**
+     * Gets the current game being played in the lobby
+     *
+     * @return current game being played
+     */
+    public synchronized Minigame getCurrentGame() {
+        return games.get(gameNumber - 1);
+    }
+
+    public synchronized String[] getScores() {
+        String[] toReturn = new String[players.size()];
+        StringBuilder string = new StringBuilder();
+        for (int i =0; i < players.size(); i++) {
+            string.append(players.get(i).getUser().getUsername() + " " + players.get(i).getScore());
+            toReturn[i] = string.toString();
+            string.setLength(0);
+        }
+        return toReturn;
     }
 
     /**
@@ -116,6 +145,17 @@ public class GameLobby implements Runnable {
      */
     @Override
     public void run() {
+        isRunning = true;
+        HeadlineGame game = new HeadlineGame(players);
+        for (Player player : players) {
+            ServerProtocol start = new ServerProtocol("start", "game is starting");
+            try {
+                player.getOut().writeObject(start);
+                player.getOut().flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
     }
 

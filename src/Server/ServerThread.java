@@ -198,7 +198,7 @@ public class ServerThread implements Runnable {
      *
      * @throws IOException
      */
-    private void joinLobby(int lobbyNumber) throws IOException {
+    private void joinLobby(int lobbyNumber) throws IOException, ClassNotFoundException {
         if (lobbyNumber > 4 || 1 > lobbyNumber) {
             ServerProtocol message = new ServerProtocol("false", "Lobby does not exist");
             outputStream.writeObject(message);
@@ -211,7 +211,7 @@ public class ServerThread implements Runnable {
             outputStream.writeObject(message);
             outputStream.flush();
         } else {
-            this.player = new Player(this, lobby);
+            this.player = new Player(this, lobby, currentUser);
             lobby.addPlayer(player);
             ServerProtocol message = new ServerProtocol("true", "Successfully joined lobby");
             outputStream.writeObject(message);

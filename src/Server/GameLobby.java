@@ -1,5 +1,7 @@
 package Server;
 
+import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -17,12 +19,11 @@ public class GameLobby implements Runnable {
     private String lobbyName;
     private int id;
     private int totalScore;
-    private int roundNumber;
+    private int gameNumber;
     private List<Player> players;
     private final int maxPlayers = 4;
     private List<Minigame> games;
     private ChatRoom chatRoom;
-    private Player questionMaster;
     private boolean isFull;
     private boolean isRunning;
 
@@ -40,7 +41,7 @@ public class GameLobby implements Runnable {
         isFull = false;
         isRunning = false;
         chatRoom = new ChatRoom(this);
-        roundNumber = 1;
+        gameNumber = 1;
     }
 
     /**
@@ -109,6 +110,25 @@ public class GameLobby implements Runnable {
         }
     }
 
+    /**
+     * Gets the current game being played in the lobby
+     *
+     * @return current game being played
+     */
+    public synchronized Minigame getCurrentGame() {
+        return games.get(gameNumber - 1);
+    }
+
+    public synchronized String[] getScores() {
+        String[] toReturn = new String[players.size()];
+        StringBuilder string = new StringBuilder();
+        for (int i =0; i < players.size(); i++) {
+            string.append(players.get(i).getUser().getUsername() + " " + players.get(i).getScore());
+            toReturn[i] = string.toString();
+            string.setLength(0);
+        }
+        return toReturn;
+    }
 
     /**
      * Gets the player/players with the highest score
@@ -121,35 +141,21 @@ public class GameLobby implements Runnable {
     }
 
     /**
-     * Chooses the next question master randomly from the list of players in the game. Will ensure that a new player is
-     * picked each round until the number of rounds exceed the number of players in which case each player will be
-     * eligible to be question master again
-     */
-    public synchronized void chooseQuestionMaster() {
-        questionMaster.setHasBeenQuestionMaster(true);
-        if (roundNumber == players.size()) {
-            for (Player player : players) {
-                player.setHasBeenQuestionMaster(false);
-            }
-        }
-        Random random = new Random();
-        int index = random.nextInt(players.size() - 1);
-        Player player = players.get(index);
-        while (player.isHasBeenQuestionMaster()) {
-            index = random.nextInt(players.size() - 1);
-            player = players.get(index);
-        }
-        questionMaster.setQuestionMaster(false);
-        player.setQuestionMaster(true);
-        questionMaster = player;
-    }
-
-    /**
      * Runs a new GameLobby on a new thread
      */
     @Override
     public void run() {
         isRunning = true;
+        HeadlineGame game = new HeadlineGame(players);
+        for (Player player : players) {
+            ServerProtocol start = new ServerProtocol("start", "game is starting");
+            try {
+                player.getOut().writeObject(start);
+                player.getOut().flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
     }
 

@@ -55,6 +55,7 @@ public class RegisterFrame extends JPanel {
                         "Warning", JOptionPane.WARNING_MESSAGE);
             } else {
                 ClientGui.gui.client.connect();
+                ClientGui.gui.client.serverRequest("create-account", username, password);
                 ServerProtocol response = ClientGui.gui.client.serverRequest("create-account", username, password);
                 if (response.type.startsWith("true")) {
                     JOptionPane.showMessageDialog(ClientGui.gui,

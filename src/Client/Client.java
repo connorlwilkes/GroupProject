@@ -13,8 +13,6 @@ public class Client {
     final private int port = 5000;
     final private String host = "localhost";
     private Socket connection;
-    private DataOutputStream out;
-    private BufferedReader in;
     private ObjectInputStream inputStream;
     private ObjectOutputStream outputStream;
     private User user;
@@ -23,14 +21,15 @@ public class Client {
     public void connect() {
         try {
             connection = new Socket(host, port);
-            out = new DataOutputStream(connection.getOutputStream());
-            in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             outputStream = new ObjectOutputStream(connection.getOutputStream());
             inputStream = new ObjectInputStream(connection.getInputStream());
+            ServerProtocol message = (ServerProtocol) inputStream.readObject();
         } catch (ConnectException ex) {
         System.out.println("Connection failure");
         } catch (IOException e) {
             System.err.println(e);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         }
     }
 
@@ -53,7 +52,9 @@ public class Client {
             if (args[0].equals("login")){
                 user = new User(args[1], args[2]);
             }
-            return (ServerProtocol) inputStream.readObject();
+            ServerProtocol toReturn = (ServerProtocol) inputStream.readObject();
+            System.out.println(toReturn);
+            return toReturn;
         } catch (ConnectException ex) {
             System.out.println("Connection failure");
             return new ServerProtocol("false", "Server connection error");

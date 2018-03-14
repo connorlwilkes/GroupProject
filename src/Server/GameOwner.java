@@ -16,8 +16,8 @@ public class GameOwner extends Player {
      * @param client client associated with the GameOwner
      * @param lobby  lobby the GameOwner owns
      */
-    public GameOwner(ServerThread client, GameLobby lobby) {
-        super(client, lobby);
+    public GameOwner(ServerThread client, GameLobby lobby, User user) {
+        super(client, lobby, user);
     }
 
     /**

@@ -8,7 +8,7 @@ import java.util.Calendar;
  * @author Florence
  * @version 9/3/2018
  */
-public class Message implements Serializable{
+public class Message implements Serializable {
 
     private String message;
     private String time;
@@ -16,8 +16,9 @@ public class Message implements Serializable{
 
     /**
      * Constructor for the message class
+     *
      * @param message content of the message
-     * @param sender the user who is sending the message
+     * @param sender  the user who is sending the message
      */
     public Message(String message, User sender) {
         this.message = message;
@@ -30,7 +31,18 @@ public class Message implements Serializable{
      */
     private void setUpTime() {
         Calendar now = Calendar.getInstance();
-        time = String.valueOf(now.get(Calendar.HOUR_OF_DAY));
+        time = (String.valueOf(now.get(Calendar.HOUR_OF_DAY)) + ":" + String.valueOf(now.get(Calendar.MINUTE)));
+    }
+
+    /**
+     * toString method for the message class
+     *
+     * @return
+     */
+    public String toString() {
+        StringBuilder string = new StringBuilder();
+        string.append(time + " <" + sender + ">: " + message);
+        return string.toString();
     }
 }
 

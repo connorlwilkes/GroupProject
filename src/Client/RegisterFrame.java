@@ -3,8 +3,6 @@ package Client;
 import Server.ServerProtocol;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class RegisterFrame extends JPanel {
 
@@ -44,32 +42,31 @@ public class RegisterFrame extends JPanel {
         add(reEnterPass);
 
         JButton btnSignIn = new JButton("Sign Up");
-        btnSignIn.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                String username = enterUser.getText();
-                String password = enterPass.getText();
-                if ("".equals(username) || "".equals(password)) {
+        btnSignIn.addActionListener(e -> {
+            String username = enterUser.getText();
+            String password = enterPass.getText();
+            if ("".equals(username) || "".equals(password)) {
+                JOptionPane.showMessageDialog(ClientGui.gui,
+                        "Username or password field cannot be empty",
+                        "Warning", JOptionPane.WARNING_MESSAGE);
+            } else if (!(password.equals(reEnterPass.getText()))) {
+                JOptionPane.showMessageDialog(ClientGui.gui,
+                        "Passwords do not match",
+                        "Warning", JOptionPane.WARNING_MESSAGE);
+            } else {
+                ClientGui.gui.client.connect();
+                ClientGui.gui.client.serverRequest("create-account", username, password);
+                ServerProtocol response = ClientGui.gui.client.serverRequest("create-account", username, password);
+                if (response.type.startsWith("true")) {
                     JOptionPane.showMessageDialog(ClientGui.gui,
-                            "Username or password field cannot be empty",
-                            "Warning", JOptionPane.WARNING_MESSAGE);
-                } else if (!(password.equals(reEnterPass.getText()))) {
+                            "Created account with username: " + username,
+                            "Account Created", JOptionPane.INFORMATION_MESSAGE);
+                    ClientGui.gui.setContentPane(ClientGui.gui.login);
+                    ClientGui.gui.setTitle("Log in");
+                } else if (response.type.startsWith("false")) {
                     JOptionPane.showMessageDialog(ClientGui.gui,
-                            "Passwords do not match",
-                            "Warning", JOptionPane.WARNING_MESSAGE);
-                } else {
-                    ClientGui.gui.client.connect();
-                    ServerProtocol response = ClientGui.gui.client.createAccount(username, password);
-                    if (response.type.startsWith("true")) {
-                        JOptionPane.showMessageDialog(ClientGui.gui,
-                                "Created account with username: " + username,
-                                "Account Created", JOptionPane.INFORMATION_MESSAGE);
-                        ClientGui.gui.setContentPane(ClientGui.gui.login);
-                        ClientGui.gui.setTitle("Log in");
-                    } else if (response.type.startsWith("false")) {
-                        JOptionPane.showMessageDialog(ClientGui.gui,
-                                response.message[0],
-                                "Account Creation Failure", JOptionPane.WARNING_MESSAGE);
-                    }
+                            response.message[0],
+                            "Account Creation Failure", JOptionPane.WARNING_MESSAGE);
                 }
             }
         });
@@ -77,12 +74,10 @@ public class RegisterFrame extends JPanel {
         add(btnSignIn);
 
         JButton back = new JButton("Back");
-        back.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                ClientGui.gui.setContentPane(
-                        ClientGui.gui.login);
-                ClientGui.gui.setTitle("Log In");
-            }
+        back.addActionListener(e -> {
+            ClientGui.gui.setContentPane(
+                    ClientGui.gui.login);
+            ClientGui.gui.setTitle("Log In");
         });
         back.setBounds(125, 240, 91, 29);
         add(back);

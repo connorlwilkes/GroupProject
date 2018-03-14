@@ -3,10 +3,6 @@ package Client;
 import Server.ServerProtocol;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.IOException;
-
 
 public class LogInFrame extends JPanel {
 
@@ -36,28 +32,27 @@ public class LogInFrame extends JPanel {
         add(enterPassword);
 
         JButton btnSignIn = new JButton("Sign In");
-        btnSignIn.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                String username = enterUsername.getText();
-                String password = enterPassword.getText();
-                if (username.isEmpty() || password.isEmpty()) {
+        btnSignIn.addActionListener(e -> {
+            String username = enterUsername.getText();
+            String password = enterPassword.getText();
+            if (username.isEmpty() || password.isEmpty()) {
+                JOptionPane.showMessageDialog(ClientGui.gui,
+                        "Username or password field cannot be empty",
+                        "Warning", JOptionPane.WARNING_MESSAGE);
+            } else {
+                ClientGui.gui.client.connect();
+                ServerProtocol response = ClientGui.gui.client.serverRequest("login", username, password);
+                System.out.println(response);
+                if (response.type.startsWith("true")) {
                     JOptionPane.showMessageDialog(ClientGui.gui,
-                            "Username or password field cannot be empty",
-                            "Warning", JOptionPane.WARNING_MESSAGE);
-                } else {
-                    ClientGui.gui.client.connect();
-                    ServerProtocol response = ClientGui.gui.client.logIn(username, password);
-                    if (response.type.startsWith("true")) {
-                        JOptionPane.showMessageDialog(ClientGui.gui,
-                                "Signed in: " + username,
-                                "Sign-in success", JOptionPane.INFORMATION_MESSAGE);
-                        ClientGui.gui.setContentPane(ClientGui.gui.lobby);
-                        ClientGui.gui.setTitle("Lobby Room");
-                    } else if (response.type.startsWith("false")) {
-                        JOptionPane.showMessageDialog(ClientGui.gui,
-                                response.message[0],
-                                "Sign-in failure", JOptionPane.WARNING_MESSAGE);
-                    }
+                            "Signed in: " + username,
+                            "Sign-in success", JOptionPane.INFORMATION_MESSAGE);
+                    ClientGui.gui.setContentPane(ClientGui.gui.lobby);
+                    ClientGui.gui.setTitle("Lobby Room");
+                } else if (response.type.startsWith("false")) {
+                    JOptionPane.showMessageDialog(ClientGui.gui,
+                            response.message[0],
+                            "Sign-in failure", JOptionPane.WARNING_MESSAGE);
                 }
             }
         });
@@ -69,12 +64,10 @@ public class LogInFrame extends JPanel {
 //        add(lblNoAccount);
 
         JButton btnSignUp = new JButton("Sign Up");
-        btnSignUp.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                ClientGui.gui.setContentPane(
-                        ClientGui.gui.register);
-                ClientGui.gui.setTitle("Sign up");
-            }
+        btnSignUp.addActionListener(e -> {
+            ClientGui.gui.setContentPane(
+                    ClientGui.gui.register);
+            ClientGui.gui.setTitle("Sign up");
         });
         btnSignUp.setBounds(175, 230, 91, 29);
         add(btnSignUp);

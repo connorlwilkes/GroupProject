@@ -31,7 +31,7 @@ public class DatabaseQueries {
             ResultSet rs = pmst.getGeneratedKeys();
 
 
-                if (rs == null) {
+                if (!rs.next()) {
                     x=  false;
                 }
                 else {

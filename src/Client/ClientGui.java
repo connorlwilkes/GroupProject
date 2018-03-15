@@ -21,10 +21,10 @@ public class ClientGui extends JFrame {
     public User user;
 
     private ClientGui() {
-        setTitle("Log In");
-        setResizable(true);
+        setTitle("Log in");
+        setResizable(false);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setBounds(0, 0, 630, 460);
+        setBounds(100, 100, 900, 900);
         add(login);
         add(lobby);
         add(register);
@@ -34,7 +34,11 @@ public class ClientGui extends JFrame {
         add(questionMasterAnswerPanel);
         add(questionMasterQuestionPanel);
         add(questionPanel);
-        setContentPane(lobby);
+        setContentPane(chat);
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public static void main(String[] args) {

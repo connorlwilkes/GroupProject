@@ -70,7 +70,7 @@ public class Client {
             outputStream.writeObject(message);
             outputStream.flush();
         } catch (IOException ex) {
-            System.err.println(ex);
+            ex.printStackTrace();
         }
     }
 
@@ -84,6 +84,7 @@ public class Client {
             }
         }
     }
+
 
     public static void main(String[] args) {
         Client test = new Client();

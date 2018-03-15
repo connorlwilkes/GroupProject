@@ -39,6 +39,11 @@ public class ChatDisplay extends JPanel {
     		if (chatMessage.length() != 0) {
     			ClientGui.gui.client.sendMessage(chatMessage);
     		}
+    		else {
+                JOptionPane.showMessageDialog(ClientGui.gui,
+                        "Enter a message!",
+                        "Sign-in failure", JOptionPane.WARNING_MESSAGE);
+            }
      
     });
     btnSend.setBounds(530, 400, 90, 30);

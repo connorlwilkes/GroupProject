@@ -1,8 +1,11 @@
 package Client;
 
-import Server.Message;
+
 
 import javax.swing.*;
+
+import Server.ServerProtocol;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,14 +14,39 @@ import java.util.List;
 @SuppressWarnings("Duplicates")
 public class ChatDisplay extends JPanel {
 
-    private JFrame newFrame;
-    private JFrame displayFrame;
-    private JTextField messageBox;
-    private JButton sendMessage;
-    private JTextArea chatBox;
-    private String username;
-    private List<Message> messageList;
-
+	private JTextField messageBox;
+	private JTextArea chatBox;
+	
+	public ChatDisplay() {
+	
+	setLayout(null);
+    	
+		
+    chatBox = new JTextArea(10, 20);
+    chatBox.setEditable(false);
+    chatBox.setBounds(20, 20, 590, 370);
+    add(chatBox);
+    
+    messageBox = new JTextField();
+	messageBox.setEditable(true);
+	messageBox.setBounds(20, 400, 500, 30);
+	messageBox.setColumns(80);
+	add(messageBox);
+	
+	JButton btnSend = new JButton("Send");
+    btnSend.addActionListener(e -> {
+    		String chatMessage = messageBox.getText();
+    		if (chatMessage.length() != 0) {
+    			ClientGui.gui.client.sendMessage(chatMessage);
+    		}
+     
+    });
+    btnSend.setBounds(530, 400, 90, 30);
+    add(btnSend);
+	
+		
+}
+	
     /**
      * chatDisplay is the game chat display that appears once the user has chosen a lobby in lobbyDisplay.
      * <p>
@@ -42,7 +70,7 @@ public class ChatDisplay extends JPanel {
      * | ___________________________________|       |_________________________________________|
      * ______________________________________
      */
-    public void chatDisplay() {
+/*    public void chatDisplay() {
         newFrame.setVisible(true);
         displayFrame = new JFrame("CHAT");                            // creates a new JFrame
         JPanel southPanel = new JPanel();                            // creates a new JPanel (southPanel)
@@ -73,10 +101,7 @@ public class ChatDisplay extends JPanel {
         newFrame.setSize(470, 300);                                        // sets the size of the chat box to 470px x 300px (x, y)
     }
 
-    /**
-     * 'Send' button checks if the message exists (1 or more characters), checks if the text has a functionality,
-     * and then sends the message with the users username preceding it
-     */
+    
     class sendMessageButtonListener implements ActionListener {
         public void actionPerformed(ActionEvent event) {
             if (messageBox.getText().length() < 1) {
@@ -86,4 +111,5 @@ public class ChatDisplay extends JPanel {
             }
         }
     }
+ */
 }

@@ -1,7 +1,5 @@
 package Client;
 
-import Server.ServerProtocol;
-
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -32,48 +30,30 @@ public class LobbyFrame extends JPanel {
      * | ___________________________________|
      * ______________________________________
      */
-    public void lobbyFrame() {
-        //TODO: Create lobby and game gui - Jack
-        setLayout(null);
-        this.setBounds(0, 0, 450, 278);
-
-        JButton lobby1 = new JButton("Lobby 1");
-        lobby1.setBounds(150, 60, 90, 30);
-        add(lobby1);
-
-        JButton lobby2 = new JButton("Lobby 2");
-        lobby1.setBounds(150, 120, 90, 30);
-        add(lobby2);
-
-        JButton lobby3 = new JButton("Lobby 3");
-        lobby1.setBounds(150, 180, 90, 30);
-        add(lobby3);
-
-        lobby1.addActionListener(new enterLobby1());    // adds action listener to open lobby 1 chatDisplay when clicked
-        lobby2.addActionListener(new enterLobby2());    // adds action listener to open lobby 2 chatDisplay when clicked
-        lobby3.addActionListener(new enterLobby3());    // adds action listener to open lobby 3 chatDisplay when clicked
-
+    public LobbyFrame() {
+        
+    	setLayout(null);
+    	
+    	 JButton btnLobby1 = new JButton("Lobby 1");
+         btnLobby1.addActionListener(e -> {
+        	 // insert function
+         });
+         btnLobby1.setBounds(175, 190, 100, 29);
+         add(btnLobby1);
+         
+     JButton btnLobby2 = new JButton("Lobby 2");
+         btnLobby2.addActionListener(e -> {
+        	 // insert function
+         });
+         btnLobby2.setBounds(175, 230, 100, 29);
+         add(btnLobby2);
+         
+     JButton btnLobby3 = new JButton("Lobby 3");
+         btnLobby3.addActionListener(e -> {
+        	 // insert function
+         });
+         btnLobby3.setBounds(175, 270, 100, 29);
+         add(btnLobby3);
     }
-
-    /**
-     * 'Lobby 1/2/3' button takes the user into the lobby they clicked
-     */
-    class enterLobby1 implements ActionListener {
-        public void actionPerformed(ActionEvent event) {
-            //TODO: Logic for lobby joining - Connor
-            ServerProtocol response = ClientGui.gui.client.serverRequest("join-lobby", "1");
-        }
-    }
-
-    class enterLobby2 implements ActionListener {
-        public void actionPerformed(ActionEvent event) {
-            ServerProtocol response = ClientGui.gui.client.serverRequest("join-lobby", "2");
-        }
-    }
-
-    class enterLobby3 implements ActionListener {
-        public void actionPerformed(ActionEvent event) {
-            ServerProtocol response = ClientGui.gui.client.serverRequest("join-lobby", "3");
-        }
-    }
+    	
 }

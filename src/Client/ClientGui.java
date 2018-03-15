@@ -22,9 +22,9 @@ public class ClientGui extends JFrame {
 
     private ClientGui() {
         setTitle("Log In");
-        setResizable(false);
+        setResizable(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setBounds(100, 100, 450, 450);
+        setBounds(0, 0, 630, 460);
         add(login);
         add(lobby);
         add(register);
@@ -34,7 +34,7 @@ public class ClientGui extends JFrame {
         add(questionMasterAnswerPanel);
         add(questionMasterQuestionPanel);
         add(questionPanel);
-        setContentPane(qm);
+        setContentPane(lobby);
     }
 
     public static void main(String[] args) {

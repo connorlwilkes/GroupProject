@@ -40,13 +40,14 @@ public class RegisterUser {
 
             pmst.setString(1, username);
             pmst.setString(2, password);
-
+            pmst.execute();
             return a;
 
         } catch (SQLException ex) {
             System.err.println(ex);
+            return d;
         }
-        return d;
+
     }
 
 }

@@ -37,10 +37,10 @@ public class DatabaseQueries {
 
 
                 if (!rs.next()) {
-                    x=  false;//returns false if the user doesn't exist
+                    x=  true;//returns true if the user doesn't exist
                 }
                 else {
-                    x = true;//returns false if the user exists already
+                    x = false;//returns false if the user exists already
                 }
 
             } catch (SQLException ex) {

@@ -29,7 +29,7 @@ public class RegisterUser {
             return RegisterUserResponses.userAlreadyExists;
         }
 
-        String query = "INSERT INTO userdb (username, password) VALUES (?, ?))";
+        String query = "INSERT INTO userdb (username, password) VALUES (?, ?)";
 
 
         try (Connection connection = connect()) {

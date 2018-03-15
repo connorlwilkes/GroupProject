@@ -5,6 +5,11 @@ import Server.User;
 import java.sql.*;
 
 public class DatabaseQueries {
+    /**
+     *
+     * @return
+     * @throws SQLException
+     */
 
     public static Connection connect() throws SQLException {
 

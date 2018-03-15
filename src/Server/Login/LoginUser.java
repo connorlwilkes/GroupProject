@@ -1,27 +1,33 @@
 package Server.Login;
 
+import Server.ServerProtocol;
 import Server.User;
 
 import static Server.Login.DatabaseQueries.checkUsername;
 
 public class LoginUser {
 
-    public static int CheckLogin (User user) {
+    public static ServerProtocol CheckLogin (User user) {
 
         String username = user.getUsername();
         String password = user.getPassword();
 
+        ServerProtocol a= new ServerProtocol("true","Successfully logged in");
+        ServerProtocol b= new ServerProtocol("false","Invalid Input");
+        ServerProtocol c= new ServerProtocol("false","User does not exist");
+        ServerProtocol d= new ServerProtocol("false","Failure");
+
         if (username.equals("") || password.equals("")) {
 
-            return LoginUserResponses.invalidInput;
+            return b;
         } else if (!checkUsername(user)) {
 
-            return LoginUserResponses.userDoesNotExist;
+            return c;
         } else if (password.equals(user.getPassword())) {
 
-            return LoginUserResponses.success;
+            return a;
         } else {
-            return LoginUserResponses.failure;
+            return d;
 
             //check if user exists
             //if user exists then check that the passwords match

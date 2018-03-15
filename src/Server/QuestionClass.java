@@ -1,12 +1,9 @@
 package Server;
 
-import Server.Login.DatabaseQueries;
-
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Arrays;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class QuestionClass {

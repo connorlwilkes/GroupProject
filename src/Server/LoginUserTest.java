@@ -1,4 +1,4 @@
-package Server.Login;
+package Server;
 
 //import static org.junit.Assert.*;
 //import Server.User;

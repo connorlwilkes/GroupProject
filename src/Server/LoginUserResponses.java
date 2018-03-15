@@ -1,4 +1,4 @@
-package Server.Login;
+package Server;
 
 public class LoginUserResponses {
 

@@ -1,9 +1,6 @@
-package Server.Login;
+package Server;
 
-import Server.ServerProtocol;
-import Server.User;
-
-import static Server.Login.DatabaseQueries.checkUsername;
+import static Server.DatabaseQueries.checkUsername;
 
 public class LoginUser {
 

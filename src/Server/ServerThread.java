@@ -158,24 +158,31 @@ public class ServerThread implements Runnable {
     private synchronized void loginUser(String username, String password) throws IOException {
         System.out.println("here");
         //TODO: Code for loginuser from database - Sophia
-        if (!(server.checkUsername(username))) {
-            ServerProtocol response = new ServerProtocol("false", "User does not exist");
-            System.out.println(response);
-            outputStream.writeObject(response);
-            outputStream.flush();
-        } else if (!(server.checkPassword(username, password))) {
-            ServerProtocol response = new ServerProtocol("false", "Username or password does not match");
-            System.out.println(response);
-            outputStream.writeObject(response);
-            outputStream.flush();
-        } else {
-            currentUser = new User(username, password);
-            server.addActiveUser(currentUser);
-            ServerProtocol response = new ServerProtocol("true", "Success: User " + username + " logged in");
-            outputStream.reset();
-            outputStream.writeObject(response);
-            outputStream.flush();
-        }
+        currentUser = new User(username,password);
+        ServerProtocol response = LoginUser.CheckLogin(currentUser);
+        System.out.println(response);
+        outputStream.writeObject(response);
+        outputStream.flush();
+
+
+       // if (!(server.checkUsername(username))) {
+        //    ServerProtocol response = new ServerProtocol("false", "User does not exist");
+        //    System.out.println(response);
+        //    outputStream.writeObject(response);
+        //    outputStream.flush();
+      //  } else if (!(server.checkPassword(username, password))) {
+       //     ServerProtocol response = new ServerProtocol("false", "Username or password does not match");
+         //   System.out.println(response);
+           // outputStream.writeObject(response);
+        //    outputStream.flush();
+        //} else {
+          //  currentUser = new User(username, password);
+          //  server.addActiveUser(currentUser);
+          //  ServerProtocol response = new ServerProtocol("true", "Success: User " + username + " logged in");
+          //  outputStream.reset();
+           // outputStream.writeObject(response);
+           // outputStream.flush();
+       // }
     }
 
     /**
@@ -185,17 +192,23 @@ public class ServerThread implements Runnable {
      */
     private synchronized void setUpAccount(String username, String password) throws IOException {
         //TODO: add database add and check for adding a new user - Sophia
-        if (username.startsWith("fail") || password.startsWith("fail")) {
-            ServerProtocol response = new ServerProtocol("false", " test error");
-            outputStream.writeObject(response);
-            outputStream.flush();
-        } else {
-            ServerProtocol response = new ServerProtocol("true", "User: " + username + " created");
-            outputStream.writeObject(response);
-            outputStream.flush();
-        }
-        server.addActiveUser(new User(username, password));
-    }
+        currentUser = new User(username,password);
+        ServerProtocol response = RegisterUser.checkUser(currentUser);
+        System.out.println(response);
+        outputStream.writeObject(response);
+        outputStream.flush();
+
+     //   if (username.startsWith("fail") || password.startsWith("fail")) {
+     //       ServerProtocol response = new ServerProtocol("false", " test error");
+     //       outputStream.writeObject(response);
+     //       outputStream.flush();
+     //   } else {
+     //       ServerProtocol response = new ServerProtocol("true", "User: " + username + " created");
+     //       outputStream.writeObject(response);
+     //       outputStream.flush();
+     //   }
+     //   server.addActiveUser(new User(username, password));
+   }
 
     /**
      * Joins a lobby

@@ -3,6 +3,7 @@ package Server;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -154,12 +155,12 @@ public class Player {
                     }
                 }
                 if (username == null) {
-                    ServerProtocol message = new ServerProtocol("false", "process error - pick again");
+                    ServerProtocol message = new ServerProtocol("false", "invalid request");
                     out.writeObject(message);
                     out.flush();
                 } else {
                     game.addScore(Integer.valueOf(request.message[0]), username);
-                    ServerProtocol message = new ServerProtocol("true", "Vote accepted");
+                    ServerProtocol message = new ServerProtocol("qm-vote", "Vote accepted");
                     out.writeObject(message);
                     out.flush();
                 }
@@ -170,35 +171,41 @@ public class Player {
             }
         } else if (type.startsWith("get-answers")) {
             if (isQuestionMaster) {
-                List<String> list = game.getAnswers();
-                list.add("true");
+                List<String> list = new ArrayList<>();
+                list.add("get-answers");
                 list.add("qm");
+                list.addAll(game.getAnswers());
                 String[] toReturn = list.toArray(new String[list.size()]);
                 ServerProtocol message = new ServerProtocol(toReturn);
+                out.writeObject(message);
+                out.flush();
             } else {
-                List<String> list = game.getAnswers();
-                list.add("true");
+                List<String> list = new ArrayList<>();
+                list.add("get-answers");
                 list.add("notqm");
+                list.addAll(game.getAnswers());
                 String[] toReturn = list.toArray(new String[list.size()]);
                 ServerProtocol message = new ServerProtocol(toReturn);
+                out.writeObject(message);
+                out.flush();
             }
         } else if (type.startsWith("leave")) {
             lobby.removePlayer(this);
-            ServerProtocol message = new ServerProtocol("true", "Left " + lobby.toString() + " successfully");
+            ServerProtocol message = new ServerProtocol("remove", "Left " + lobby.toString() + " successfully");
             out.writeObject(message);
             out.flush();
         } else if (type.startsWith("question")) {
             if (isQuestionMaster) {
-                ServerProtocol message = new ServerProtocol("true", "qm", game.getCurrentQuestion());
+                ServerProtocol message = new ServerProtocol("question", "qm", game.getCurrentQuestion());
                 out.writeObject(message);
                 out.flush();
             } else {
-                ServerProtocol message = new ServerProtocol("true", "notqm", game.getCurrentQuestion());
+                ServerProtocol message = new ServerProtocol("question", "notqm", game.getCurrentQuestion());
                 out.writeObject(message);
                 out.flush();
             }
         } else if (type.startsWith("get-qm")) {
-            ServerProtocol message = new ServerProtocol("true", game.getQuestionMaster().getUser().getUsername());
+            ServerProtocol message = new ServerProtocol("get-qm", game.getQuestionMaster().getUser().getUsername());
             out.writeObject(message);
             out.flush();
         } else if (type.startsWith("getscores")) {

@@ -1,5 +1,4 @@
 package Client;
-
 import Server.Message;
 import Server.ServerProtocol;
 import Server.User;
@@ -74,13 +73,17 @@ public class Client {
         }
     }
 
-    public Object listenForInput() throws IOException, ClassNotFoundException {
+    public void listenForInput() throws IOException, ClassNotFoundException {
         while (true) {
             Object o = inputStream.readObject();
             if (o instanceof Message) {
                 //TODO: Get message, add to list and display?
+            	Message newMessage = (Message) o;
+            	String oldMessage = ChatDisplay.chatBox.getText();
+            	ChatDisplay.chatBox.setText(oldMessage + "\n" + newMessage.toString());
             } else {
                 //TODO: Game logic here?
+            	
             }
         }
     }

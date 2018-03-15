@@ -34,12 +34,12 @@ public class ClientGui extends JFrame {
         add(questionMasterAnswerPanel);
         add(questionMasterQuestionPanel);
         add(questionPanel);
-        setContentPane(lobby);
+        setContentPane(login);
     }
 
     public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
-            try {
+            try {   
                 gui = new ClientGui();
                 gui.setVisible(true);
             } catch (Exception e) {

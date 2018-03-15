@@ -15,7 +15,7 @@ import java.util.List;
 public class ChatDisplay extends JPanel {
 
 	private JTextField messageBox;
-	private JTextArea chatBox;
+	public static JTextArea chatBox;
 	
 	public ChatDisplay() {
 	

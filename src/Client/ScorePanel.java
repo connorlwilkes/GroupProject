@@ -1,3 +1,5 @@
+package Client;
+
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -15,11 +17,11 @@ public class ScorePanel extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public ScorePanel(int i) {
+	public ScorePanel() {
 		setBackground(new Color(0, 255, 127));
 		setLayout(null);
 		
-		JLabel lblRound = new JLabel("Round " + (i+1));
+		JLabel lblRound = new JLabel("Round ");
 		lblRound.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblRound.setBounds(20, 11, 78, 23);
 		add(lblRound);
@@ -48,14 +50,5 @@ public class ScorePanel extends JPanel {
 		textArea.setBounds(20, 188, 232, 88);
 		add(textArea);
 
-	}
-	
-	public static void main(String[] args) throws SQLException, ClassNotFoundException, InterruptedException {
-		JFrame frame = new  JFrame();
-		frame.setBounds(100, 100, 900, 360); 
-		ScorePanel panel = new ScorePanel(0);
-		panel.setVisible(true);
-		frame.setVisible(true);
-		frame.getContentPane().add(panel);
 	}
 }

@@ -1,3 +1,5 @@
+package Client;
+
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import java.awt.Font;
@@ -19,11 +21,11 @@ public class QuestionPanel extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public QuestionPanel(int i) {
+	public QuestionPanel() {
 		setBackground(new Color(154, 205, 50));
 		setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("Round " + (i+1));
+		JLabel lblNewLabel = new JLabel("Round ");
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblNewLabel.setBounds(10, 11, 80, 28);
 		add(lblNewLabel);
@@ -76,14 +78,5 @@ public class QuestionPanel extends JPanel {
 		    
 		timer.start();	
 	
-	}
-	
-	public static void main(String[] args) throws SQLException, ClassNotFoundException, InterruptedException {
-		JFrame frame = new  JFrame();
-		frame.setBounds(100, 100, 900, 360); 
-		QuestionPanel panel = new QuestionPanel(0);
-		panel.setVisible(true);
-		frame.setVisible(true);
-		frame.getContentPane().add(panel);
 	}
 }

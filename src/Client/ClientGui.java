@@ -13,6 +13,11 @@ public class ClientGui extends JFrame {
     public RegisterFrame register = new RegisterFrame();
     public ChatDisplay chat = new ChatDisplay();
     public Client client = new Client();
+    public InstructionPanel instructions = new InstructionPanel();
+    public QuestionMasterPanel qm = new QuestionMasterPanel();
+    public QuestionMasterAnswerPanel questionMasterAnswerPanel = new QuestionMasterAnswerPanel();
+    public QuestionMasterQuestionPanel questionMasterQuestionPanel = new QuestionMasterQuestionPanel();
+    public QuestionPanel questionPanel = new QuestionPanel();
     public User user;
 
     private ClientGui() {
@@ -23,8 +28,13 @@ public class ClientGui extends JFrame {
         add(login);
         add(lobby);
         add(register);
-//        add(chat);
-        setContentPane(login);
+        add(chat);
+        add(instructions);
+        add(qm);
+        add(questionMasterAnswerPanel);
+        add(questionMasterQuestionPanel);
+        add(questionPanel);
+        setContentPane(qm);
     }
 
     public static void main(String[] args) {

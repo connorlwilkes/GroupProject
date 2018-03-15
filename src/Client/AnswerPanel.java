@@ -1,3 +1,4 @@
+package Client;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -53,14 +54,5 @@ public class AnswerPanel extends JPanel {
 		txtrPlayerAnswer_1.setWrapStyleWord(true);
 		add(txtrPlayerAnswer_1);
 		
-	}
-	
-	public static void main(String[] args) throws SQLException, ClassNotFoundException, InterruptedException {
-		JFrame frame = new  JFrame();
-		frame.setBounds(100, 100, 900, 360); 
-		AnswerPanel panel = new AnswerPanel(0);
-		panel.setVisible(true);
-		frame.setVisible(true);
-		frame.getContentPane().add(panel);
 	}
 }

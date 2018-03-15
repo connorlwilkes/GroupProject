@@ -1,3 +1,5 @@
+package Client;
+
 import javax.swing.JPanel;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -7,12 +9,14 @@ import java.sql.SQLException;
 
 import javax.swing.JTextArea;
 
-public class instructionPanel extends JPanel {
+public class InstructionPanel extends JPanel {
 
 	/**
 	 * Create the panel.
 	 */
-	public instructionPanel() {
+	public InstructionPanel() {
+		setLayout(null);
+		this.setBounds(0, 0, 900, 360);
 		
 		setBackground(Color.PINK);
 		setLayout(null);
@@ -41,7 +45,7 @@ public class instructionPanel extends JPanel {
 	public static void main(String[] args) throws SQLException, ClassNotFoundException, InterruptedException {
 		JFrame frame = new  JFrame();
 		frame.setBounds(100, 100, 900, 360); 
-		instructionPanel panel = new instructionPanel();
+		InstructionPanel panel = new InstructionPanel();
 		panel.setVisible(true);
 		frame.setVisible(true);
 		frame.add(panel);

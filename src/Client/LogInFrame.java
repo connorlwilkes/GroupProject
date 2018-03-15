@@ -1,7 +1,6 @@
 package Client;
 
 import Server.ServerProtocol;
-import Server.User;
 
 import javax.swing.*;
 
@@ -43,11 +42,11 @@ public class LogInFrame extends JPanel {
             } else {
                 ClientGui.gui.client.connect();
                 ServerProtocol response = ClientGui.gui.client.serverRequest("login", username, password);
+                System.out.println(response);
                 if (response.type.startsWith("true")) {
                     JOptionPane.showMessageDialog(ClientGui.gui,
                             "Signed in: " + username,
                             "Sign-in success", JOptionPane.INFORMATION_MESSAGE);
-                    ClientGui.gui.setUser(new User(username, password));
                     ClientGui.gui.setContentPane(ClientGui.gui.lobby);
                     ClientGui.gui.setTitle("Lobby Room");
                 } else if (response.type.startsWith("false")) {

@@ -156,6 +156,7 @@ public class ServerThread implements Runnable {
      * @throws IOException
      */
     private synchronized void loginUser(String username, String password) throws IOException {
+        System.out.println("here");
         //TODO: Code for loginuser from database - Sophia
         if (!(server.checkUsername(username))) {
             ServerProtocol response = new ServerProtocol("false", "User does not exist");

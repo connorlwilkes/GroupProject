@@ -124,8 +124,12 @@ public class Player {
         while (true) {
             Object o = in.readObject();
             if (o instanceof Message) {
-                lobby.getChatRoom().addMessage((Message) o);
-                //TODO: Chat room logic
+                Message message = (Message) o;
+                lobby.getChatRoom().addMessage(message);
+                for (ObjectOutputStream out: lobby.getChatRoom().getObjectOutputStreams()) {
+                    out.writeObject(message);
+                    out.flush();
+                }
             } else if (o instanceof ServerProtocol && lobby.getCurrentGame() instanceof HeadlineGame) {
                 ServerProtocol request = (ServerProtocol) o;
                 String type = request.type;

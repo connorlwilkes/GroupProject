@@ -70,12 +70,13 @@ public class ChatRoom implements Runnable {
             objectOutputStreams.add(player.getClient().getOutputStream());
         }
     }
-     
-    public synchronized void addMessage(Message message) {
-        messages.add(message);
+
+    public HashSet<ObjectOutputStream> getObjectOutputStreams() {
+        return objectOutputStreams;
     }
 
-    private void readFromClients() {
+    public synchronized void addMessage(Message message) {
+        messages.add(message);
     }
 
     /**

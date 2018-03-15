@@ -7,11 +7,9 @@ import java.sql.*;
 public class DatabaseQueries {
 
     public static Connection connect() throws SQLException {
-
         String url = "jdbc:postgresql://mod-msc-sw1.cs.bham.ac.uk:5432/florence";
         String user = "florence";
         String password = "kx7t40vm7v";
-
         return DriverManager.getConnection(url, user, password);
 
     }
@@ -31,11 +29,11 @@ public class DatabaseQueries {
             ResultSet rs = pmst.getGeneratedKeys();
 
 
-                if (!rs.next()) {
-                    x=  false;//returns false if the user doesn't exist
+                if (rs == null) {
+                    x=  false;
                 }
                 else {
-                    x = true;//returns false if the user exists already
+                    x = true;
                 }
 
             } catch (SQLException ex) {

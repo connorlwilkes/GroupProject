@@ -12,7 +12,7 @@ public class DatabaseQueriesTest {
         boolean expected = true;
         boolean actual = DatabaseQueries.checkUsername(a);
         assertEquals(expected, actual);
-    }//testing if correct boolean when user doesnt exist
+    }//testing if correct boolean when user doesn't exist
 
     @Test
     public void test2() {
@@ -20,6 +20,6 @@ public class DatabaseQueriesTest {
         boolean expected = false;
         boolean actual = DatabaseQueries.checkUsername(a);
         assertEquals(expected, actual);
-    }
+    }//testing the correct boolean is produced if an existing user is inputted
 
 }

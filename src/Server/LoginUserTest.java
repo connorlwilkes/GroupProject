@@ -13,7 +13,7 @@ public class LoginUserTest {
         String expected = a.toString();
         String actual = LoginUser.CheckLogin(b).toString();
         assertEquals(expected, actual);
-    }
+    }//checking whether you can login with correct credentials
 
     @Test
     public void test2() {
@@ -22,7 +22,7 @@ public class LoginUserTest {
         String expected = a.toString();
         String actual = LoginUser.CheckLogin(b).toString();
         assertEquals(expected, actual);
-    }
+    }//checking whether you can log in with an existing username and incorrect password
 
     @Test
     public void test3() {
@@ -31,7 +31,7 @@ public class LoginUserTest {
         String expected = a.toString();
         String actual = LoginUser.CheckLogin(b).toString();
         assertEquals(expected, actual);
-    }
+    }//check whether you can log in with a non existing username and password
 }
 
 

@@ -16,9 +16,6 @@ public class DatabaseInsert extends DatabaseAccess {
         try (Connection connection = super.connect();
              PreparedStatement psmt = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)) {
 
-            psmt.setString(1, user.getUsername());
-            psmt.setString(2, user.getPassword());
-
 
             int affectedRows = psmt.executeUpdate();
 

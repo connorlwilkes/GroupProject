@@ -1,12 +1,9 @@
 package Server;
 
-import Server.User;
-
 import java.sql.*;
 
 public class DatabaseQueries {
     /**
-     *
      * @return
      * @throws SQLException
      */
@@ -29,31 +26,28 @@ public class DatabaseQueries {
         String query = "SELECT * FROM userdb WHERE username = ?";
 
         try (Connection connection = connect();
-            PreparedStatement pmst = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)){
+             PreparedStatement pmst = connection.prepareStatement(query)) {
 
             pmst.setString(1, username);
 
-            ResultSet rs = pmst.getGeneratedKeys();
+            ResultSet rs = pmst.executeQuery();
 
 
-                if (!rs.next()) {
-                    x=  false;//returns false if the user doesn't exist
-                }
-                else {
-                    x = true;//returns false if the user exists already
-                }
-
-            } catch (SQLException ex) {
-                System.err.println(ex);
+            if (!rs.next()) {
+                return true;//returns true if the user doesn't exist
+            } else {
+                return false;//returns false if the user exists already
             }
+        } catch (SQLException ex) {
+            System.err.println(ex);
+        }
 
         return x;
 
-        }
+    }
 
 
-
- }
+}
 
 
 

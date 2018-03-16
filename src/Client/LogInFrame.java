@@ -3,6 +3,7 @@ package Client;
 import Server.ServerProtocol;
 
 import javax.swing.*;
+import java.io.ObjectOutputStream;
 
 public class LogInFrame extends JPanel {
 
@@ -42,7 +43,6 @@ public class LogInFrame extends JPanel {
             } else {
                 ClientGui.gui.client.connect();
                 ServerProtocol response = ClientGui.gui.client.serverRequest("login", username, password);
-                System.out.println(response);
                 if (response.type.startsWith("true")) {
                     JOptionPane.showMessageDialog(ClientGui.gui,
                             "Signed in: " + username,
@@ -53,6 +53,7 @@ public class LogInFrame extends JPanel {
                     JOptionPane.showMessageDialog(ClientGui.gui,
                             response.message[0],
                             "Sign-in failure", JOptionPane.WARNING_MESSAGE);
+
                 }
             }
         });

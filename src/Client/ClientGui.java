@@ -7,7 +7,7 @@ import java.awt.*;
 
 public class ClientGui extends JFrame {
 
-    public static ClientGui gui = null;
+    public ClientGui gui;
     public LogInFrame login = new LogInFrame();
     public LobbyFrame lobby = new LobbyFrame();
     public RegisterFrame register = new RegisterFrame();
@@ -34,14 +34,14 @@ public class ClientGui extends JFrame {
         add(questionMasterAnswerPanel);
         add(questionMasterQuestionPanel);
         add(questionPanel);
-        setContentPane(lobby);
+        setContentPane(login);
+        gui.setVisible(true);
     }
 
     public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
             try {
-                gui = new ClientGui();
-                gui.setVisible(true);
+                ClientGui gui = new ClientGui();
             } catch (Exception e) {
                 System.err.println(e);
             }

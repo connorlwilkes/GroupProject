@@ -7,24 +7,24 @@ import java.awt.*;
 
 public class ClientGui extends JFrame {
 
-    public static ClientGui gui = null;
-    public LogInFrame login = new LogInFrame();
-    public LobbyFrame lobby = new LobbyFrame();
-    public RegisterFrame register = new RegisterFrame();
-    public ChatDisplay chat = new ChatDisplay();
-    public Client client = new Client();
-    public InstructionPanel instructions = new InstructionPanel();
-    public QuestionMasterPanel qm = new QuestionMasterPanel();
-    public QuestionMasterAnswerPanel questionMasterAnswerPanel = new QuestionMasterAnswerPanel();
-    public QuestionMasterQuestionPanel questionMasterQuestionPanel = new QuestionMasterQuestionPanel();
-    public QuestionPanel questionPanel = new QuestionPanel();
+    public ClientGui gui;
+    public LogInFrame login = new LogInFrame(this);
+    public LobbyFrame lobby = new LobbyFrame(this);
+    public RegisterFrame register = new RegisterFrame(this);
+    public ChatDisplay chat = new ChatDisplay(this);
+    public Client client = new Client(this);
+    public InstructionPanel instructions = new InstructionPanel(this);
+    public QuestionMasterPanel qm = new QuestionMasterPanel(this);
+    public QuestionMasterAnswerPanel questionMasterAnswerPanel = new QuestionMasterAnswerPanel(this);
+    public QuestionMasterQuestionPanel questionMasterQuestionPanel = new QuestionMasterQuestionPanel(this);
+    public QuestionPanel questionPanel = new QuestionPanel(this);
     public User user;
 
     private ClientGui() {
         setTitle("Log In");
         setResizable(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setBounds(0, 0, 630, 460);
+        setBounds(0, 0, 450, 278);
         add(login);
         add(lobby);
         add(register);
@@ -35,13 +35,13 @@ public class ClientGui extends JFrame {
         add(questionMasterQuestionPanel);
         add(questionPanel);
         setContentPane(login);
+        gui.setVisible(true);
     }
 
     public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
             try {
-                gui = new ClientGui();
-                gui.setVisible(true);
+                ClientGui gui = new ClientGui();
             } catch (Exception e) {
                 System.err.println(e);
             }

@@ -31,7 +31,7 @@ public class Minigame {
      * Adds score to a player in the game
      *
      * @param scoreToAdd the score to add
-     * @param username     the username of the player to add the score to
+     * @param username   the username of the player to add the score to
      */
     public void addScore(int scoreToAdd, String username) {
         for (Player gamePlayer : players) {

@@ -1,7 +1,5 @@
 package Server;
 
-import Server.User;
-
 import java.sql.*;
 /**
  * DatabaseQueries class with methods used by both the LoginUser and RegisterUser classes

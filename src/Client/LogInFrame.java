@@ -8,8 +8,10 @@ public class LogInFrame extends JPanel {
 
     private JTextField enterUsername;
     private JTextField enterPassword;
+    private ClientGui gui;
 
-    public LogInFrame() {
+    public LogInFrame(ClientGui gui) {
+        this.gui = gui;
         setLayout(null);
         this.setBounds(0, 0, 450, 278);
 
@@ -36,23 +38,23 @@ public class LogInFrame extends JPanel {
             String username = enterUsername.getText();
             String password = enterPassword.getText();
             if (username.isEmpty() || password.isEmpty()) {
-                JOptionPane.showMessageDialog(ClientGui.gui,
+                JOptionPane.showMessageDialog(gui,
                         "Username or password field cannot be empty",
                         "Warning", JOptionPane.WARNING_MESSAGE);
             } else {
-                ClientGui.gui.client.connect();
-                ServerProtocol response = ClientGui.gui.client.serverRequest("login", username, password);
-                System.out.println(response);
+                gui.client.connect();
+                ServerProtocol response = gui.client.serverRequest("login", username, password);
                 if (response.type.startsWith("true")) {
-                    JOptionPane.showMessageDialog(ClientGui.gui,
+                    JOptionPane.showMessageDialog(gui,
                             "Signed in: " + username,
                             "Sign-in success", JOptionPane.INFORMATION_MESSAGE);
-                    ClientGui.gui.setContentPane(ClientGui.gui.lobby);
-                    ClientGui.gui.setTitle("Lobby Room");
+                    gui.setContentPane(gui.lobby);
+                    gui.setTitle("Lobby Room");
                 } else if (response.type.startsWith("false")) {
-                    JOptionPane.showMessageDialog(ClientGui.gui,
+                    JOptionPane.showMessageDialog(gui,
                             response.message[0],
                             "Sign-in failure", JOptionPane.WARNING_MESSAGE);
+
                 }
             }
         });
@@ -65,9 +67,9 @@ public class LogInFrame extends JPanel {
 
         JButton btnSignUp = new JButton("Sign Up");
         btnSignUp.addActionListener(e -> {
-            ClientGui.gui.setContentPane(
-                    ClientGui.gui.register);
-            ClientGui.gui.setTitle("Sign up");
+            gui.setContentPane(
+                    gui.register);
+            gui.setTitle("Sign up");
         });
         btnSignUp.setBounds(175, 230, 91, 29);
         add(btnSignUp);

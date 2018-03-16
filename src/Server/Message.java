@@ -5,6 +5,7 @@ import java.util.Calendar;
 
 /**
  * Message class for the game. Can be sent across a network as a serialized object
+ *
  * @author Florence
  * @version 9/3/2018
  */

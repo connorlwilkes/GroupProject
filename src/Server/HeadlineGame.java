@@ -75,6 +75,7 @@ public class HeadlineGame extends Minigame {
         player.setQuestionMaster(true);
         questionMaster = player;
     }
+
     /**
      * Sets the questions for the round
      *

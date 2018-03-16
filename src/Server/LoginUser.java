@@ -30,6 +30,7 @@ public class LoginUser {
         String username = user.getUsername();
         String password = user.getPassword();
 
+
         ServerProtocol a = new ServerProtocol("true", "Successfully logged in");
         System.out.println(username + password);
         ServerProtocol b = new ServerProtocol("false", "Invalid Input");
@@ -57,7 +58,6 @@ public class LoginUser {
                  * checks whether the passwords match
                  */
                 if (rs.getString(2).equals(password)) {
-
                     return a;
                 }
             }

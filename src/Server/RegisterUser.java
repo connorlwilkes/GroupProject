@@ -5,8 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import static Server.DatabaseQueries.connect;
 import static Server.DatabaseQueries.checkUsername;
+import static Server.DatabaseQueries.connect;
 
 /**
  * RegisterUser class for the registration process of the minigame

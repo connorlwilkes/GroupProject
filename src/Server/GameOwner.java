@@ -3,6 +3,7 @@ package Server;
 /**
  * GameOwner class for the game. This is a player that is in charge of a game lobby. They can remove players and moderate
  * the game.
+ *
  * @author Florence
  * @version 9/3/2018
  */

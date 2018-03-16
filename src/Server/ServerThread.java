@@ -48,6 +48,21 @@ public class ServerThread implements Runnable {
     }
 
     /**
+     * Helper function to close the server
+     *
+     * @param socket socket to close
+     */
+    public static void closeSilently(Socket socket) {
+        if (socket != null) {
+            try {
+                socket.close();
+            } catch (IOException ex) {
+                errorLogger.log(Level.SEVERE, "could not close connection", ex);
+            }
+        }
+    }
+
+    /**
      * Getter for the objectOutputStream
      *
      * @return outputStream of the thread
@@ -103,12 +118,10 @@ public class ServerThread implements Runnable {
     public void setUp() throws IOException {
         reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
         writer = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream()));
+        writer.flush();
         outputStream = new ObjectOutputStream(connection.getOutputStream());
-        inputStream = new ObjectInputStream(connection.getInputStream());
-        ServerProtocol welcome = new ServerProtocol("welcome", "welcome to the server");
-        System.out.println(welcome);
-        outputStream.writeObject(welcome);
         outputStream.flush();
+        inputStream = new ObjectInputStream(connection.getInputStream());
     }
 
     /**
@@ -120,14 +133,16 @@ public class ServerThread implements Runnable {
         while (true) {
             ServerProtocol request = (ServerProtocol) inputStream.readObject();
             String requestType = request.type;
+            System.out.println(request);
             if (requestType.startsWith("login")) {
                 loginUser(request.message[0], request.message[1]);
                 processRequests();
             } else if (requestType.startsWith("create-account")) {
                 setUpAccount(request.message[0], request.message[1]);
-                connection.close();
             } else if (connection.isClosed()) {
                 break;
+            } else if (request.type.startsWith("close")) {
+                connection.close();
             }
         }
     }
@@ -156,33 +171,31 @@ public class ServerThread implements Runnable {
      * @throws IOException
      */
     private synchronized void loginUser(String username, String password) throws IOException {
-        System.out.println("here");
-        //TODO: Code for loginuser from database - Sophia
-        currentUser = new User(username,password);
+        currentUser = new User(username, password);
         ServerProtocol response = LoginUser.CheckLogin(currentUser);
         System.out.println(response);
         outputStream.writeObject(response);
         outputStream.flush();
 
 
-       // if (!(server.checkUsername(username))) {
+        // if (!(server.checkUsername(username))) {
         //    ServerProtocol response = new ServerProtocol("false", "User does not exist");
         //    System.out.println(response);
         //    outputStream.writeObject(response);
         //    outputStream.flush();
-      //  } else if (!(server.checkPassword(username, password))) {
-       //     ServerProtocol response = new ServerProtocol("false", "Username or password does not match");
-         //   System.out.println(response);
-           // outputStream.writeObject(response);
+        //  } else if (!(server.checkPassword(username, password))) {
+        //     ServerProtocol response = new ServerProtocol("false", "Username or password does not match");
+        //   System.out.println(response);
+        // outputStream.writeObject(response);
         //    outputStream.flush();
         //} else {
-          //  currentUser = new User(username, password);
-          //  server.addActiveUser(currentUser);
-          //  ServerProtocol response = new ServerProtocol("true", "Success: User " + username + " logged in");
-          //  outputStream.reset();
-           // outputStream.writeObject(response);
-           // outputStream.flush();
-       // }
+        //  currentUser = new User(username, password);
+        //  server.addActiveUser(currentUser);
+        //  ServerProtocol response = new ServerProtocol("true", "Success: User " + username + " logged in");
+        //  outputStream.reset();
+        // outputStream.writeObject(response);
+        // outputStream.flush();
+        // }
     }
 
     /**
@@ -191,24 +204,25 @@ public class ServerThread implements Runnable {
      * @throws IOException
      */
     private synchronized void setUpAccount(String username, String password) throws IOException {
-        //TODO: add database add and check for adding a new user - Sophia
-        currentUser = new User(username,password);
-        ServerProtocol response = RegisterUser.checkUser(currentUser);
-        System.out.println(response);
+        currentUser = new User(username, password);
+//        ServerProtocol response = RegisterUser.checkUser(currentUser);
+//        System.out.println(response);
+        ServerProtocol response = new ServerProtocol("false", " test error");
+        server.addActiveUser(currentUser);
         outputStream.writeObject(response);
         outputStream.flush();
 
-     //   if (username.startsWith("fail") || password.startsWith("fail")) {
-     //       ServerProtocol response = new ServerProtocol("false", " test error");
-     //       outputStream.writeObject(response);
-     //       outputStream.flush();
-     //   } else {
-     //       ServerProtocol response = new ServerProtocol("true", "User: " + username + " created");
-     //       outputStream.writeObject(response);
-     //       outputStream.flush();
-     //   }
-     //   server.addActiveUser(new User(username, password));
-   }
+        //   if (username.startsWith("fail") || password.startsWith("fail")) {
+        //       ServerProtocol response = new ServerProtocol("false", " test error");
+        //       outputStream.writeObject(response);
+        //       outputStream.flush();
+        //   } else {
+        //       ServerProtocol response = new ServerProtocol("true", "User: " + username + " created");
+        //       outputStream.writeObject(response);
+        //       outputStream.flush();
+        //   }
+        //   server.addActiveUser(new User(username, password));
+    }
 
     /**
      * Joins a lobby
@@ -248,21 +262,6 @@ public class ServerThread implements Runnable {
         outputStream.writeObject(message);
         outputStream.flush();
         connection.close();
-    }
-
-    /**
-     * Helper function to close the server
-     *
-     * @param socket socket to close
-     */
-    public static void closeSilently(Socket socket) {
-        if (socket != null) {
-            try {
-                socket.close();
-            } catch (IOException ex) {
-                errorLogger.log(Level.SEVERE, "could not close connection", ex);
-            }
-        }
     }
 }
 

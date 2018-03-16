@@ -1,7 +1,5 @@
 package Server;
 
-import Client.Client;
-
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -70,7 +68,7 @@ public class ChatRoom implements Runnable {
             objectOutputStreams.add(player.getClient().getOutputStream());
         }
     }
-     
+
     public synchronized void addMessage(Message message) {
         messages.add(message);
     }

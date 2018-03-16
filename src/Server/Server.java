@@ -36,6 +36,16 @@ public class Server {
     private List<User> activeUsers;
 
     /**
+     * Main method to begin the server
+     *
+     * @param args
+     */
+    public static void main(String[] args) {
+        Server testServer = new Server();
+        testServer.start();
+    }
+
+    /**
      * Getter for the lobbies list
      *
      * @return lobbies
@@ -83,6 +93,7 @@ public class Server {
 
     /**
      * Adds a user to the active user list
+     *
      * @param user user to add
      */
     public void addActiveUser(User user) {
@@ -158,16 +169,6 @@ public class Server {
         for (int i = 1; i <= 3; i++) {
             lobbies.add(new GameLobby(i));
         }
-    }
-
-    /**
-     * Main method to begin the server
-     *
-     * @param args
-     */
-    public static void main(String[] args) {
-        Server testServer = new Server();
-        testServer.start();
     }
 
 }

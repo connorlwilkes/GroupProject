@@ -2,14 +2,16 @@ package Client;
 
 import javax.swing.*;
 import java.awt.*;
-import java.sql.SQLException;
 
 public class QuestionMasterPanel extends JPanel {
+
+    private ClientGui gui;
 
     /**
      * Create the panel.
      */
-    public QuestionMasterPanel() {
+    public QuestionMasterPanel(ClientGui gui) {
+        this.gui = gui;
         setBackground(new Color(220, 20, 60));
         setLayout(null);
 
@@ -26,16 +28,11 @@ public class QuestionMasterPanel extends JPanel {
         lblNewLabel_1.setBounds(410, 130, 85, 37);
         add(lblNewLabel_1);
 
-        JLabel lblRound = new JLabel("Round " + getRound());
+        JLabel lblRound = new JLabel("Round ");
         lblRound.setFont(new Font("Tahoma", Font.PLAIN, 15));
         lblRound.setBounds(20, 11, 78, 23);
         add(lblRound);
 
 
     }
-
-    public String getRound() {
-        return null;
-    }
-
 }

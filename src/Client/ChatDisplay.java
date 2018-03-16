@@ -1,57 +1,49 @@
 package Client;
 
 
-
 import javax.swing.*;
-
-import Server.ServerProtocol;
-
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.List;
 
 @SuppressWarnings("Duplicates")
 public class ChatDisplay extends JPanel {
 
-	private JTextField messageBox;
-	public static JTextArea chatBox;
-	
-	public ChatDisplay() {
-	
-	setLayout(null);
-    	
-		
-    chatBox = new JTextArea(10, 20);
-    chatBox.setEditable(false);
-    chatBox.setBounds(20, 20, 590, 370);
-    add(chatBox);
-    
-    messageBox = new JTextField();
-	messageBox.setEditable(true);
-	messageBox.setBounds(20, 400, 500, 30);
-	messageBox.setColumns(80);
-	add(messageBox);
-	
-	JButton btnSend = new JButton("Send");
-    btnSend.addActionListener(e -> {
-    		String chatMessage = messageBox.getText();
-    		if (chatMessage.length() != 0) {
-    			ClientGui.gui.client.sendMessage(chatMessage);
-    		}
-    		else {
-                JOptionPane.showMessageDialog(ClientGui.gui,
+    public JTextArea chatBox;
+    private JTextField messageBox;
+    private ClientGui gui;
+
+    public ChatDisplay(ClientGui gui) {
+        this.gui = gui;
+        setLayout(null);
+        setBounds(0, 0, 630, 460);
+
+        chatBox = new JTextArea(10, 20);
+        chatBox.setEditable(false);
+        chatBox.setBounds(20, 20, 590, 370);
+        add(chatBox);
+
+        messageBox = new JTextField();
+        messageBox.setEditable(true);
+        messageBox.setBounds(20, 400, 500, 30);
+        messageBox.setColumns(80);
+        add(messageBox);
+
+        JButton btnSend = new JButton("Send");
+        btnSend.addActionListener(e -> {
+            String chatMessage = messageBox.getText();
+            if (chatMessage.length() != 0) {
+                gui.client.sendMessage(chatMessage);
+            } else {
+                JOptionPane.showMessageDialog(gui,
                         "Enter a message!",
                         "Sign-in failure", JOptionPane.WARNING_MESSAGE);
             }
-     
-    });
-    btnSend.setBounds(530, 400, 90, 30);
-    add(btnSend);
-	
-		
-}
-	
+
+        });
+        btnSend.setBounds(530, 400, 90, 30);
+        add(btnSend);
+
+
+    }
+
     /**
      * chatDisplay is the game chat display that appears once the user has chosen a lobby in lobbyDisplay.
      * <p>

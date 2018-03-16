@@ -1,9 +1,12 @@
 package Client;
+
 import Server.Message;
 import Server.ServerProtocol;
 import Server.User;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.ConnectException;
 import java.net.Socket;
 
@@ -15,7 +18,11 @@ public class Client {
     private ObjectInputStream inputStream;
     private ObjectOutputStream outputStream;
     private User user;
+    private ClientGui gui;
 
+    public Client(ClientGui gui) {
+        this.gui = gui;
+    }
 
     public void connect() {
         try {
@@ -23,7 +30,7 @@ public class Client {
             outputStream = new ObjectOutputStream(connection.getOutputStream());
             inputStream = new ObjectInputStream(connection.getInputStream());
         } catch (ConnectException ex) {
-        System.out.println("Connection failure");
+            System.out.println("Connection failure");
         } catch (IOException e) {
             System.err.println(e);
         }
@@ -45,7 +52,7 @@ public class Client {
             ServerProtocol message = new ServerProtocol(args);
             outputStream.writeObject(message);
             outputStream.flush();
-            if (args[0].equals("login")){
+            if (args[0].equals("login")) {
                 user = new User(args[1], args[2]);
             }
             System.out.println((ServerProtocol) inputStream.readObject());
@@ -74,18 +81,13 @@ public class Client {
             Object o = inputStream.readObject();
             if (o instanceof Message) {
                 //TODO: Get message, add to list and display?
-            	Message newMessage = (Message) o;
-            	String oldMessage = ChatDisplay.chatBox.getText();
-            	ChatDisplay.chatBox.setText(oldMessage + "\n" + newMessage.toString());
+                Message newMessage = (Message) o;
+                String oldMessage = gui.chat.chatBox.getText();
+                gui.chat.chatBox.setText(oldMessage + "\n" + newMessage.toString());
             } else {
                 //TODO: Game logic here?
-            	
+
             }
         }
-    }
-
-    public static void main(String[] args) {
-        Client test = new Client();
-        test.connect();
     }
 }

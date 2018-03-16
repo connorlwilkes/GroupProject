@@ -1,10 +1,8 @@
 package Server;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 /**
@@ -16,12 +14,12 @@ import java.util.stream.Collectors;
  */
 public class GameLobby implements Runnable {
 
+    private final int maxPlayers = 4;
     private String lobbyName;
     private int id;
     private int totalScore;
     private int gameNumber;
     private List<Player> players;
-    private final int maxPlayers = 4;
     private List<Minigame> games;
     private ChatRoom chatRoom;
     private boolean isFull;
@@ -126,7 +124,7 @@ public class GameLobby implements Runnable {
     public synchronized String[] getScores() {
         String[] toReturn = new String[players.size()];
         StringBuilder string = new StringBuilder();
-        for (int i =0; i < players.size(); i++) {
+        for (int i = 0; i < players.size(); i++) {
             string.append(players.get(i).getUser().getUsername() + " " + players.get(i).getScore());
             toReturn[i] = string.toString();
             string.setLength(0);

@@ -6,12 +6,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class QuestionMasterAnswerPanel extends JPanel {
+
     boolean voteCast = false;
+    private ClientGui gui;
 
     /**
      * Create the panel.
      */
-    public QuestionMasterAnswerPanel() {
+    public QuestionMasterAnswerPanel(ClientGui gui) {
+        this.gui = gui;
         setBackground(new Color(85, 107, 47));
         setLayout(null);
 

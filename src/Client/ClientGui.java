@@ -8,23 +8,23 @@ import java.awt.*;
 public class ClientGui extends JFrame {
 
     public ClientGui gui;
-    public LogInFrame login = new LogInFrame();
-    public LobbyFrame lobby = new LobbyFrame();
-    public RegisterFrame register = new RegisterFrame();
-    public ChatDisplay chat = new ChatDisplay();
-    public Client client = new Client();
-    public InstructionPanel instructions = new InstructionPanel();
-    public QuestionMasterPanel qm = new QuestionMasterPanel();
-    public QuestionMasterAnswerPanel questionMasterAnswerPanel = new QuestionMasterAnswerPanel();
-    public QuestionMasterQuestionPanel questionMasterQuestionPanel = new QuestionMasterQuestionPanel();
-    public QuestionPanel questionPanel = new QuestionPanel();
+    public LogInFrame login = new LogInFrame(this);
+    public LobbyFrame lobby = new LobbyFrame(this);
+    public RegisterFrame register = new RegisterFrame(this);
+    public ChatDisplay chat = new ChatDisplay(this);
+    public Client client = new Client(this);
+    public InstructionPanel instructions = new InstructionPanel(this);
+    public QuestionMasterPanel qm = new QuestionMasterPanel(this);
+    public QuestionMasterAnswerPanel questionMasterAnswerPanel = new QuestionMasterAnswerPanel(this);
+    public QuestionMasterQuestionPanel questionMasterQuestionPanel = new QuestionMasterQuestionPanel(this);
+    public QuestionPanel questionPanel = new QuestionPanel(this);
     public User user;
 
     private ClientGui() {
         setTitle("Log In");
         setResizable(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setBounds(0, 0, 630, 460);
+        setBounds(0, 0, 450, 278);
         add(login);
         add(lobby);
         add(register);

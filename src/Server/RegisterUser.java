@@ -5,8 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import static Server.DatabaseQueries.connect;
 import static Server.DatabaseQueries.checkUsername;
+import static Server.DatabaseQueries.connect;
 
 public class RegisterUser {
 
@@ -17,10 +17,10 @@ public class RegisterUser {
         String username = user.getUsername();
         String password = user.getPassword();
 
-        ServerProtocol a= new ServerProtocol("true","Successfully registered user");
-        ServerProtocol b= new ServerProtocol("false","Invalid Input");
-        ServerProtocol c= new ServerProtocol("false","User already exists");
-        ServerProtocol d= new ServerProtocol("false","Failure");
+        ServerProtocol a = new ServerProtocol("true", "Successfully registered user");
+        ServerProtocol b = new ServerProtocol("false", "Invalid Input");
+        ServerProtocol c = new ServerProtocol("false", "User already exists");
+        ServerProtocol d = new ServerProtocol("false", "Failure");
 
         if (username.equals("") || password.equals("")) {
 
@@ -28,7 +28,7 @@ public class RegisterUser {
             //JOptionPane.showMessageDialog(null,"invalid name or password","Error",JOptionPane.ERROR_MESSAGE);
             //this creates a pop up if both the password or usernames' are left empty, prevents the database from storing invalid
             //entries by a user and allows the user to rectify their mistake
-        } else if (checkUsername(user) == true) {
+        } else if (checkUsername(user) == false) {
             return c;
         }
 
@@ -40,13 +40,14 @@ public class RegisterUser {
 
             pmst.setString(1, username);
             pmst.setString(2, password);
-
+            pmst.execute();
             return a;
 
         } catch (SQLException ex) {
             System.err.println(ex);
+            return d;
         }
-        return d;
+
     }
 
 }

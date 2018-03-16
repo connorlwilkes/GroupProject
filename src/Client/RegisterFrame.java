@@ -9,8 +9,10 @@ public class RegisterFrame extends JPanel {
     private JTextField enterUser;
     private JTextField enterPass;
     private JTextField reEnterPass;
+    private ClientGui gui;
 
-    public RegisterFrame() {
+    public RegisterFrame(ClientGui gui) {
+        this.gui = gui;
         setLayout(null);
         this.setBounds(0, 0, 450, 278);
 
@@ -46,25 +48,25 @@ public class RegisterFrame extends JPanel {
             String username = enterUser.getText();
             String password = enterPass.getText();
             if ("".equals(username) || "".equals(password)) {
-                JOptionPane.showMessageDialog(ClientGui.gui,
+                JOptionPane.showMessageDialog(gui,
                         "Username or password field cannot be empty",
                         "Warning", JOptionPane.WARNING_MESSAGE);
             } else if (!(password.equals(reEnterPass.getText()))) {
-                JOptionPane.showMessageDialog(ClientGui.gui,
+                JOptionPane.showMessageDialog(gui,
                         "Passwords do not match",
                         "Warning", JOptionPane.WARNING_MESSAGE);
             } else {
-                ClientGui.gui.client.connect();
-                ClientGui.gui.client.serverRequest("create-account", username, password);
-                ServerProtocol response = ClientGui.gui.client.serverRequest("create-account", username, password);
+                gui.client.connect();
+                gui.client.serverRequest("create-account", username, password);
+                ServerProtocol response = gui.client.serverRequest("create-account", username, password);
                 if (response.type.startsWith("true")) {
-                    JOptionPane.showMessageDialog(ClientGui.gui,
+                    JOptionPane.showMessageDialog(gui,
                             "Created account with username: " + username,
                             "Account Created", JOptionPane.INFORMATION_MESSAGE);
-                    ClientGui.gui.setContentPane(ClientGui.gui.login);
-                    ClientGui.gui.setTitle("Log in");
+                    gui.setContentPane(gui.login);
+                    gui.setTitle("Log in");
                 } else if (response.type.startsWith("false")) {
-                    JOptionPane.showMessageDialog(ClientGui.gui,
+                    JOptionPane.showMessageDialog(gui,
                             response.message[0],
                             "Account Creation Failure", JOptionPane.WARNING_MESSAGE);
                 }
@@ -75,9 +77,9 @@ public class RegisterFrame extends JPanel {
 
         JButton back = new JButton("Back");
         back.addActionListener(e -> {
-            ClientGui.gui.setContentPane(
-                    ClientGui.gui.login);
-            ClientGui.gui.setTitle("Log In");
+            gui.setContentPane(
+                    gui.login);
+            gui.setTitle("Log In");
         });
         back.setBounds(125, 240, 91, 29);
         add(back);

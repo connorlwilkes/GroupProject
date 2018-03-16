@@ -27,6 +27,12 @@ public class Message implements Serializable {
         this.sender = sender.getUsername();
     }
 
+    public Message(String message, String sender) {
+        this.message = message;
+        setUpTime();
+        this.sender = sender;
+    }
+
     /**
      * Sets up the time the message was sent
      */

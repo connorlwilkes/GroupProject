@@ -16,7 +16,7 @@ public class Client {
     final private String host = "localhost";
     private Socket connection;
     private ObjectInputStream inputStream;
-    private ObjectOutputStream outputStream;
+    public ObjectOutputStream outputStream;
     private User user;
     private ClientGui gui;
 

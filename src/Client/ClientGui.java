@@ -7,35 +7,48 @@ import java.awt.*;
 
 public class ClientGui extends JFrame {
 
-    public ClientGui gui;
-    public LogInFrame login = new LogInFrame(this);
-    public LobbyFrame lobby = new LobbyFrame(this);
-    public RegisterFrame register = new RegisterFrame(this);
-    public ChatDisplay chat = new ChatDisplay(this);
-    public Client client = new Client(this);
-    public InstructionPanel instructions = new InstructionPanel(this);
-    public QuestionMasterPanel qm = new QuestionMasterPanel(this);
-    public QuestionMasterAnswerPanel questionMasterAnswerPanel = new QuestionMasterAnswerPanel(this);
-    public QuestionMasterQuestionPanel questionMasterQuestionPanel = new QuestionMasterQuestionPanel(this);
-    public QuestionPanel questionPanel = new QuestionPanel(this);
+    public LogInFrame login;
+    public LobbyFrame lobby;
+    public RegisterFrame register;
+    public ChatDisplay chat;
+    public Client client;
+    public InstructionPanel instructions;
+    public QuestionMasterPanel qm;
+    public QuestionMasterAnswerPanel questionMasterAnswerPanel;
+    public QuestionMasterQuestionPanel questionMasterQuestionPanel;
+    public QuestionPanel questionPanel;
     public User user;
 
     private ClientGui() {
         setTitle("Log In");
+        setUp();
         setResizable(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setBounds(0, 0, 450, 278);
         add(login);
-        add(lobby);
-        add(register);
-        add(chat);
-        add(instructions);
-        add(qm);
-        add(questionMasterAnswerPanel);
-        add(questionMasterQuestionPanel);
-        add(questionPanel);
+//        add(lobby);
+//        add(register);
+//        add(chat);
+//        add(instructions);
+//        add(qm);
+//        add(questionMasterAnswerPanel);
+//        add(questionMasterQuestionPanel);
+//        add(questionPanel);
         setContentPane(login);
-        gui.setVisible(true);
+        setVisible(true);
+    }
+
+    public void setUp() {
+        login = new LogInFrame();
+//        lobby = new LobbyFrame(this);
+//        register = new RegisterFrame(this);
+//        chat = new ChatDisplay(this);
+//        client = new Client(this);
+//        instructions = new InstructionPanel(this);
+//        qm = new QuestionMasterPanel(this);
+//        questionMasterAnswerPanel = new QuestionMasterAnswerPanel(this);
+//        questionMasterQuestionPanel = new QuestionMasterQuestionPanel(this);
+//        questionPanel = new QuestionPanel(this);
     }
 
     public static void main(String[] args) {

@@ -29,11 +29,11 @@ public class DatabaseQueries {
         String query = "SELECT * FROM userdb WHERE username = ?";
 
         try (Connection connection = connect();
-            PreparedStatement pmst = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)){
+            PreparedStatement pmst = connection.prepareStatement(query)){
 
             pmst.setString(1, username);
 
-            ResultSet rs = pmst.getGeneratedKeys();
+            ResultSet rs = pmst.executeQuery();
 
 
                 if (!rs.next()) {
@@ -42,8 +42,9 @@ public class DatabaseQueries {
                 else {
                     x = false;//returns false if the user exists already
                 }
-
-            } catch (SQLException ex) {
+            rs.close();                           // Close ResultSet
+            pmst.close();
+        } catch (SQLException ex) {
                 System.err.println(ex);
             }
 

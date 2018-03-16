@@ -39,7 +39,7 @@ public class ClientGui extends JFrame {
 
     public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
-            try {   
+            try {
                 gui = new ClientGui();
                 gui.setVisible(true);
             } catch (Exception e) {

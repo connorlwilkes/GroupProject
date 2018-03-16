@@ -7,7 +7,7 @@ public class RegisterUserTest {
 
     @Test
             public void test1(){
-        User a = new User ("Jerry","chess");
+        User a = new User ("Connor","smells");
         ServerProtocol b = new ServerProtocol("true","Successfully registered user");
         String expected = b.toString() ;
         String actual = RegisterUser.checkUser(a).toString();

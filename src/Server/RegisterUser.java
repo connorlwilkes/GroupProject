@@ -28,7 +28,7 @@ public class RegisterUser {
             //JOptionPane.showMessageDialog(null,"invalid name or password","Error",JOptionPane.ERROR_MESSAGE);
             //this creates a pop up if both the password or usernames' are left empty, prevents the database from storing invalid
             //entries by a user and allows the user to rectify their mistake
-        } else if (checkUsername(user) == true) {
+        } else if (checkUsername(user) == false) {
             return c;
         }
 

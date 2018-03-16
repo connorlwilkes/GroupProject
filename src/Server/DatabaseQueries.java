@@ -36,7 +36,10 @@ public class DatabaseQueries {
 
         String username = user.getUsername();
         boolean x = false;
-
+        /**
+         * this string sets up the prepared statement which queries the database to return records
+         * where the username equals the one specified
+         */
         String query = "SELECT * FROM userdb WHERE username = ?";
 
         try (Connection connection = connect();
@@ -46,13 +49,15 @@ public class DatabaseQueries {
 
             ResultSet rs = pmst.executeQuery();
 
-
+            /**
+             * if the results set is empty then the user doesn't exist therefore true is returned
+             */
             if (!rs.next()) {
                 x = true;//returns true if the user doesn't exist
             } else {
-                x = false;//returns false if the user exists already
-            }
-            rs.close();                           // Close ResultSet
+            x = false;//returns false if the user exists already
+        }
+            rs.close();
             pmst.close();
         } catch (SQLException ex) {
             System.err.println(ex);

@@ -10,9 +10,9 @@ import java.io.IOException;
 public class ChatDisplay extends JPanel {
 
     public JTextArea chatBox;
+    public Runnable chatThread;
     private JTextField messageBox;
     private ClientGui gui;
-    public Runnable chatThread;
     private boolean isRunning;
 
     public ChatDisplay(ClientGui guiConstructor) {

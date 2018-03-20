@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 import static Server.DatabaseQueries.checkUsername;
 import static Server.DatabaseQueries.connect;
-import static java.lang.System.*;
+import static java.lang.System.err;
 
 /**
  * LoginUser class for the Login process of the minigame
@@ -40,7 +40,7 @@ public class LoginUser {
          * this string is used to construct the Prepared Statement which is used to check whether
          * the login credentials are valid and if the user exists
          */
-        String query = "SELECT * FROM userdb WHERE username = ? and password= ? ";
+        String query = "SELECT * FROM userdb WHERE username = ? AND password= ? ";
 
         try (Connection connection = connect();
              PreparedStatement pmst = connection.prepareStatement(query)) {

@@ -14,9 +14,9 @@ public class Client {
 
     final private int port = 5000;
     final private String host = "localhost";
-    private Socket connection;
     public ObjectInputStream inputStream;
     public ObjectOutputStream outputStream;
+    private Socket connection;
     private User user;
     private ClientGui gui;
 

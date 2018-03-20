@@ -127,7 +127,6 @@ public class ServerThread implements Runnable {
         while (true) {
             ServerProtocol request = (ServerProtocol) inputStream.readObject();
             String requestType = request.type;
-            System.out.println(request);
             if (requestType.startsWith("login")) {
                 loginUser(request.message[0], request.message[1]);
                 processRequests();
@@ -169,26 +168,6 @@ public class ServerThread implements Runnable {
         ServerProtocol response = LoginUser.CheckLogin(currentUser);
         outputStream.writeObject(response);
         outputStream.flush();
-
-
-        // if (!(server.checkUsername(username))) {
-        //    ServerProtocol response = new ServerProtocol("false", "User does not exist");
-        //    System.out.println(response);
-        //    outputStream.writeObject(response);
-        //    outputStream.flush();
-        //  } else if (!(server.checkPassword(username, password))) {
-        //     ServerProtocol response = new ServerProtocol("false", "Username or password does not match");
-        //   System.out.println(response);
-        // outputStream.writeObject(response);
-        //    outputStream.flush();
-        //} else {
-        //  currentUser = new User(username, password);
-        //  server.addActiveUser(currentUser);
-        //  ServerProtocol response = new ServerProtocol("true", "Success: User " + username + " logged in");
-        //  outputStream.reset();
-        // outputStream.writeObject(response);
-        // outputStream.flush();
-        // }
     }
 
     /**
@@ -199,22 +178,9 @@ public class ServerThread implements Runnable {
     private synchronized void setUpAccount(String username, String password) throws IOException {
         currentUser = new User(username, password);
         ServerProtocol response = RegisterUser.checkUser(currentUser);
-        System.out.println(response);
-        // ServerProtocol response = new ServerProtocol("false", " test error");
         server.addActiveUser(currentUser);
         outputStream.writeObject(response);
         outputStream.flush();
-
-        //   if (username.startsWith("fail") || password.startsWith("fail")) {
-        //       ServerProtocol response = new ServerProtocol("false", " test error");
-        //       outputStream.writeObject(response);
-        //       outputStream.flush();
-        //   } else {
-        //       ServerProtocol response = new ServerProtocol("true", "User: " + username + " created");
-        //       outputStream.writeObject(response);
-        //       outputStream.flush();
-        //   }
-        //   server.addActiveUser(new User(username, password));
     }
 
     /**
@@ -237,11 +203,8 @@ public class ServerThread implements Runnable {
         } else {
             this.player = new Player(this, lobby, currentUser);
             lobby.addPlayer(this.player);
-            System.out.println("here");
             ServerProtocol message = new ServerProtocol("true", "Successfully joined lobby");
-            System.out.println("here");
             outputStream.writeObject(message);
-            System.out.println("here");
             outputStream.flush();
             player.processGameRequests();
         }

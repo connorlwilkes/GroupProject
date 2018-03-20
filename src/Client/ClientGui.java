@@ -38,6 +38,16 @@ public class ClientGui extends JFrame {
         setVisible(true);
     }
 
+    public static void main(String[] args) {
+        EventQueue.invokeLater(() -> {
+            try {
+                ClientGui gui = new ClientGui();
+            } catch (Exception e) {
+                System.err.println(e);
+            }
+        });
+    }
+
     public void setUp() {
         login = new LogInFrame(this);
         lobby = new LobbyFrame(this);
@@ -49,15 +59,5 @@ public class ClientGui extends JFrame {
         questionMasterAnswerPanel = new QuestionMasterAnswerPanel(this);
         questionMasterQuestionPanel = new QuestionMasterQuestionPanel(this);
         questionPanel = new QuestionPanel(this);
-    }
-
-    public static void main(String[] args) {
-        EventQueue.invokeLater(() -> {
-            try {
-                ClientGui gui = new ClientGui();
-            } catch (Exception e) {
-                System.err.println(e);
-            }
-        });
     }
 }

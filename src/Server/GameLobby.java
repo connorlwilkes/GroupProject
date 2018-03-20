@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
  */
 public class GameLobby implements Runnable {
 
-    private final int maxPlayers = 4;
+    private final int maxPlayers = 3;
     private String lobbyName;
     private int id;
     private int totalScore;
@@ -154,12 +154,11 @@ public class GameLobby implements Runnable {
         isRunning = true;
         HeadlineGame game = new HeadlineGame(players);
         for (Player player : players) {
-            ServerProtocol start = new ServerProtocol("start", "game is starting");
             try {
+                ServerProtocol start = new ServerProtocol("start", "game is starting");
                 player.getOut().writeObject(start);
                 player.getOut().flush();
-                player.processGameRequests();
-            } catch (IOException | ClassNotFoundException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }

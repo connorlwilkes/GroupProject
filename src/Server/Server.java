@@ -9,8 +9,10 @@
 package Server;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -29,7 +31,8 @@ public class Server {
 
     private final static Logger serverErrorLogger = Logger.getLogger("ServerErrors");
     private final static Logger serverConnectionLogger = Logger.getLogger("ServerConnections");
-    private final int port = 5000;
+    private int port;
+    private InetAddress host;
     private ExecutorService threadPool;
     private List<GameLobby> lobbies;
     private List<User> userDatabase;
@@ -41,8 +44,35 @@ public class Server {
      * @param args
      */
     public static void main(String[] args) {
-        Server testServer = new Server();
+        Server testServer = new Server(args[0]);
         testServer.start();
+    }
+
+    /**
+     * Primary constructor for the Server class taking just portNumber and automatically binds to localhost
+     * @param portNumber port number
+     */
+    public Server(String portNumber) {
+        port = Integer.valueOf(portNumber);
+        try {
+            host = InetAddress.getLocalHost();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Secondary constructor for the Server class taking portNumber and address
+     * @param portNumber port number
+     * @param address address of the server
+     */
+    public Server(String portNumber, String address) {
+        try {
+            port = Integer.valueOf(portNumber);
+            host = InetAddress.getByName(address);
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -70,25 +100,6 @@ public class Server {
      */
     public void addUser(User user) {
         userDatabase.add(user);
-    }
-
-    // Testing purposes - will perform same function as database call
-    public boolean checkUsername(String toCheck) {
-        return userDatabase.stream()
-                .anyMatch(user -> (user.getUsername().equals(toCheck)));
-    }
-
-    // Testing purposes - will perform same function as database call
-    public boolean checkPassword(String username, String password) {
-        return userDatabase.stream()
-                .anyMatch(user -> (user.getUsername().equals(username) && user.verifyPassword(password)));
-    }
-
-    // Testing purposes - will perform same function as database call
-    public User findUser(String username) {
-        return userDatabase.stream()
-                .filter(user -> (user.getUsername().equals(username)))
-                .findFirst().orElse(null);
     }
 
     /**
@@ -122,10 +133,9 @@ public class Server {
         lobbies = new ArrayList<>();
         userDatabase = new ArrayList<>();
         activeUsers = new ArrayList<>();
-        addUser(new User("connor", "password"));    // for testing, remove!
         threadPool = Executors.newFixedThreadPool(50);
         setUpGameLobbies();
-        try (ServerSocket server = new ServerSocket(port)) {
+        try (ServerSocket server = new ServerSocket(port, 500, host)) {
             while (true) {
                 try {
                     serverConnectionLogger.info("Starting server on port " + port);

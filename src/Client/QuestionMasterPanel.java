@@ -5,6 +5,7 @@ import java.awt.*;
 
 public class QuestionMasterPanel extends JPanel {
 
+    public JLabel lblNewLabel_1;
     private ClientGui gui;
 
     /**
@@ -23,7 +24,7 @@ public class QuestionMasterPanel extends JPanel {
         lblNewLabel.setBounds(270, 68, 351, 51);
         add(lblNewLabel);
 
-        JLabel lblNewLabel_1 = new JLabel("player 1");   //make a call to get player username who is question master.
+        lblNewLabel_1 = new JLabel("player 1");   //make a call to get player username who is question master.
         lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
         lblNewLabel_1.setBounds(410, 130, 85, 37);
         add(lblNewLabel_1);

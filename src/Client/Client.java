@@ -11,6 +11,12 @@ import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.Socket;
 
+/**
+ * Client class for the GUI, listens to input from the server and processes requests
+ *
+ * @author Florence
+ * @version 13/3/2018
+ */
 public class Client {
 
     final private int port = 5000;

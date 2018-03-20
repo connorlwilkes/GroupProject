@@ -185,14 +185,12 @@ public class ServerThread implements Runnable {
         ServerProtocol response = null;
         try {
             response = RegisterUser.checkUser(currentUser);
-        } catch (InvalidKeySpecException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
+        } catch (InvalidKeySpecException | NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
-        System.out.println(response);
-        // ServerProtocol response = new ServerProtocol("false", " test error");
-        server.addActiveUser(currentUser);
+        if (response.type.equals("true")) {
+            server.addActiveUser(this);
+        }
         outputStream.writeObject(response);
         outputStream.flush();
     }

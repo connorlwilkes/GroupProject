@@ -9,8 +9,8 @@ import java.sql.SQLException;
 
 import static Server.DatabaseQueries.checkUsername;
 import static Server.DatabaseQueries.connect;
-import static java.lang.System.*;
 import static Server.PasswordSecure.passwordCheck;
+import static java.lang.System.err;
 
 /**
  * LoginUser class for the Login process of the minigame
@@ -91,13 +91,10 @@ public class LoginUser {
 
         } catch (SQLException ex) {
             err.println(ex);
-
-            /**
-             * if all else fails then the return is failure
-             */
-
         }
-
+        /**
+         * if all else fails then the return is failure
+         */
         return d;
     }
 }

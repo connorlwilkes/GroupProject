@@ -32,7 +32,6 @@ public class LoginUser {
 
 
         ServerProtocol a = new ServerProtocol("true", "Successfully logged in");
-        System.out.println(username + password);
         ServerProtocol b = new ServerProtocol("false", "Invalid Input");
         ServerProtocol c = new ServerProtocol("false", "User does not exist");
         ServerProtocol d = new ServerProtocol("false", "Failure");

@@ -19,11 +19,10 @@ public class ChatDisplay extends JFrame {
     private Client client;
     public Runnable chatThread;
     private boolean isRunning;
-    private JFrame newFrame;
+    public JFrame newFrame;
     private JButton btnSend;
 
-    
-    
+
     public ChatDisplay(Client clientConstructor) {
     		this.client = clientConstructor;
     		setLayout(null);
@@ -37,8 +36,8 @@ public class ChatDisplay extends JFrame {
         JPanel northPanel = new JPanel();
         northPanel.setLayout(new GridBagLayout());
         newFrame.add(BorderLayout.NORTH, northPanel);
-    		
-    		JPanel southPanel = new JPanel();      
+
+        JPanel southPanel = new JPanel();
         southPanel.setLayout(new GridBagLayout());
         southPanel.setBackground(Color.BLACK);
         newFrame.add(BorderLayout.SOUTH, southPanel);                 
@@ -54,20 +53,21 @@ public class ChatDisplay extends JFrame {
         chatBox.setLineWrap(true);
         chatBox.setEditable(false); 
         northPanel.add(chatBox);
-        
+
         // message box
         messageBox = new JTextField();
         messageBox.setEditable(true);
         messageBox.setColumns(80);
         southPanel.add(messageBox, left);
-        
+
         // send button
         btnSend = new JButton("Send");
         btnSend.addActionListener(e -> {
             String chatMessage = messageBox.getText();
             if (chatMessage.length() != 0) {
                 client.sendMessage(chatMessage);
-                messageBox = null;
+                messageBox.setText("");
+//                messageBox = null;
             }
         });
         southPanel.add(btnSend, right);
@@ -75,24 +75,22 @@ public class ChatDisplay extends JFrame {
         chatThread = () -> {
             while (isRunning) {
                 try {
-                    System.out.println("running");
                     Object o = client.inputStream.readObject();
                     if (o instanceof Message) {
                         Message message = (Message) o;
                         chatBox.append(message.toString() + "\n");
+//                        messageBox.setText("");
                     }
                 } catch (IOException | ClassNotFoundException e) {
                     e.printStackTrace();
                 }
             }
         };
-        
-                                       
-        
+        newFrame.pack();
     }
 
     public void setRunning(boolean running) {
         isRunning = running;
     }
-        
+
 }

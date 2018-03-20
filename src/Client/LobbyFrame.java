@@ -19,7 +19,8 @@ public class LobbyFrame extends JPanel {
                 gui.setTitle("Lobby 1");
                 gui.chat.setRunning(true);
                 new Thread(gui.chat.chatThread).start();
-                gui.setContentPane(gui.chat);
+                gui.chat.setVisible(true);
+                gui.chat.newFrame.setVisible(true);
             } else if (response.type.equals("false")) {
                 JOptionPane.showMessageDialog(gui,
                         response.message[0],
@@ -36,7 +37,7 @@ public class LobbyFrame extends JPanel {
                 gui.setTitle("Lobby 2");
                 gui.chat.setRunning(true);
                 new Thread(gui.chat.chatThread).start();
-                gui.setContentPane(gui.chat);
+                gui.chat.newFrame.setVisible(true);
             } else if (response.type.equals("false")) {
                 JOptionPane.showMessageDialog(gui,
                         response.message[0],
@@ -57,7 +58,7 @@ public class LobbyFrame extends JPanel {
                 gui.setTitle("Lobby 3");
                 gui.chat.setRunning(true);
                 new Thread(gui.chat.chatThread).start();
-                gui.setContentPane(gui.chat);
+                gui.chat.newFrame.setVisible(true);
             } else if (response.type.equals("false")) {
                 JOptionPane.showMessageDialog(gui,
                         response.message[0],

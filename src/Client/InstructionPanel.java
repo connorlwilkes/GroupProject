@@ -2,11 +2,11 @@ package Client;
 
 import javax.swing.*;
 import java.awt.*;
-import java.sql.SQLException;
 
 public class InstructionPanel extends JPanel {
 
     private ClientGui gui;
+
     /**
      * Create the panel.
      */

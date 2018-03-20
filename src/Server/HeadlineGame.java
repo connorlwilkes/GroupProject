@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
@@ -21,12 +22,14 @@ public class HeadlineGame extends Minigame {
 
     private Player questionMaster;
     private List<String> questions;
+    private HashMap<Player, String> answerMap;
     private List<String> answers;
 
     public HeadlineGame(List<Player> players) {
         super(players);
         chooseQuestionMaster();
         this.questions = questions;
+        answerMap = new HashMap<>();
         answers = new ArrayList<>();
         questions = new ArrayList<>();
         try {
@@ -34,10 +37,9 @@ public class HeadlineGame extends Minigame {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
-
-    public List<String> getAnswers() {
-        return answers;
+        for (Player player : players) {
+            answerMap.put(player, null);
+        }
     }
 
     public Player getQuestionMaster() {
@@ -48,8 +50,23 @@ public class HeadlineGame extends Minigame {
         return questions.get(getRoundNumber() - 1);
     }
 
-    public synchronized void addAnswer(String answer) {
+    public HashMap<Player, String> getAnswerMap() {
+        return answerMap;
+    }
+
+    /**
+     * Adds an answer to the answerMap hashmap and list of answerss
+     *
+     * @param player key
+     * @param answer value
+     */
+    public synchronized void addAnswer(Player player, String answer) {
+        answerMap.put(player, answer);
         answers.add(answer);
+    }
+
+    public synchronized List<String> getAnswers() {
+        return answers;
     }
 
     /**

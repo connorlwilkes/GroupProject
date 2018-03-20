@@ -8,30 +8,6 @@ public class LobbyFrame extends JPanel {
 
     private ClientGui gui;
 
-    /**
-     * lobbyDisplay is the display where the lobby to play in is chosen. It is the display that appears
-     * once the user has logged-in successfully.
-     * <p>
-     * JFrame_______________________________
-     * | ___________________________________|
-     * | |								   ||
-     * | |								   ||
-     * | |								   ||           _______________
-     * | |			  			           ||           |   Lobby 1   |
-     * | |								   ||           |_____________|
-     * | |								   ||
-     * | |								   ||           _______________
-     * | |       JPanel = lobbyPanel       || ===>      |   Lobby 2   |
-     * | |                                 ||           |_____________|
-     * | |								   ||
-     * | |								   ||           _______________
-     * | |			           			   ||           |   Lobby 3   |
-     * | |								   ||           |_____________|
-     * | |								   ||
-     * | |								   ||
-     * | ___________________________________|
-     * ______________________________________
-     */
     public LobbyFrame(ClientGui guiConstructor) {
         this.gui = guiConstructor;
         setLayout(null);

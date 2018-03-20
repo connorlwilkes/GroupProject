@@ -20,7 +20,7 @@ public class LobbyFrame extends JPanel {
                 gui.chat.setRunning(true);
                 new Thread(gui.chat.chatThread).start();
                 gui.chat.setVisible(true);
-                gui.chat.newFrame.setVisible(true);
+                gui.chat.displayFrame.setVisible(true);
             } else if (response.type.equals("false")) {
                 JOptionPane.showMessageDialog(gui,
                         response.message[0],
@@ -35,17 +35,13 @@ public class LobbyFrame extends JPanel {
             ServerProtocol response = gui.client.serverRequest("join-lobby", "2");
             if (response.type.equals("true")) {
                 gui.setTitle("Lobby 2");
+                gui.chat.displayFrame.setVisible(true);
                 gui.chat.setRunning(true);
                 new Thread(gui.chat.chatThread).start();
-                gui.chat.newFrame.setVisible(true);
             } else if (response.type.equals("false")) {
                 JOptionPane.showMessageDialog(gui,
                         response.message[0],
                         "Lobby join failure", JOptionPane.INFORMATION_MESSAGE);
-                gui.chat.setRunning(true);
-                gui.setContentPane(gui.lobby);
-                gui.setTitle("Lobby Room");
-                gui.setContentPane(gui.chat);
             }
         });
         btnLobby2.setBounds(175, 230, 100, 29);
@@ -58,13 +54,12 @@ public class LobbyFrame extends JPanel {
                 gui.setTitle("Lobby 3");
                 gui.chat.setRunning(true);
                 new Thread(gui.chat.chatThread).start();
-                gui.chat.newFrame.setVisible(true);
+                gui.chat.displayFrame.setVisible(true);
             } else if (response.type.equals("false")) {
                 JOptionPane.showMessageDialog(gui,
                         response.message[0],
                         "Lobby join failure", JOptionPane.INFORMATION_MESSAGE);
             }
-            gui.setContentPane(gui.chat);
         });
         btnLobby3.setBounds(175, 270, 100, 29);
         add(btnLobby3);

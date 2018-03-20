@@ -164,7 +164,7 @@ public class ServerThread implements Runnable {
      * @throws IOException
      */
     private synchronized void loginUser(String username, String password) throws IOException {
-        ServerProtocol response = LoginUser.CheckLogin(currentUser);
+        ServerProtocol response = LoginUser.CheckLogin(new User(username, password));
         if (response.type.equals("true")) {
             currentUser = new User(username, password);
             server.addActiveUser(this);

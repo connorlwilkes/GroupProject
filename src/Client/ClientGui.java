@@ -28,7 +28,6 @@ public class ClientGui extends JFrame {
         add(login);
         add(lobby);
         add(register);
-        add(chat);
         add(instructions);
         add(qm);
         add(questionMasterAnswerPanel);
@@ -36,6 +35,19 @@ public class ClientGui extends JFrame {
         add(questionPanel);
         setContentPane(login);
         setVisible(true);
+    }
+
+    public void setUp() {
+        login = new LogInFrame(this);
+        lobby = new LobbyFrame(this);
+        register = new RegisterFrame(this);
+        client = new Client(this);
+        chat = new ChatDisplay(client);
+        instructions = new InstructionPanel(this);
+        qm = new QuestionMasterPanel(this);
+        questionMasterAnswerPanel = new QuestionMasterAnswerPanel(this);
+        questionMasterQuestionPanel = new QuestionMasterQuestionPanel(this);
+        questionPanel = new QuestionPanel(this);
     }
 
     public static void main(String[] args) {
@@ -46,18 +58,5 @@ public class ClientGui extends JFrame {
                 System.err.println(e);
             }
         });
-    }
-
-    public void setUp() {
-        login = new LogInFrame(this);
-        lobby = new LobbyFrame(this);
-        register = new RegisterFrame(this);
-        chat = new ChatDisplay(this);
-        client = new Client(this);
-        instructions = new InstructionPanel(this);
-        qm = new QuestionMasterPanel(this);
-        questionMasterAnswerPanel = new QuestionMasterAnswerPanel(this);
-        questionMasterQuestionPanel = new QuestionMasterQuestionPanel(this);
-        questionPanel = new QuestionPanel(this);
     }
 }

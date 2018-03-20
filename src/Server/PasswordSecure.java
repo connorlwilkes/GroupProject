@@ -16,7 +16,7 @@ import javax.crypto.spec.PBEKeySpec;
 
 public class PasswordSecure {
     /**
-     *
+     *this generates a random value for salt which is unique for every user
      * @returna byte array which is unique for each new user
      * @throws NoSuchAlgorithmException
      */
@@ -32,7 +32,7 @@ public class PasswordSecure {
     }
 
     /**
-     *
+     *this class encrypts a password inputted as a string using a unique salt value and PBKDF2 with SHA-1 as the hashing algorithm
      * @param password the password inputted by the user into the gui for the registration process
      * @param salt the unique byte array used to encrypt the user password
      * @return a byte array which is stored in the userdatabase as their password
@@ -56,7 +56,7 @@ public class PasswordSecure {
     }
 
     /**
-     *
+     *this method checks an inputted password in the string format against the password saved as a byte array in the database and its respective salt value
      * @param attemptedPassword te string inputted to the gui when the user is logging in- this is to be checked
      * @param encryptedPassword the password stored in the database as a byte[]
      * @param salt the unique byte array stored in the database with the user record

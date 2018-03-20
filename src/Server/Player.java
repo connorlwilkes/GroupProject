@@ -125,8 +125,9 @@ public class Player {
         while (true) {
             Object o = in.readObject();
             if (o instanceof Message) {
+                System.out.println("here");
                 lobby.getChatRoom().addMessage((Message) o);
-                //TODO: Chat room logic
+                lobby.getChatRoom().broadcastMessage((Message) o);
             } else if (o instanceof ServerProtocol && lobby.getCurrentGame() instanceof HeadlineGame) {
                 ServerProtocol request = (ServerProtocol) o;
                 String type = request.type;
@@ -190,10 +191,10 @@ public class Player {
                 out.flush();
             }
         } else if (type.startsWith("leave")) {
-//            lobby.removePlayer(this);
-//            ServerProtocol message = new ServerProtocol("remove", "Left " + lobby.toString() + " successfully");
-//            out.writeObject(message);
-//            out.flush();
+            lobby.removePlayer(this);
+            ServerProtocol message = new ServerProtocol("remove", "Left " + lobby.toString() + " successfully");
+            out.writeObject(message);
+            out.flush();
         } else if (type.startsWith("question")) {
             if (isQuestionMaster) {
                 ServerProtocol message = new ServerProtocol("question", "qm", game.getCurrentQuestion());

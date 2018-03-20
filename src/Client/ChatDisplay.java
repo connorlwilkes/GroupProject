@@ -12,7 +12,7 @@ public class ChatDisplay extends JPanel {
     public JTextArea chatBox;
     private JTextField messageBox;
     private ClientGui gui;
-    private Runnable chatThread;
+    public Runnable chatThread;
     private boolean isRunning;
 
     public ChatDisplay(ClientGui guiConstructor) {
@@ -46,20 +46,20 @@ public class ChatDisplay extends JPanel {
         btnSend.setBounds(530, 400, 90, 30);
         add(btnSend);
 
-        Runnable task = () -> {
+        chatThread = () -> {
             while (isRunning) {
                 try {
+                    System.out.println("running");
                     Object o = gui.client.inputStream.readObject();
                     if (o instanceof Message) {
                         Message message = (Message) o;
-                        chatBox.append(message.toString());
+                        chatBox.append(message.toString() + "\n");
                     }
                 } catch (IOException | ClassNotFoundException e) {
                     e.printStackTrace();
                 }
             }
         };
-        new Thread(task).start();
     }
 
     public void setRunning(boolean running) {

@@ -41,14 +41,13 @@ public class LobbyFrame extends JPanel {
             ServerProtocol response = gui.client.serverRequest("join-lobby", "1");
             if (response.type.equals("true")) {
                 gui.setTitle("Lobby 1");
+                gui.chat.setRunning(true);
+                new Thread(gui.chat.chatThread).start();
                 gui.setContentPane(gui.chat);
             } else if (response.type.equals("false")) {
                 JOptionPane.showMessageDialog(gui,
                         response.message[0],
                         "Lobby join failure", JOptionPane.INFORMATION_MESSAGE);
-                gui.chat.setRunning(true);
-                gui.setContentPane(gui.lobby);
-                gui.setTitle("Lobby Room");
             }
         });
         btnLobby1.setBounds(175, 190, 100, 29);
@@ -59,6 +58,8 @@ public class LobbyFrame extends JPanel {
             ServerProtocol response = gui.client.serverRequest("join-lobby", "2");
             if (response.type.equals("true")) {
                 gui.setTitle("Lobby 2");
+                gui.chat.setRunning(true);
+                new Thread(gui.chat.chatThread).start();
                 gui.setContentPane(gui.chat);
             } else if (response.type.equals("false")) {
                 JOptionPane.showMessageDialog(gui,
@@ -78,15 +79,13 @@ public class LobbyFrame extends JPanel {
             ServerProtocol response = gui.client.serverRequest("join-lobby", "3");
             if (response.type.equals("true")) {
                 gui.setTitle("Lobby 3");
+                gui.chat.setRunning(true);
+                new Thread(gui.chat.chatThread).start();
                 gui.setContentPane(gui.chat);
             } else if (response.type.equals("false")) {
                 JOptionPane.showMessageDialog(gui,
                         response.message[0],
                         "Lobby join failure", JOptionPane.INFORMATION_MESSAGE);
-                gui.chat.setRunning(true);
-                gui.setContentPane(gui.lobby);
-                gui.setTitle("Lobby Room");
-                gui.setContentPane(gui.chat);
             }
             gui.setContentPane(gui.chat);
         });

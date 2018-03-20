@@ -1,5 +1,6 @@
 package Server;
 
+import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -13,7 +14,7 @@ import java.util.List;
  */
 public class ChatRoom {
 
-    private HashSet<ObjectOutputStream> objectOutputStreams;
+    private List<ObjectOutputStream> objectOutputStreams;
     private List<Message> messages;
     private List<Player> players;
     private GameLobby lobby;
@@ -25,7 +26,7 @@ public class ChatRoom {
      */
     public ChatRoom(GameLobby lobby) {
         messages = new ArrayList<>();
-        objectOutputStreams = new HashSet<>();
+        objectOutputStreams = new ArrayList<>();
         players = new ArrayList<>();
         this.lobby = lobby;
     }
@@ -40,15 +41,15 @@ public class ChatRoom {
         objectOutputStreams.add(player.getClient().getOutputStream());
     }
 
-//    /**
-//     * Removes a player from the chatroom, also removes the player's outputstream
-//     *
-//     * @param playerToRemove player to remove
-//     */
-//    public synchronized void removePlayer(Player playerToRemove) {
-//        players.remove(playerToRemove);
-//        objectOutputStreams.remove(playerToRemove.getClient().getOutputStream());
-//    }
+    /**
+     * Removes a player from the chatroom, also removes the player's outputstream
+     *
+     * @param playerToRemove player to remove
+     */
+    public synchronized void removePlayer(Player playerToRemove) {
+        players.remove(playerToRemove);
+        objectOutputStreams.remove(playerToRemove.getClient().getOutputStream());
+    }
 
     /**
      * Setter for the list of players
@@ -74,6 +75,17 @@ public class ChatRoom {
         messages.add(message);
     }
 
-    private void readFromClients() {
+    public synchronized void broadcastMessage(Message message) {
+        System.out.println(objectOutputStreams.size());
+        for (ObjectOutputStream out : objectOutputStreams) {
+            try {
+                System.out.println(message);
+                out.writeObject(message);
+                out.flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
+
 }

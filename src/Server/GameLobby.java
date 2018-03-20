@@ -86,15 +86,15 @@ public class GameLobby implements Runnable {
         return lobbyName;
     }
 
-//    /**
-//     * Removes a player from the game
-//     *
-//     * @param playerToRemove the player to remove
-//     */
-//    public synchronized void removePlayer(Player playerToRemove) {
-//        players.remove(playerToRemove);
-//        chatRoom.removePlayer(playerToRemove);
-//    }
+    /**
+     * Removes a player from the game
+     *
+     * @param playerToRemove the player to remove
+     */
+    public synchronized void removePlayer(Player playerToRemove) {
+        players.remove(playerToRemove);
+        chatRoom.removePlayer(playerToRemove);
+    }
 
     /**
      * Adds a player to the players list

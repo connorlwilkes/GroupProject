@@ -12,7 +12,8 @@ public class LogInFrame extends JPanel {
     private JTextField enterPassword;
     private ClientGui gui;
 
-    public LogInFrame() {
+    public LogInFrame(ClientGui gui) {
+        this.gui = gui;
         setLayout(null);
         this.setBounds(0, 0, 450, 278);
 

@@ -154,7 +154,8 @@ public class GameLobby implements Runnable {
             try {
                 player.getOut().writeObject(start);
                 player.getOut().flush();
-            } catch (IOException e) {
+                player.processGameRequests();
+            } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
         }

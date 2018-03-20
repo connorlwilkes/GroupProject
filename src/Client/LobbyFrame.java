@@ -1,5 +1,7 @@
 package Client;
 
+import Server.ServerProtocol;
+
 import javax.swing.*;
 
 public class LobbyFrame extends JPanel {
@@ -36,8 +38,16 @@ public class LobbyFrame extends JPanel {
 
         JButton btnLobby1 = new JButton("Lobby 1");
         btnLobby1.addActionListener(e -> {
-            gui.client.serverRequest("join-lobby", "1");
-            gui.setTitle("Lobby 1");
+            ServerProtocol response = gui.client.serverRequest("join-lobby", "1");
+            if (response.type.equals("true")) {
+                gui.setTitle("Lobby 1");
+            } else if (response.type.equals("false")) {
+                JOptionPane.showMessageDialog(gui,
+                           response.message[0],
+                            "Lobby join failure", JOptionPane.INFORMATION_MESSAGE);
+                    gui.setContentPane(gui.lobby);
+                    gui.setTitle("Lobby Room");
+            }
             gui.setContentPane(gui.chat);
         });
         btnLobby1.setBounds(175, 190, 100, 29);
@@ -45,7 +55,16 @@ public class LobbyFrame extends JPanel {
 
         JButton btnLobby2 = new JButton("Lobby 2");
         btnLobby2.addActionListener(e -> {
-            gui.client.serverRequest("join-lobby", "1");
+            ServerProtocol response = gui.client.serverRequest("join-lobby", "2");
+            if (response.type.equals("true")) {
+                gui.setTitle("Lobby 2");
+            } else if (response.type.equals("false")) {
+                JOptionPane.showMessageDialog(gui,
+                        response.message[0],
+                        "Lobby join failure", JOptionPane.INFORMATION_MESSAGE);
+                gui.setContentPane(gui.lobby);
+                gui.setTitle("Lobby Room");
+            }
             gui.setContentPane(gui.chat);
         });
         btnLobby2.setBounds(175, 230, 100, 29);
@@ -53,7 +72,16 @@ public class LobbyFrame extends JPanel {
 
         JButton btnLobby3 = new JButton("Lobby 3");
         btnLobby3.addActionListener(e -> {
-            gui.client.serverRequest("join-lobby", "1");
+            ServerProtocol response = gui.client.serverRequest("join-lobby", "3");
+            if (response.type.equals("true")) {
+                gui.setTitle("Lobby 3");
+            } else if (response.type.equals("false")) {
+                JOptionPane.showMessageDialog(gui,
+                        response.message[0],
+                        "Lobby join failure", JOptionPane.INFORMATION_MESSAGE);
+                gui.setContentPane(gui.lobby);
+                gui.setTitle("Lobby Room");
+            }
             gui.setContentPane(gui.chat);
         });
         btnLobby3.setBounds(175, 270, 100, 29);

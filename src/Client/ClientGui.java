@@ -26,29 +26,29 @@ public class ClientGui extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setBounds(0, 0, 450, 278);
         add(login);
-//        add(lobby);
-//        add(register);
-//        add(chat);
-//        add(instructions);
-//        add(qm);
-//        add(questionMasterAnswerPanel);
-//        add(questionMasterQuestionPanel);
-//        add(questionPanel);
+        add(lobby);
+        add(register);
+        add(chat);
+        add(instructions);
+        add(qm);
+        add(questionMasterAnswerPanel);
+        add(questionMasterQuestionPanel);
+        add(questionPanel);
         setContentPane(login);
         setVisible(true);
     }
 
     public void setUp() {
-        login = new LogInFrame();
-//        lobby = new LobbyFrame(this);
-//        register = new RegisterFrame(this);
-//        chat = new ChatDisplay(this);
-//        client = new Client(this);
-//        instructions = new InstructionPanel(this);
-//        qm = new QuestionMasterPanel(this);
-//        questionMasterAnswerPanel = new QuestionMasterAnswerPanel(this);
-//        questionMasterQuestionPanel = new QuestionMasterQuestionPanel(this);
-//        questionPanel = new QuestionPanel(this);
+        login = new LogInFrame(this);
+        lobby = new LobbyFrame(this);
+        register = new RegisterFrame(this);
+        chat = new ChatDisplay(this);
+        client = new Client(this);
+        instructions = new InstructionPanel(this);
+        qm = new QuestionMasterPanel(this);
+        questionMasterAnswerPanel = new QuestionMasterAnswerPanel(this);
+        questionMasterQuestionPanel = new QuestionMasterQuestionPanel(this);
+        questionPanel = new QuestionPanel(this);
     }
 
     public static void main(String[] args) {

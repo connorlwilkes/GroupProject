@@ -138,7 +138,7 @@ public class Player {
         }
     }
 
-    public void processHeadlineGameRequests(ServerProtocol request, String type) throws IOException {
+    private void processHeadlineGameRequests(ServerProtocol request, String type) throws IOException {
         HeadlineGame game = (HeadlineGame) lobby.getCurrentGame();
         if (type.startsWith("answer")) {
             game.addAnswer(request.message[0]);

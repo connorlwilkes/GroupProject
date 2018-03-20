@@ -35,8 +35,7 @@ public class Server {
     private InetAddress host;
     private ExecutorService threadPool;
     private List<GameLobby> lobbies;
-    private List<User> userDatabase;
-    private List<User> activeUsers;
+    private List<ServerThread> activeUsers;
 
     /**
      * Main method to begin the server
@@ -50,6 +49,7 @@ public class Server {
 
     /**
      * Primary constructor for the Server class taking just portNumber and automatically binds to localhost
+     *
      * @param portNumber port number
      */
     public Server(String portNumber) {
@@ -63,8 +63,9 @@ public class Server {
 
     /**
      * Secondary constructor for the Server class taking portNumber and address
+     *
      * @param portNumber port number
-     * @param address address of the server
+     * @param address    address of the server
      */
     public Server(String portNumber, String address) {
         try {
@@ -94,21 +95,12 @@ public class Server {
     }
 
     /**
-     * Adds a user to the list of currently active users
+     * Adds a client to the active user list
      *
-     * @param user user to add
+     * @param client client to add
      */
-    public void addUser(User user) {
-        userDatabase.add(user);
-    }
-
-    /**
-     * Adds a user to the active user list
-     *
-     * @param user user to add
-     */
-    public void addActiveUser(User user) {
-        activeUsers.add(user);
+    public void addActiveUser(ServerThread client) {
+        activeUsers.add(client);
     }
 
     /**
@@ -118,9 +110,9 @@ public class Server {
      */
     public void removeUser(User userToRemove) {
         String toRemove = userToRemove.getUsername();
-        for (User user : userDatabase) {
-            if (user.getUsername().equals(toRemove)) {
-                userDatabase.remove(user);
+        for (ServerThread connection : activeUsers) {
+            if (connection.currentUser.getUsername().equals(toRemove)) {
+                activeUsers.remove(connection);
             }
         }
     }
@@ -131,10 +123,10 @@ public class Server {
     @SuppressWarnings("InfiniteLoopStatement")
     public void start() {
         lobbies = new ArrayList<>();
-        userDatabase = new ArrayList<>();
         activeUsers = new ArrayList<>();
         threadPool = Executors.newFixedThreadPool(50);
         setUpGameLobbies();
+        monitorUsers();
         try (ServerSocket server = new ServerSocket(port, 500, host)) {
             while (true) {
                 try {
@@ -177,6 +169,22 @@ public class Server {
         for (int i = 1; i <= 3; i++) {
             lobbies.add(new GameLobby(i));
         }
+    }
+
+    /**
+     * Keeps up to date all active threads
+     */
+    private void monitorUsers() {
+        Runnable monitor = () -> {
+            while (true) {
+                for (ServerThread connection : activeUsers) {
+                    if (connection.connection.isClosed()) {
+                        activeUsers.remove(connection);
+                    }
+                }
+            }
+        };
+        new Thread(monitor).start();
     }
 
 }

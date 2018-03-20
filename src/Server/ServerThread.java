@@ -17,13 +17,13 @@ public class ServerThread implements Runnable {
 
     private final static Logger auditLogger = Logger.getLogger("requests");
     private final static Logger errorLogger = Logger.getLogger("errors");
-    private Socket connection;
+    public Socket connection;
     private Server server;
     private BufferedReader reader;
     private BufferedWriter writer;
     private ObjectOutputStream outputStream;
     private ObjectInputStream inputStream;
-    private User currentUser;
+    public User currentUser;
     private Player player;
 
 
@@ -164,8 +164,11 @@ public class ServerThread implements Runnable {
      * @throws IOException
      */
     private synchronized void loginUser(String username, String password) throws IOException {
-        currentUser = new User(username, password);
         ServerProtocol response = LoginUser.CheckLogin(currentUser);
+        if (response.type.equals("true")) {
+            currentUser = new User(username, password);
+            server.addActiveUser(this);
+        }
         outputStream.writeObject(response);
         outputStream.flush();
     }
@@ -176,9 +179,7 @@ public class ServerThread implements Runnable {
      * @throws IOException
      */
     private synchronized void setUpAccount(String username, String password) throws IOException {
-        currentUser = new User(username, password);
         ServerProtocol response = RegisterUser.checkUser(currentUser);
-        server.addActiveUser(currentUser);
         outputStream.writeObject(response);
         outputStream.flush();
     }

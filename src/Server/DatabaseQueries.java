@@ -40,7 +40,7 @@ public class DatabaseQueries {
          * this string sets up the prepared statement which queries the database to return records
          * where the username equals the one specified
          */
-        String query = "SELECT * FROM userdb WHERE username = ?";
+        String query = "SELECT * FROM userdbtest WHERE username = ?";
 
         try (Connection connection = connect();
              PreparedStatement pmst = connection.prepareStatement(query)) {

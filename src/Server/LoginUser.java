@@ -1,5 +1,7 @@
 package Server;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,6 +10,7 @@ import java.sql.SQLException;
 import static Server.DatabaseQueries.checkUsername;
 import static Server.DatabaseQueries.connect;
 import static java.lang.System.*;
+import static Server.PasswordSecure.passwordCheck;
 
 /**
  * LoginUser class for the Login process of the minigame
@@ -32,7 +35,6 @@ public class LoginUser {
 
 
         ServerProtocol a = new ServerProtocol("true", "Successfully logged in");
-        System.out.println(username + password);
         ServerProtocol b = new ServerProtocol("false", "Invalid Input");
         ServerProtocol c = new ServerProtocol("false", "User does not exist");
         ServerProtocol d = new ServerProtocol("false", "Failure");
@@ -40,7 +42,9 @@ public class LoginUser {
          * this string is used to construct the Prepared Statement which is used to check whether
          * the login credentials are valid and if the user exists
          */
-        String query = "SELECT * FROM userdb WHERE username = ? and password= ? ";
+
+
+        String query = "SELECT * FROM userdbtest WHERE username = ? ";
 
         try (Connection connection = connect();
              PreparedStatement pmst = connection.prepareStatement(query)) {
@@ -48,17 +52,21 @@ public class LoginUser {
              * sets the two parameters for the prepared statement of username and password
              */
             pmst.setString(1, username);
-            pmst.setString(2, password);
+
             /**
-             * produces a results set of the user and their respective password
+             * produces a results set of the user and their respective password and salt
              */
             ResultSet rs = pmst.executeQuery();
             while (rs.next()) {
                 /**
                  * checks whether the passwords match
                  */
-                if (rs.getString(2).equals(password)) {
-                    return a;
+                try {
+                    if (passwordCheck(password, rs.getBytes(2), rs.getBytes(3))) {
+                        return a;
+                    }
+                } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+                    e.printStackTrace();
                 }
             }
             /**
@@ -84,11 +92,12 @@ public class LoginUser {
         } catch (SQLException ex) {
             err.println(ex);
 
+            /**
+             * if all else fails then the return is failure
+             */
+
         }
-        /**
-         * if all else fails then the return is failure
-         */
+
         return d;
     }
-
 }

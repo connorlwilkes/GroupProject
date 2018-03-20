@@ -69,18 +69,18 @@ public class RegisterUser {
 
         try (Connection connection = connect()) {
             PreparedStatement pmst = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-        /**
-         * creation of a prepared statement and the specification of the two parameters username and password
-         * which have been inputted into the gui. These are then added to the database userdb.
-         */
+            /**
+             * creation of a prepared statement and the specification of the two parameters username and password
+             * which have been inputted into the gui. These are then added to the database userdb.
+             */
             pmst.setString(1, username);
             pmst.setBytes(2, encryptedPassword);
             pmst.setBytes(3, salt);
             pmst.execute();
             return a;
-        /**
-         * if the connection fails then server protocol for failure is returned
-         */
+            /**
+             * if the connection fails then server protocol for failure is returned
+             */
         } catch (SQLException ex) {
             System.err.println(ex);
             return d;

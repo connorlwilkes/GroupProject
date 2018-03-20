@@ -1,12 +1,11 @@
 package Server;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * User class for the minigame game.
  */
-public class User implements Serializable {
+public class User {
 
     private String username;
     private String password;

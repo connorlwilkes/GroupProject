@@ -3,7 +3,6 @@ package Server;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -76,10 +75,8 @@ public class ChatRoom {
     }
 
     public synchronized void broadcastMessage(Message message) {
-        System.out.println(objectOutputStreams.size());
         for (ObjectOutputStream out : objectOutputStreams) {
             try {
-                System.out.println(message);
                 out.writeObject(message);
                 out.flush();
             } catch (IOException e) {

@@ -8,30 +8,6 @@ public class LobbyFrame extends JPanel {
 
     private ClientGui gui;
 
-    /**
-     * lobbyDisplay is the display where the lobby to play in is chosen. It is the display that appears
-     * once the user has logged-in successfully.
-     * <p>
-     * JFrame_______________________________
-     * | ___________________________________|
-     * | |								   ||
-     * | |								   ||
-     * | |								   ||           _______________
-     * | |			  			           ||           |   Lobby 1   |
-     * | |								   ||           |_____________|
-     * | |								   ||
-     * | |								   ||           _______________
-     * | |       JPanel = lobbyPanel       || ===>      |   Lobby 2   |
-     * | |                                 ||           |_____________|
-     * | |								   ||
-     * | |								   ||           _______________
-     * | |			           			   ||           |   Lobby 3   |
-     * | |								   ||           |_____________|
-     * | |								   ||
-     * | |								   ||
-     * | ___________________________________|
-     * ______________________________________
-     */
     public LobbyFrame(ClientGui guiConstructor) {
         this.gui = guiConstructor;
         setLayout(null);
@@ -43,14 +19,15 @@ public class LobbyFrame extends JPanel {
                 gui.setTitle("Lobby 1");
                 gui.chat.setRunning(true);
                 new Thread(gui.chat.chatThread).start();
-                gui.setContentPane(gui.chat);
+                gui.chat.setVisible(true);
+                gui.chat.newFrame.setVisible(true);
             } else if (response.type.equals("false")) {
                 JOptionPane.showMessageDialog(gui,
                         response.message[0],
                         "Lobby join failure", JOptionPane.INFORMATION_MESSAGE);
             }
         });
-        btnLobby1.setBounds(175, 190, 100, 29);
+        btnLobby1.setBounds(175, 200, 100, 29);
         add(btnLobby1);
 
         JButton btnLobby2 = new JButton("Lobby 2");
@@ -60,7 +37,7 @@ public class LobbyFrame extends JPanel {
                 gui.setTitle("Lobby 2");
                 gui.chat.setRunning(true);
                 new Thread(gui.chat.chatThread).start();
-                gui.setContentPane(gui.chat);
+                gui.chat.newFrame.setVisible(true);
             } else if (response.type.equals("false")) {
                 JOptionPane.showMessageDialog(gui,
                         response.message[0],
@@ -81,7 +58,7 @@ public class LobbyFrame extends JPanel {
                 gui.setTitle("Lobby 3");
                 gui.chat.setRunning(true);
                 new Thread(gui.chat.chatThread).start();
-                gui.setContentPane(gui.chat);
+                gui.chat.newFrame.setVisible(true);
             } else if (response.type.equals("false")) {
                 JOptionPane.showMessageDialog(gui,
                         response.message[0],

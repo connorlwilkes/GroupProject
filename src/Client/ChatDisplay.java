@@ -5,8 +5,8 @@ import Server.Message;
 
 import javax.swing.*;
 
-
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.io.IOException;
@@ -27,11 +27,12 @@ public class ChatDisplay extends JFrame {
     public ChatDisplay(Client clientConstructor) {
     		this.client = clientConstructor;
     		setLayout(null);
-        this.setBounds(0, 0, 630, 460);
+        this.setBounds(0, 0, 470, 300);
     		
         newFrame = new JFrame();
     		newFrame.setVisible(true);
-        newFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);            
+        newFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
+        newFrame.add(new JScrollPane(chatBox), BorderLayout.CENTER);
     		
         JPanel northPanel = new JPanel();
         northPanel.setLayout(new GridBagLayout());
@@ -39,6 +40,7 @@ public class ChatDisplay extends JFrame {
     		
     		JPanel southPanel = new JPanel();      
         southPanel.setLayout(new GridBagLayout());
+        southPanel.setBackground(Color.BLACK);
         newFrame.add(BorderLayout.SOUTH, southPanel);                 
                             
         GridBagConstraints left = new GridBagConstraints();            
@@ -49,13 +51,13 @@ public class ChatDisplay extends JFrame {
         // chat area
         chatBox = new JTextArea(10, 20);
         chatBox.setEditable(false);
-        chatBox.setBounds(20, 20, 590, 370);
+        chatBox.setLineWrap(true);
+        chatBox.setEditable(false); 
         northPanel.add(chatBox);
         
         // message box
         messageBox = new JTextField();
         messageBox.setEditable(true);
-        messageBox.setBounds(20, 400, 500, 30);
         messageBox.setColumns(80);
         southPanel.add(messageBox, left);
         
@@ -68,7 +70,6 @@ public class ChatDisplay extends JFrame {
                 messageBox = null;
             }
         });
-        btnSend.setBounds(530, 400, 90, 30);
         southPanel.add(btnSend, right);
 
         chatThread = () -> {

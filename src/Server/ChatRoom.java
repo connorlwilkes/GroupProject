@@ -11,7 +11,7 @@ import java.util.List;
  * @author Florence
  * @version 9/3/2018
  */
-public class ChatRoom implements Runnable {
+public class ChatRoom {
 
     private HashSet<ObjectOutputStream> objectOutputStreams;
     private List<Message> messages;
@@ -25,6 +25,7 @@ public class ChatRoom implements Runnable {
      */
     public ChatRoom(GameLobby lobby) {
         messages = new ArrayList<>();
+        objectOutputStreams = new HashSet<>();
         players = new ArrayList<>();
         this.lobby = lobby;
     }
@@ -39,15 +40,15 @@ public class ChatRoom implements Runnable {
         objectOutputStreams.add(player.getClient().getOutputStream());
     }
 
-    /**
-     * Removes a player from the chatroom, also removes the player's outputstream
-     *
-     * @param playerToRemove player to remove
-     */
-    public synchronized void removePlayer(Player playerToRemove) {
-        players.remove(playerToRemove);
-        objectOutputStreams.remove(playerToRemove.getClient().getOutputStream());
-    }
+//    /**
+//     * Removes a player from the chatroom, also removes the player's outputstream
+//     *
+//     * @param playerToRemove player to remove
+//     */
+//    public synchronized void removePlayer(Player playerToRemove) {
+//        players.remove(playerToRemove);
+//        objectOutputStreams.remove(playerToRemove.getClient().getOutputStream());
+//    }
 
     /**
      * Setter for the list of players
@@ -74,15 +75,5 @@ public class ChatRoom implements Runnable {
     }
 
     private void readFromClients() {
-    }
-
-    /**
-     * Run method for the thread
-     */
-    @Override
-    public void run() {
-        while (true) {
-
-        }
     }
 }

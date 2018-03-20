@@ -95,12 +95,6 @@ public class ServerThread implements Runnable {
         } catch (IOException | ClassNotFoundException ex) {
             System.err.println(ex);
         } finally {
-            if (currentUser != null) {
-                server.removeUser(currentUser);
-            }
-            if (player != null) {
-                player.getLobby().removePlayer(player);
-            }
             try {
                 auditLogger.info("Closing connection to " + connection.getRemoteSocketAddress() + " on " + new Date());
                 connection.close();
@@ -242,9 +236,12 @@ public class ServerThread implements Runnable {
             outputStream.flush();
         } else {
             this.player = new Player(this, lobby, currentUser);
-            lobby.addPlayer(player);
+            lobby.addPlayer(this.player);
+            System.out.println("here");
             ServerProtocol message = new ServerProtocol("true", "Successfully joined lobby");
+            System.out.println("here");
             outputStream.writeObject(message);
+            System.out.println("here");
             outputStream.flush();
             player.processGameRequests();
         }

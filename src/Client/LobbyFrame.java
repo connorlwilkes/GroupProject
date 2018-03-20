@@ -44,10 +44,11 @@ public class LobbyFrame extends JPanel {
                 gui.setContentPane(gui.chat);
             } else if (response.type.equals("false")) {
                 JOptionPane.showMessageDialog(gui,
-                           response.message[0],
-                            "Lobby join failure", JOptionPane.INFORMATION_MESSAGE);
-                    gui.setContentPane(gui.lobby);
-                    gui.setTitle("Lobby Room");
+                        response.message[0],
+                        "Lobby join failure", JOptionPane.INFORMATION_MESSAGE);
+                gui.chat.setRunning(true);
+                gui.setContentPane(gui.lobby);
+                gui.setTitle("Lobby Room");
             }
         });
         btnLobby1.setBounds(175, 190, 100, 29);
@@ -63,10 +64,11 @@ public class LobbyFrame extends JPanel {
                 JOptionPane.showMessageDialog(gui,
                         response.message[0],
                         "Lobby join failure", JOptionPane.INFORMATION_MESSAGE);
+                gui.chat.setRunning(true);
                 gui.setContentPane(gui.lobby);
                 gui.setTitle("Lobby Room");
+                gui.setContentPane(gui.chat);
             }
-            gui.setContentPane(gui.chat);
         });
         btnLobby2.setBounds(175, 230, 100, 29);
         add(btnLobby2);
@@ -81,8 +83,10 @@ public class LobbyFrame extends JPanel {
                 JOptionPane.showMessageDialog(gui,
                         response.message[0],
                         "Lobby join failure", JOptionPane.INFORMATION_MESSAGE);
+                gui.chat.setRunning(true);
                 gui.setContentPane(gui.lobby);
                 gui.setTitle("Lobby Room");
+                gui.setContentPane(gui.chat);
             }
             gui.setContentPane(gui.chat);
         });

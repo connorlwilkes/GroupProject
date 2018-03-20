@@ -190,10 +190,10 @@ public class Player {
                 out.flush();
             }
         } else if (type.startsWith("leave")) {
-            lobby.removePlayer(this);
-            ServerProtocol message = new ServerProtocol("remove", "Left " + lobby.toString() + " successfully");
-            out.writeObject(message);
-            out.flush();
+//            lobby.removePlayer(this);
+//            ServerProtocol message = new ServerProtocol("remove", "Left " + lobby.toString() + " successfully");
+//            out.writeObject(message);
+//            out.flush();
         } else if (type.startsWith("question")) {
             if (isQuestionMaster) {
                 ServerProtocol message = new ServerProtocol("question", "qm", game.getCurrentQuestion());

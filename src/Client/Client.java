@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ConnectException;
+import java.net.InetAddress;
 import java.net.Socket;
 
 public class Client {
@@ -26,7 +27,7 @@ public class Client {
 
     public void connect() {
         try {
-            connection = new Socket(host, port);
+            connection = new Socket(InetAddress.getLocalHost(), port);
             outputStream = new ObjectOutputStream(connection.getOutputStream());
             inputStream = new ObjectInputStream(connection.getInputStream());
         } catch (ConnectException ex) {

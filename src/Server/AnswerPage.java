@@ -3,30 +3,40 @@ package Server;
 import javax.swing.*;
 import java.awt.*;
 
+
+/**
+ * AnswerPage class to generate the page which displays the answers for each round, has the field variable txtQuestionAnswer 
+ * of type JTextArea
+ * @author Florence
+ * @version 20/03/2018
+ *
+ */
 public class AnswerPage {
 
     JFrame frame;
     private JTextArea txtQuestionAnswer;
 
     /**
-     * Create the application.
-     *
+     * Constructor to create the application
      * @throws ClassNotFoundException
      * @wbp.parser.entryPoint
+     * @param question The array of questions to be asked over 3 rounds
+     * @param i The index of array question
      */
     public AnswerPage(String[] question, int i) throws ClassNotFoundException {
         initialize(question, i);
     }
 
+
     /**
-     * Launch the application.
+     * Main method to launch the application
      */
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
 
-
+                	
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -34,8 +44,10 @@ public class AnswerPage {
         });
     }
 
-    /**
-     * Initialize the contents of the frame.
+
+    /**initialize method to start the contents of the frame.
+     * @param question The array of questions to be asked over 3 rounds
+     * @param i The index of array question
      */
     private void initialize(String[] questions, int i) {
 
@@ -106,5 +118,5 @@ public class AnswerPage {
             textArea_3.setText("player 4 it is your turn to vote for the best answer");
         }
     }
-}
 
+}

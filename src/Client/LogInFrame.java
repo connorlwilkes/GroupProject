@@ -7,7 +7,7 @@ import javax.swing.*;
 public class LogInFrame extends JPanel {
 
     private JTextField enterUsername;
-    private JTextField enterPassword;
+    private JPasswordField enterPassword;
     private ClientGui gui;
 
     public LogInFrame(ClientGui guiConstructor) {
@@ -28,7 +28,7 @@ public class LogInFrame extends JPanel {
         lblPass.setBounds(110, 154, 79, 16);
         add(lblPass);
 
-        enterPassword = new JTextField();
+        enterPassword = new JPasswordField();
         enterPassword.setBounds(190, 149, 130, 26);
         enterPassword.setColumns(12);
         add(enterPassword);

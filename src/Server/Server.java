@@ -140,8 +140,6 @@ public class Server {
             }
         } catch (IOException ex) {
             serverErrorLogger.log(Level.SEVERE, "Couldn't start server", ex);
-        } catch (RuntimeException ex) {
-            serverErrorLogger.log(Level.SEVERE, "Couldn't start server", ex);
         }
     }
 

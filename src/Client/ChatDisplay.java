@@ -49,7 +49,6 @@ public class ChatDisplay extends JPanel {
         chatThread = () -> {
             while (isRunning) {
                 try {
-                    System.out.println("running");
                     Object o = gui.client.inputStream.readObject();
                     if (o instanceof Message) {
                         Message message = (Message) o;

@@ -2,6 +2,7 @@ package Server;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,6 +25,7 @@ public class GameLobby implements Runnable {
     private ChatRoom chatRoom;
     private boolean isFull;
     private boolean isRunning;
+    private HashMap<Player, String> answers;
 
     /**
      * Constructor for the GameLobby class
@@ -40,6 +42,7 @@ public class GameLobby implements Runnable {
         isRunning = false;
         chatRoom = new ChatRoom(this);
         gameNumber = 1;
+        answers = new HashMap<>();
     }
 
     /**
@@ -69,19 +72,15 @@ public class GameLobby implements Runnable {
         return players;
     }
 
-    /**
-     * Setters for players
-     *
-     * @param players list of players to set players to
-     */
-    public void setPlayers(List<Player> players) {
-        this.players = players;
-    }
-
     public ChatRoom getChatRoom() {
         return chatRoom;
     }
 
+    /**
+     * toString method for the class
+     *
+     * @return String interpretation of the class
+     */
     public String toString() {
         return lobbyName;
     }
@@ -108,7 +107,9 @@ public class GameLobby implements Runnable {
             isFull = true;
             new Thread(this).start();
         }
+        answers.put(playerToAdd, null);
     }
+
 
     /**
      * Gets the current game being played in the lobby
@@ -119,6 +120,11 @@ public class GameLobby implements Runnable {
         return games.get(gameNumber - 1);
     }
 
+    /**
+     * Gets the scores for the game
+     *
+     * @return the scores as an array of Strings
+     */
     public synchronized String[] getScores() {
         String[] toReturn = new String[players.size()];
         StringBuilder string = new StringBuilder();

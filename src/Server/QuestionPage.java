@@ -25,35 +25,35 @@ public class QuestionPage {
         initialize1(question, i);
     }
 
-//    public static void StartGame() throws ClassNotFoundException, InterruptedException, SQLException {
-//        String[] questions = QuestionClass.QuestionHeader();                    //calls the method for getting the questions and assigns them to an array.
-//        for (int i = 0; i < 4; i++) {                                            // for  loop to initiate each round
-//            QuestionPage questionWindow = new QuestionPage(questions, i);        //initially creating a window with the question on it
-//            questionWindow.frame.setVisible(true);                                //setting the question window to visible
-//            AnswerPage answerWindow = new AnswerPage(questions, i);                //initially creating the answer page
-//            answerWindow.frame.setVisible(false);                                //setting the answer page to be not visible
-//
-//            Timer timer = new Timer(6000, new ActionListener() {                //swing timer that will wait and the do an action
-//                @Override
-//                public void actionPerformed(ActionEvent e) {                    // the action the timer will do is to change the visibility of queestion and answer windows
-//
-//                    answerWindow.frame.setVisible(true);
-//                    questionWindow.frame.setVisible(false);
-//                }
-//            });
-//            timer.start();                                                        //start the timer
-//            Thread t1 = new Thread();
-//            t1.start();
-//            Thread.sleep(10000);
-//        }
-//
-//
-//    }
+    public static void StartGame() throws ClassNotFoundException, InterruptedException, SQLException {
+        String[] questions = QuestionClass.QuestionHeader();                    //calls the method for getting the questions and assigns them to an array.
+        for (int i = 0; i < 4; i++) {                                            // for  loop to initiate each round
+            QuestionPage questionWindow = new QuestionPage(questions, i);        //initially creating a window with the question on it
+            questionWindow.frame.setVisible(true);                                //setting the question window to visible
+            AnswerPage answerWindow = new AnswerPage(questions, i);                //initially creating the answer page
+            answerWindow.frame.setVisible(false);                                //setting the answer page to be not visible
 
-//    public static void main(String[] args) throws ClassNotFoundException, InterruptedException, SQLException {
-//        QuestionPage.StartGame();
-//
-//    }
+            Timer timer = new Timer(6000, new ActionListener() {                //swing timer that will wait and the do an action
+                @Override
+                public void actionPerformed(ActionEvent e) {                    // the action the timer will do is to change the visibility of queestion and answer windows
+
+                    answerWindow.frame.setVisible(true);
+                    questionWindow.frame.setVisible(false);
+                }
+            });
+            timer.start();                                                        //start the timer
+            Thread t1 = new Thread();
+            t1.start();
+            Thread.sleep(10000);
+        }
+
+
+    }
+
+    public static void main(String[] args) throws ClassNotFoundException, InterruptedException, SQLException {
+        QuestionPage.StartGame();
+
+    }
 
     /**
      * Initialize the contents of the frame.

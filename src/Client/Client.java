@@ -8,22 +8,15 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ConnectException;
-import java.net.InetAddress;
 import java.net.Socket;
 
-/**
- * Client class for the GUI, listens to input from the server and processes requests
- *
- * @author Florence
- * @version 13/3/2018
- */
 public class Client {
 
     final private int port = 5000;
     final private String host = "localhost";
+    private Socket connection;
     public ObjectInputStream inputStream;
     public ObjectOutputStream outputStream;
-    private Socket connection;
     private User user;
     private ClientGui gui;
 
@@ -33,7 +26,7 @@ public class Client {
 
     public void connect() {
         try {
-            connection = new Socket(InetAddress.getLocalHost(), port);
+            connection = new Socket(host, port);
             outputStream = new ObjectOutputStream(connection.getOutputStream());
             inputStream = new ObjectInputStream(connection.getInputStream());
         } catch (ConnectException ex) {

@@ -1,7 +1,6 @@
 package Server;
 
 import java.sql.*;
-
 /**
  * DatabaseQueries class with methods used by both the LoginUser and RegisterUser classes
  *
@@ -12,10 +11,9 @@ import java.sql.*;
 public class DatabaseQueries {
     /**
      * Connection class used to connect to and query databases
-     *
      * @return a connection
      * @throws SQLException if connection fails it throws SQLException
-     */
+     * */
     public static Connection connect() throws SQLException {
         /**
          * specifies the location of the database as well as the login credentials
@@ -30,7 +28,6 @@ public class DatabaseQueries {
 
     /**
      * checkUsername method used by both the LoginUser and RegisterUser classes
-     *
      * @param user a new user to be checked
      * @return boolean, returns true if the user doesn't exist and returns false if the user does exist
      */
@@ -43,7 +40,7 @@ public class DatabaseQueries {
          * this string sets up the prepared statement which queries the database to return records
          * where the username equals the one specified
          */
-        String query = "SELECT * FROM userdb WHERE username = ?";
+        String query = "SELECT * FROM userdbtest WHERE username = ?";
 
         try (Connection connection = connect();
              PreparedStatement pmst = connection.prepareStatement(query)) {
@@ -58,8 +55,8 @@ public class DatabaseQueries {
             if (!rs.next()) {
                 x = true;//returns true if the user doesn't exist
             } else {
-                x = false;//returns false if the user exists already
-            }
+            x = false;//returns false if the user exists already
+        }
             rs.close();
             pmst.close();
         } catch (SQLException ex) {

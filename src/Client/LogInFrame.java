@@ -7,7 +7,7 @@ import javax.swing.*;
 public class LogInFrame extends JPanel {
 
     private JTextField enterUsername;
-    private JPasswordField enterPassword;
+    private JTextField enterPassword;
     private ClientGui gui;
 
     public LogInFrame(ClientGui guiConstructor) {
@@ -28,7 +28,7 @@ public class LogInFrame extends JPanel {
         lblPass.setBounds(110, 154, 79, 16);
         add(lblPass);
 
-        enterPassword = new JPasswordField();
+        enterPassword = new JTextField();
         enterPassword.setBounds(190, 149, 130, 26);
         enterPassword.setColumns(12);
         add(enterPassword);
@@ -44,6 +44,7 @@ public class LogInFrame extends JPanel {
             } else {
                 gui.client.connect();
                 ServerProtocol response = gui.client.serverRequest("login", username, password);
+                System.out.println(response);
                 if (response.type.startsWith("true")) {
                     JOptionPane.showMessageDialog(gui,
                             "Signed in: " + username,
@@ -61,11 +62,11 @@ public class LogInFrame extends JPanel {
                 }
             }
         });
-        btnSignIn.setBounds(175, 180, 91, 29);
+        btnSignIn.setBounds(175, 190, 91, 29);
         add(btnSignIn);
 
         JLabel lblNoAccount = new JLabel("Don't have an account?");
-        lblNoAccount.setBounds(150, 215, 180, 16);
+        lblNoAccount.setBounds(150, 250, 180, 16);
         add(lblNoAccount);
 
         JButton btnSignUp = new JButton("Sign Up");

@@ -5,13 +5,12 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Player class for the game. A player object is created when a User class enters a lobby
  *
- * @author Florence
- * @version 15/3/2018
+ * @author Connor Wilkes
+ * @version 9/3/2018
  */
 public class Player {
 
@@ -23,6 +22,7 @@ public class Player {
     private GameLobby lobby;
     private ObjectOutputStream out;
     private ObjectInputStream in;
+    private String currentAnswer;
 
     /**
      * Constructor for the player class
@@ -95,38 +95,22 @@ public class Player {
         return lobby;
     }
 
-    /**
-     * Getter for the hasBeenQuestionMaster boolean
-     *
-     * @return the hasBeenQuestionMaster boolean
-     */
     public boolean isHasBeenQuestionMaster() {
         return hasBeenQuestionMaster;
     }
 
-    /**
-     * Setter for the hasBeenQuestionMaster boolean
-     *
-     * @param hasBeenQuestionMaster the
-     */
     public void setHasBeenQuestionMaster(boolean hasBeenQuestionMaster) {
         this.hasBeenQuestionMaster = hasBeenQuestionMaster;
     }
 
-    /**
-     * Getter for the user
-     *
-     * @return the user
-     */
     public User getUser() {
         return user;
     }
 
-    /**
-     * Gets the player's object output stream
-     *
-     * @return objectoutputstream
-     */
+    public String getCurrentAnswer() {
+        return currentAnswer;
+    }
+
     public ObjectOutputStream getOut() {
         return out;
     }
@@ -141,6 +125,7 @@ public class Player {
         while (true) {
             Object o = in.readObject();
             if (o instanceof Message) {
+                System.out.println("here");
                 lobby.getChatRoom().addMessage((Message) o);
                 lobby.getChatRoom().broadcastMessage((Message) o);
             } else if (o instanceof ServerProtocol && lobby.getCurrentGame() instanceof HeadlineGame) {
@@ -154,157 +139,83 @@ public class Player {
         }
     }
 
-    /**
-     * Processes requests for the HeadlineGame
-     *
-     * @param request request to process
-     * @param type    type of the request
-     * @throws IOException
-     */
     private void processHeadlineGameRequests(ServerProtocol request, String type) throws IOException {
         HeadlineGame game = (HeadlineGame) lobby.getCurrentGame();
         if (type.startsWith("answer")) {
-            answer(request, game);
+            game.addAnswer(request.message[0]);
+            currentAnswer = request.message[0];
+            ServerProtocol message = new ServerProtocol("true", "Answer added");
+            out.writeObject(message);
+            out.flush();
         } else if (type.startsWith("qm-vote")) {
-            vote(request, game);
+            if (isQuestionMaster) {
+                String username = null;
+                for (Player player : game.getPlayers()) {
+                    if (player.getCurrentAnswer().startsWith(request.message[1])) {
+                        username = player.getUser().getUsername();
+                    }
+                }
+                if (username == null) {
+                    ServerProtocol message = new ServerProtocol("false", "invalid request");
+                    out.writeObject(message);
+                    out.flush();
+                } else {
+                    game.addScore(Integer.valueOf(request.message[0]), username);
+                    ServerProtocol message = new ServerProtocol("qm-vote", "Vote accepted");
+                    out.writeObject(message);
+                    out.flush();
+                }
+            } else {
+                ServerProtocol message = new ServerProtocol("false", "invalid request");
+                out.writeObject(message);
+                out.flush();
+            }
         } else if (type.startsWith("get-answers")) {
-            sendAnswers(game);
+            if (isQuestionMaster) {
+                List<String> list = new ArrayList<>();
+                list.add("get-answers");
+                list.add("qm");
+                list.addAll(game.getAnswers());
+                String[] toReturn = list.toArray(new String[list.size()]);
+                ServerProtocol message = new ServerProtocol(toReturn);
+                out.writeObject(message);
+                out.flush();
+            } else {
+                List<String> list = new ArrayList<>();
+                list.add("get-answers");
+                list.add("notqm");
+                list.addAll(game.getAnswers());
+                String[] toReturn = list.toArray(new String[list.size()]);
+                ServerProtocol message = new ServerProtocol(toReturn);
+                out.writeObject(message);
+                out.flush();
+            }
         } else if (type.startsWith("leave")) {
-            leave();
+            lobby.removePlayer(this);
+            ServerProtocol message = new ServerProtocol("remove", "Left " + lobby.toString() + " successfully");
+            out.writeObject(message);
+            out.flush();
         } else if (type.startsWith("question")) {
-            sendQuestion(game);
+            if (isQuestionMaster) {
+                ServerProtocol message = new ServerProtocol("question", "qm", game.getCurrentQuestion());
+                out.writeObject(message);
+                out.flush();
+            } else {
+                ServerProtocol message = new ServerProtocol("question", "notqm", game.getCurrentQuestion());
+                out.writeObject(message);
+                out.flush();
+            }
         } else if (type.startsWith("get-qm")) {
-            sendQuestionMaster(game);
+            ServerProtocol message = new ServerProtocol("get-qm", game.getQuestionMaster().getUser().getUsername());
+            out.writeObject(message);
+            out.flush();
         } else if (type.startsWith("getscores")) {
-            sendScores();
+            ServerProtocol message = new ServerProtocol(lobby.getScores());
+            out.writeObject(message);
+            out.flush();
         } else {
             out.writeObject(new ServerProtocol("false", "invalid request"));
             out.flush();
         }
-    }
-
-    /**
-     * Gets an answer from a client
-     *
-     * @param request the protocol from the client
-     * @param game    the headline game instance
-     * @throws IOException
-     */
-    private void answer(ServerProtocol request, HeadlineGame game) throws IOException {
-        game.addAnswer(this, request.message[0]);
-        ServerProtocol message = new ServerProtocol("true", "Answer added");
-        out.writeObject(message);
-        out.flush();
-    }
-
-    /**
-     * Gets a vote from a client
-     *
-     * @param request the protocol from the client
-     * @param game    the headline game instance
-     * @throws IOException
-     */
-    private void vote(ServerProtocol request, HeadlineGame game) throws IOException {
-        if (isQuestionMaster) {
-            String username = game.getAnswerMap().entrySet().stream()
-                    .filter(entry -> (request.message[0].equals(entry.getValue())))
-                    .findFirst()
-                    .map(Map.Entry::getKey).toString();
-            if (username == null) {
-                ServerProtocol message = new ServerProtocol("false", "invalid request");
-                out.writeObject(message);
-                out.flush();
-            } else {
-                game.addScore(Integer.valueOf(request.message[0]), username);
-                ServerProtocol message = new ServerProtocol("qm-vote", "Vote accepted");
-                out.writeObject(message);
-                out.flush();
-            }
-        } else {
-            ServerProtocol message = new ServerProtocol("false", "invalid request");
-            out.writeObject(message);
-            out.flush();
-        }
-    }
-
-    /**
-     * Sends answers to the client
-     *
-     * @param game the instance of the headline game
-     * @throws IOException
-     */
-    private void sendAnswers(HeadlineGame game) throws IOException {
-        if (isQuestionMaster) {
-            List<String> list = new ArrayList<>();
-            list.add("get-answers");
-            list.add("qm");
-            list.addAll(game.getAnswers());
-            String[] toReturn = list.toArray(new String[list.size()]);
-            ServerProtocol message = new ServerProtocol(toReturn);
-            out.writeObject(message);
-            out.flush();
-        } else {
-            List<String> list = new ArrayList<>();
-            list.add("get-answers");
-            list.add("notqm");
-            list.addAll(game.getAnswers());
-            String[] toReturn = list.toArray(new String[list.size()]);
-            ServerProtocol message = new ServerProtocol(toReturn);
-            out.writeObject(message);
-            out.flush();
-        }
-    }
-
-    /**
-     * Lets the client leave the game
-     *
-     * @throws IOException
-     */
-    private void leave() throws IOException {
-        lobby.removePlayer(this);
-        ServerProtocol message = new ServerProtocol("remove", "Left " + lobby.toString() + " successfully");
-        out.writeObject(message);
-        out.flush();
-    }
-
-    /**
-     * Sends the current question to the client
-     *
-     * @param game the headline game instance
-     * @throws IOException
-     */
-    private void sendQuestion(HeadlineGame game) throws IOException {
-        if (isQuestionMaster) {
-            ServerProtocol message = new ServerProtocol("question", "qm", game.getCurrentQuestion());
-            out.writeObject(message);
-            out.flush();
-        } else {
-            ServerProtocol message = new ServerProtocol("question", "notqm", game.getCurrentQuestion());
-            out.writeObject(message);
-            out.flush();
-        }
-    }
-
-    /**
-     * Sends the current question master to the clients
-     *
-     * @param game the instance of the headline game
-     * @throws IOException
-     */
-    private void sendQuestionMaster(HeadlineGame game) throws IOException {
-        ServerProtocol message = new ServerProtocol("get-qm", game.getQuestionMaster().getUser().getUsername());
-        out.writeObject(message);
-        out.flush();
-    }
-
-    /**
-     * Sends the current scores to the client
-     *
-     * @throws IOException
-     */
-    private void sendScores() throws IOException {
-        ServerProtocol message = new ServerProtocol(lobby.getScores());
-        out.writeObject(message);
-        out.flush();
     }
 }

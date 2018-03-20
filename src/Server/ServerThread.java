@@ -2,6 +2,8 @@ package Server;
 
 import java.io.*;
 import java.net.Socket;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,13 +19,13 @@ public class ServerThread implements Runnable {
 
     private final static Logger auditLogger = Logger.getLogger("requests");
     private final static Logger errorLogger = Logger.getLogger("errors");
-    public Socket connection;
+    private Socket connection;
     private Server server;
     private BufferedReader reader;
     private BufferedWriter writer;
     private ObjectOutputStream outputStream;
     private ObjectInputStream inputStream;
-    public User currentUser;
+    private User currentUser;
     private Player player;
 
 
@@ -127,6 +129,7 @@ public class ServerThread implements Runnable {
         while (true) {
             ServerProtocol request = (ServerProtocol) inputStream.readObject();
             String requestType = request.type;
+            System.out.println(request);
             if (requestType.startsWith("login")) {
                 loginUser(request.message[0], request.message[1]);
                 processRequests();
@@ -164,13 +167,30 @@ public class ServerThread implements Runnable {
      * @throws IOException
      */
     private synchronized void loginUser(String username, String password) throws IOException {
-        ServerProtocol response = LoginUser.CheckLogin(new User(username, password));
-        if (response.type.equals("true")) {
-            currentUser = new User(username, password);
-            server.addActiveUser(this);
-        }
+        currentUser = new User(username, password);
+        ServerProtocol response = LoginUser.CheckLogin(currentUser);
         outputStream.writeObject(response);
         outputStream.flush();
+
+
+        // if (!(server.checkUsername(username))) {
+        //    ServerProtocol response = new ServerProtocol("false", "User does not exist");
+        //    System.out.println(response);
+        //    outputStream.writeObject(response);
+        //    outputStream.flush();
+        //  } else if (!(server.checkPassword(username, password))) {
+        //     ServerProtocol response = new ServerProtocol("false", "Username or password does not match");
+        //   System.out.println(response);
+        // outputStream.writeObject(response);
+        //    outputStream.flush();
+        //} else {
+        //  currentUser = new User(username, password);
+        //  server.addActiveUser(currentUser);
+        //  ServerProtocol response = new ServerProtocol("true", "Success: User " + username + " logged in");
+        //  outputStream.reset();
+        // outputStream.writeObject(response);
+        // outputStream.flush();
+        // }
     }
 
     /**
@@ -179,9 +199,31 @@ public class ServerThread implements Runnable {
      * @throws IOException
      */
     private synchronized void setUpAccount(String username, String password) throws IOException {
-        ServerProtocol response = RegisterUser.checkUser(currentUser);
+        currentUser = new User(username, password);
+        ServerProtocol response = null;
+        try {
+            response = RegisterUser.checkUser(currentUser);
+        } catch (InvalidKeySpecException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        System.out.println(response);
+        // ServerProtocol response = new ServerProtocol("false", " test error");
+        server.addActiveUser(currentUser);
         outputStream.writeObject(response);
         outputStream.flush();
+
+        //   if (username.startsWith("fail") || password.startsWith("fail")) {
+        //       ServerProtocol response = new ServerProtocol("false", " test error");
+        //       outputStream.writeObject(response);
+        //       outputStream.flush();
+        //   } else {
+        //       ServerProtocol response = new ServerProtocol("true", "User: " + username + " created");
+        //       outputStream.writeObject(response);
+        //       outputStream.flush();
+        //   }
+        //   server.addActiveUser(new User(username, password));
     }
 
     /**
@@ -204,8 +246,11 @@ public class ServerThread implements Runnable {
         } else {
             this.player = new Player(this, lobby, currentUser);
             lobby.addPlayer(this.player);
+            System.out.println("here");
             ServerProtocol message = new ServerProtocol("true", "Successfully joined lobby");
+            System.out.println("here");
             outputStream.writeObject(message);
+            System.out.println("here");
             outputStream.flush();
             player.processGameRequests();
         }

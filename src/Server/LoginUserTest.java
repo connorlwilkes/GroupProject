@@ -8,7 +8,7 @@ public class LoginUserTest {
 
     @Test
     public void test1() {
-        User b = new User("Sally", "coach3");
+        User b = new User("Sophia", "wow");
         ServerProtocol a = new ServerProtocol("true", "Successfully logged in");
         String expected = a.toString();
         String actual = LoginUser.CheckLogin(b).toString();

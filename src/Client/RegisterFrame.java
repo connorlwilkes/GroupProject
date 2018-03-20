@@ -7,8 +7,8 @@ import javax.swing.*;
 public class RegisterFrame extends JPanel {
 
     private JTextField enterUser;
-    private JPasswordField enterPass;
-    private JPasswordField reEnterPass;
+    private JTextField enterPass;
+    private JTextField reEnterPass;
     private ClientGui gui;
 
     public RegisterFrame(ClientGui guiConstructor) {
@@ -29,7 +29,7 @@ public class RegisterFrame extends JPanel {
         lblPass.setBounds(120, 154, 79, 16);
         add(lblPass);
 
-        enterPass = new JPasswordField();
+        enterPass = new JTextField();
         enterPass.setBounds(200, 149, 130, 26);
         enterPass.setColumns(12);
         add(enterPass);
@@ -38,7 +38,7 @@ public class RegisterFrame extends JPanel {
         lblReEnterPass.setBounds(80, 195, 130, 16);
         add(lblReEnterPass);
 
-        reEnterPass = new JPasswordField();
+        reEnterPass = new JTextField();
         reEnterPass.setBounds(200, 190, 130, 26);
         reEnterPass.setColumns(12);
         add(reEnterPass);

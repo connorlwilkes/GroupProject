@@ -173,7 +173,6 @@ public class ServerThread implements Runnable {
     private synchronized void loginUser(String username, String password) throws IOException {
         currentUser = new User(username, password);
         ServerProtocol response = LoginUser.CheckLogin(currentUser);
-        System.out.println(response);
         outputStream.writeObject(response);
         outputStream.flush();
 
@@ -205,9 +204,9 @@ public class ServerThread implements Runnable {
      */
     private synchronized void setUpAccount(String username, String password) throws IOException {
         currentUser = new User(username, password);
-//        ServerProtocol response = RegisterUser.checkUser(currentUser);
-//        System.out.println(response);
-        ServerProtocol response = new ServerProtocol("false", " test error");
+        ServerProtocol response = RegisterUser.checkUser(currentUser);
+        System.out.println(response);
+        // ServerProtocol response = new ServerProtocol("false", " test error");
         server.addActiveUser(currentUser);
         outputStream.writeObject(response);
         outputStream.flush();

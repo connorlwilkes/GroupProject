@@ -13,8 +13,8 @@ public class QuestionMasterQuestionPanel extends JPanel {
     /**
      * Create the panel.
      */
-    public QuestionMasterQuestionPanel(ClientGui gui) {
-        this.gui = gui;
+    public QuestionMasterQuestionPanel(ClientGui guiConstructor) {
+        this.gui = guiConstructor;
         setBackground(new Color(135, 206, 250));
         setLayout(null);
 

@@ -11,8 +11,8 @@ public class RegisterFrame extends JPanel {
     private JTextField reEnterPass;
     private ClientGui gui;
 
-    public RegisterFrame(ClientGui gui) {
-        this.gui = gui;
+    public RegisterFrame(ClientGui guiConstructor) {
+        this.gui = guiConstructor;
         setLayout(null);
         this.setBounds(0, 0, 450, 278);
 

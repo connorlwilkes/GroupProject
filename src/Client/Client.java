@@ -15,7 +15,7 @@ public class Client {
     final private int port = 5000;
     final private String host = "localhost";
     private Socket connection;
-    private ObjectInputStream inputStream;
+    public ObjectInputStream inputStream;
     public ObjectOutputStream outputStream;
     private User user;
     private ClientGui gui;
@@ -55,7 +55,6 @@ public class Client {
             if (args[0].equals("login")) {
                 user = new User(args[1], args[2]);
             }
-            System.out.println((ServerProtocol) inputStream.readObject());
             return (ServerProtocol) inputStream.readObject();
         } catch (ConnectException ex) {
             System.out.println("Connection failure");

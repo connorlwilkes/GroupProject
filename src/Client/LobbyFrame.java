@@ -32,8 +32,8 @@ public class LobbyFrame extends JPanel {
      * | ___________________________________|
      * ______________________________________
      */
-    public LobbyFrame(ClientGui gui) {
-        this.gui = gui;
+    public LobbyFrame(ClientGui guiConstructor) {
+        this.gui = guiConstructor;
         setLayout(null);
 
         JButton btnLobby1 = new JButton("Lobby 1");
@@ -41,6 +41,7 @@ public class LobbyFrame extends JPanel {
             ServerProtocol response = gui.client.serverRequest("join-lobby", "1");
             if (response.type.equals("true")) {
                 gui.setTitle("Lobby 1");
+                gui.setContentPane(gui.chat);
             } else if (response.type.equals("false")) {
                 JOptionPane.showMessageDialog(gui,
                            response.message[0],
@@ -48,7 +49,6 @@ public class LobbyFrame extends JPanel {
                     gui.setContentPane(gui.lobby);
                     gui.setTitle("Lobby Room");
             }
-            gui.setContentPane(gui.chat);
         });
         btnLobby1.setBounds(175, 190, 100, 29);
         add(btnLobby1);
@@ -58,6 +58,7 @@ public class LobbyFrame extends JPanel {
             ServerProtocol response = gui.client.serverRequest("join-lobby", "2");
             if (response.type.equals("true")) {
                 gui.setTitle("Lobby 2");
+                gui.setContentPane(gui.chat);
             } else if (response.type.equals("false")) {
                 JOptionPane.showMessageDialog(gui,
                         response.message[0],
@@ -75,6 +76,7 @@ public class LobbyFrame extends JPanel {
             ServerProtocol response = gui.client.serverRequest("join-lobby", "3");
             if (response.type.equals("true")) {
                 gui.setTitle("Lobby 3");
+                gui.setContentPane(gui.chat);
             } else if (response.type.equals("false")) {
                 JOptionPane.showMessageDialog(gui,
                         response.message[0],

@@ -10,8 +10,8 @@ public class LogInFrame extends JPanel {
     private JTextField enterPassword;
     private ClientGui gui;
 
-    public LogInFrame(ClientGui gui) {
-        this.gui = gui;
+    public LogInFrame(ClientGui guiConstructor) {
+        this.gui = guiConstructor;
         setLayout(null);
         this.setBounds(0, 0, 450, 278);
 
@@ -44,11 +44,15 @@ public class LogInFrame extends JPanel {
             } else {
                 gui.client.connect();
                 ServerProtocol response = gui.client.serverRequest("login", username, password);
+                System.out.println(response);
                 if (response.type.startsWith("true")) {
                     JOptionPane.showMessageDialog(gui,
                             "Signed in: " + username,
                             "Sign-in success", JOptionPane.INFORMATION_MESSAGE);
+                    gui.remove(this);
                     gui.setContentPane(gui.lobby);
+                    gui.revalidate();
+                    gui.repaint();
                     gui.setTitle("Lobby Room");
                 } else if (response.type.startsWith("false")) {
                     JOptionPane.showMessageDialog(gui,

@@ -1,7 +1,10 @@
 package Client;
 
 
+import Server.Message;
+
 import javax.swing.*;
+import java.io.IOException;
 
 @SuppressWarnings("Duplicates")
 public class ChatDisplay extends JPanel {
@@ -9,9 +12,11 @@ public class ChatDisplay extends JPanel {
     public JTextArea chatBox;
     private JTextField messageBox;
     private ClientGui gui;
+    private Runnable chatThread;
+    private boolean isRunning;
 
-    public ChatDisplay(ClientGui gui) {
-        this.gui = gui;
+    public ChatDisplay(ClientGui guiConstructor) {
+        this.gui = guiConstructor;
         setLayout(null);
         setBounds(0, 0, 630, 460);
 
@@ -41,7 +46,24 @@ public class ChatDisplay extends JPanel {
         btnSend.setBounds(530, 400, 90, 30);
         add(btnSend);
 
+        Runnable task = () -> {
+            while (isRunning) {
+                try {
+                    Object o = gui.client.inputStream.readObject();
+                    if (o instanceof Message) {
+                        Message message = (Message) o;
+                        chatBox.append(message.toString());
+                    }
+                } catch (IOException | ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        new Thread(task).start();
+    }
 
+    public void setRunning(boolean running) {
+        isRunning = running;
     }
 
     /**

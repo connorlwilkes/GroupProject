@@ -15,8 +15,8 @@ public class QuestionPanel extends JPanel {
     /**
      * Create the panel.
      */
-    public QuestionPanel(ClientGui gui) {
-        this.gui = gui;
+    public QuestionPanel(ClientGui guiConstructor) {
+        this.gui = guiConstructor;
         setBackground(new Color(154, 205, 50));
         setLayout(null);
 

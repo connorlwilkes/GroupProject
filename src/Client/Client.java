@@ -90,6 +90,7 @@ public class Client {
                 Message newMessage = (Message) o;
                 String oldMessage = gui.chat.chatBox.getText();
                 gui.chat.chatBox.setText(oldMessage + "\n" + newMessage.toString());
+                gui.qm.lblNewLabel_1.setText("hello");
             } else {
                 //TODO: Game logic here?
 

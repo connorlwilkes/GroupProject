@@ -2,6 +2,8 @@ package Server;
 
 import java.io.*;
 import java.net.Socket;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -179,7 +181,18 @@ public class ServerThread implements Runnable {
      * @throws IOException
      */
     private synchronized void setUpAccount(String username, String password) throws IOException {
-        ServerProtocol response = RegisterUser.checkUser(currentUser);
+        currentUser = new User(username, password);
+        ServerProtocol response = null;
+        try {
+            response = RegisterUser.checkUser(currentUser);
+        } catch (InvalidKeySpecException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        System.out.println(response);
+        // ServerProtocol response = new ServerProtocol("false", " test error");
+        server.addActiveUser(currentUser);
         outputStream.writeObject(response);
         outputStream.flush();
     }

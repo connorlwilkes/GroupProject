@@ -1,5 +1,7 @@
 package Server;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -7,6 +9,8 @@ import java.sql.Statement;
 
 import static Server.DatabaseQueries.checkUsername;
 import static Server.DatabaseQueries.connect;
+import static Server.PasswordSecure.EncryptPassword;
+import static Server.PasswordSecure.createSalt;
 
 /**
  * RegisterUser class for the registration process of the minigame
@@ -24,11 +28,16 @@ public class RegisterUser {
      * @return Server protocol to the server in order to alert the user whether
      * their registration has been successful and if not what error occurred.
      */
-    public static ServerProtocol checkUser(User user) {
+    public static ServerProtocol checkUser(User user) throws InvalidKeySpecException, NoSuchAlgorithmException {
 
         String username = user.getUsername();
         String password = user.getPassword();
-
+        byte[] salt = new byte[0];
+        try {
+            salt = createSalt();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
         ServerProtocol a = new ServerProtocol("true", "Successfully registered user");
         ServerProtocol b = new ServerProtocol("false", "Invalid Input");
         ServerProtocol c = new ServerProtocol("false", "User already exists");
@@ -52,10 +61,12 @@ public class RegisterUser {
         /**
          * this string is used in the next method to create a prepared statement and to query the database userdb
          */
-        String query = "INSERT INTO userdb (username, password) VALUES (?, ?)";
+        String query = "INSERT INTO userdbtest (username, password, salt) VALUES (?, ?, ?)";
         /**
          * here the connection method is called in order to connect to the database
          */
+        byte[] encryptedPassword = EncryptPassword(password,salt);
+
         try (Connection connection = connect()) {
             PreparedStatement pmst = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             /**
@@ -63,7 +74,8 @@ public class RegisterUser {
              * which have been inputted into the gui. These are then added to the database userdb.
              */
             pmst.setString(1, username);
-            pmst.setString(2, password);
+            pmst.setBytes(2, encryptedPassword);
+            pmst.setBytes(3, salt);
             pmst.execute();
             return a;
             /**

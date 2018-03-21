@@ -46,6 +46,7 @@ public class UserTest {
 	}
 	
 	
+	
 	@Test
 	public void testEquals(){
 		User u1 = new User("qxr","correct");

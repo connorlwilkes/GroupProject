@@ -4,6 +4,11 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
+/**
+ * Class to test methods in DatabaseQueries class
+ * @author Florence
+ * @version 21/03/2018
+ */
 public class DatabaseQueriesTest {
 
     @Test

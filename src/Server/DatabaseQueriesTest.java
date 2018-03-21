@@ -21,5 +21,12 @@ public class DatabaseQueriesTest {
         boolean actual = DatabaseQueries.checkUsername(a);
         assertEquals(expected, actual);
     }//testing the correct boolean is produced if an existing user is inputted
+    
+     @Test
+    public void test3() {
+        User a = new User("qwerty", "ghoul");
+        boolean actual = DatabaseQueries.checkUsername(a);
+        assertTrue(actual);
+    }//again testing the correct boolean is produced if an existing user is inputted
 
 }

@@ -16,7 +16,8 @@ public class ScorePanel extends JPanel {
     private JLabel txtAndTheWinner;
 
     /**
-     * Create the panel.
+     * ScorePanel is a constructor that creates the panel.
+     * @param guiConstructor
      */
     public ScorePanel(ClientGui guiConstructor) {
         this.gui = guiConstructor;

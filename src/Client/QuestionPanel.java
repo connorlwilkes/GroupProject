@@ -21,7 +21,8 @@ public class QuestionPanel extends JPanel {
     private ClientGui gui;
 
     /**
-     * Create the panel.
+     * QuestionPanel is a constructor that creates the panel.
+     * @param guiConstructor
      */
     public QuestionPanel(ClientGui guiConstructor) {
         this.gui = guiConstructor;

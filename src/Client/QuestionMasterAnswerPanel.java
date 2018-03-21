@@ -25,7 +25,8 @@ public class QuestionMasterAnswerPanel extends JPanel {
     public String answer;
 
     /**
-     * Create the panel.
+     * QuestionMasterAnswerPanel is a constructor that creates the panel.
+     * @param guiConstructor
      */
     public QuestionMasterAnswerPanel(ClientGui guiConstructor) {
         this.gui = guiConstructor;

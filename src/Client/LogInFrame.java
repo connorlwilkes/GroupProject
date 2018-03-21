@@ -16,6 +16,10 @@ public class LogInFrame extends JPanel {
     private JPasswordField enterPassword;
     private ClientGui gui;
 
+    /**
+     * LogInFrame is a constructor that creates the panel.
+     * @param guiConstructor
+     */
     public LogInFrame(ClientGui guiConstructor) {
         this.gui = guiConstructor;
         setLayout(null);

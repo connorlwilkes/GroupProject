@@ -14,6 +14,10 @@ public class Waiting extends JPanel{
 
 	private ClientGui gui;
 	
+	/**
+	 * Waiting is a constructor that creates the panel.
+	 * @param guiConstructor
+	 */
 	public Waiting(ClientGui guiConstructor) {
         this.gui = guiConstructor;
         setLayout(null);

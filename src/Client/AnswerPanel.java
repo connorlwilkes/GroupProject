@@ -14,10 +14,10 @@ public class AnswerPanel extends JPanel {
     public JTextArea txtrPlayerAnswer = new JTextArea();
     public JTextArea txtrPlayerAnswer_1 = new JTextArea();
     private ClientGui gui;
-    private JTextField textField;
 
     /**
-     * Create the panel.
+     * AnswerPanel is a constructor that creates the panel
+     * @param guiConstructor
      */
     public AnswerPanel(ClientGui guiConstructor) {
         this.gui = guiConstructor;

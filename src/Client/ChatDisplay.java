@@ -1,12 +1,9 @@
 package Client;
 
 
-import Server.Message;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -19,7 +16,6 @@ import java.io.IOException;
  * @author Florence
  * @version 14/03/18
  */
-@SuppressWarnings("Duplicates")
 public class ChatDisplay extends JFrame {
 
     public JTextArea chatBox;
@@ -31,8 +27,7 @@ public class ChatDisplay extends JFrame {
     private JButton btnSend;
 
     /**
-     * Constructor for ChatDisplay
-     *
+     * ChatDisplay is a constructor that creates the panel
      * @param clientConstructor
      */
     public ChatDisplay(Client clientConstructor) {
@@ -95,7 +90,6 @@ public class ChatDisplay extends JFrame {
 
     /**
      * setRunning method
-     *
      * @param running
      */
     public void setRunning(boolean running) {

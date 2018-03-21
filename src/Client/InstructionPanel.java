@@ -13,7 +13,8 @@ public class InstructionPanel extends JPanel {
     private ClientGui gui;
 
     /**
-     * Create the panel.
+     * InstructionPanel is a constructor that creates the panel.
+     * @param gui
      */
     public InstructionPanel(ClientGui gui) {
         this.gui = gui;

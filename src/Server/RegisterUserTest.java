@@ -11,15 +11,13 @@ public class RegisterUserTest {
 
     @Test
     public void test1() {
-        User a = new User("Sophia", "wow");
+        User a = new User("Klara", "wow");
         ServerProtocol b = new ServerProtocol("true", "Successfully registered user");
         String expected = b.toString();
         String actual = null;
         try {
             actual = RegisterUser.checkUser(a).toString();
-        } catch (InvalidKeySpecException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
+        } catch (InvalidKeySpecException | NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
         assertEquals(expected, actual);
@@ -33,9 +31,7 @@ public class RegisterUserTest {
         String actual = null;
         try {
             actual = RegisterUser.checkUser(b).toString();
-        } catch (InvalidKeySpecException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
+        } catch (InvalidKeySpecException | NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
         assertEquals(expected, actual);

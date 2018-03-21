@@ -52,29 +52,27 @@ public class ChatDisplay extends JFrame {
 
         chatBox.setFont(new Font("Serif", Font.PLAIN, 15));                // sets the font for messages displayed in the chatBox to 'Serif', size 15
         btnSend.addActionListener(e -> {
-            String chatMessage = messageBox.getText();            
+            String chatMessage = messageBox.getText();
             if (chatMessage.length() != 0) {
-            		if (chatMessage.equals(".clear")) {
-            		chatBox.setText("");
-            		messageBox.setText("");
-            		}
-            		if (chatMessage.equals(".shot")) {
-            			messageBox.setText("");
-            			BufferedImage img = new BufferedImage(displayFrame.getWidth(), displayFrame.getHeight(), BufferedImage.TYPE_INT_RGB);
-            			displayFrame.paint(img.getGraphics());
-            			File outputfile = new File("NUDES.png");
-            			try {
-							ImageIO.write(img, "png", outputfile);
-						} catch (IOException e1) {
-							e1.printStackTrace();
-						}
-                		
-                		}
-            		else {
-                System.out.println(chatMessage);
-                client.sendMessage(chatMessage);
-                messageBox.setText("");
-            		}
+                if (chatMessage.equals(".clear")) {
+                    chatBox.setText("");
+                    messageBox.setText("");
+                }
+                if (chatMessage.equals(".shot")) {
+                    messageBox.setText("");
+                    BufferedImage img = new BufferedImage(displayFrame.getWidth(), displayFrame.getHeight(), BufferedImage.TYPE_INT_RGB);
+                    displayFrame.paint(img.getGraphics());
+                    File outputfile = new File("NUDES.png");
+                    try {
+                        ImageIO.write(img, "png", outputfile);
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+
+                } else {
+                    client.sendMessage(chatMessage);
+                    messageBox.setText("");
+                }
             }
         });
         southPanel.add(btnSend, right);

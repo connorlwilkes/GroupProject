@@ -1,6 +1,6 @@
 package Server;
 
-public class changePassword {
+public class ChangePassword {
 
    // public static
 

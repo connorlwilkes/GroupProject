@@ -215,7 +215,7 @@ public class Player {
                 out.writeObject(message);
                 out.flush();
             } else {
-                game.addScore(Integer.valueOf(request.message[0]), username);
+                game.addScore(Integer.valueOf(request.message[1]), username);
                 ServerProtocol message = new ServerProtocol("qm-vote", "Vote accepted");
                 out.writeObject(message);
                 out.flush();

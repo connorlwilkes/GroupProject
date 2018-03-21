@@ -3,13 +3,20 @@ package Client;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * QuestionMasterPanel randomly chooses a Question Master and displays which user it is
+ * @author Florence
+ * @version 17/03/18
+ */
 public class QuestionMasterPanel extends JPanel {
-    public JLabel lblNewLabel = new JLabel();
-
+    
+	public JLabel lblNewLabel = new JLabel();
+    public JLabel lblNewLabel_1 = new JLabel();
     private ClientGui gui;
 
     /**
-     * Create the panel.
+     * QuestionMasterPanel is a constructor that creates the panel.
+     * @param guiConstructor
      */
     public QuestionMasterPanel(ClientGui guiConstructor) {
         this.gui = guiConstructor;
@@ -21,7 +28,7 @@ public class QuestionMasterPanel extends JPanel {
         lblNewLabel.setBounds(270, 68, 351, 51);
         add(lblNewLabel);
 
-        JLabel lblNewLabel_1 = new JLabel();   //make a call to get player username who is question master.
+        lblNewLabel_1 = new JLabel();   //make a call to get player username who is question master.
         lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
         lblNewLabel_1.setBounds(410, 130, 85, 37);
         add(lblNewLabel_1);

@@ -7,6 +7,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+/**
+ * QuestionPanel displays the question for the round
+ * @author Florence
+ * @version 18/03/18
+ *
+ */
 public class QuestionPanel extends JPanel {
 
     public JTextArea txtrQuestion = new JTextArea();
@@ -15,7 +21,8 @@ public class QuestionPanel extends JPanel {
     private ClientGui gui;
 
     /**
-     * Create the panel.
+     * QuestionPanel is a constructor that creates the panel.
+     * @param guiConstructor
      */
     public QuestionPanel(ClientGui guiConstructor) {
         this.gui = guiConstructor;
@@ -31,6 +38,8 @@ public class QuestionPanel extends JPanel {
         txtrQuestion.setFont(new Font("Showcard Gothic", Font.PLAIN, 15));
         txtrQuestion.setText("question");
         txtrQuestion.setBounds(20, 50, 450, 79);
+        txtrQuestion.setLineWrap(true);
+        txtrQuestion.setWrapStyleWord(true);
         add(txtrQuestion);
 
         JTextArea txtrAnswer = new JTextArea();

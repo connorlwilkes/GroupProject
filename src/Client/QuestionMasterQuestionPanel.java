@@ -5,6 +5,12 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * QuestionMasterQuestionPanel LEWIS!!
+ * @author Florence
+ * @version 21/03/18
+ *
+ */
 public class QuestionMasterQuestionPanel extends JPanel {
 
     public JTextArea txtrQuestion = new JTextArea();
@@ -12,7 +18,8 @@ public class QuestionMasterQuestionPanel extends JPanel {
     private ClientGui gui;
 
     /**
-     * Create the panel.
+     * QuestionMasterQuestionPanel is a constructor that creates the panel.
+     * @param guiConstructor
      */
     public QuestionMasterQuestionPanel(ClientGui guiConstructor) {
         this.gui = guiConstructor;
@@ -36,11 +43,11 @@ public class QuestionMasterQuestionPanel extends JPanel {
         add(textField);
         textField.setColumns(10);
 
-        Timer timer = new Timer(1000, new ActionListener() {                            //creates a timer
+        Timer timer = new Timer(1000, new ActionListener() {                            
             private int count = 5;
 
             @Override
-            public void actionPerformed(ActionEvent e) {                                //after each second the timer will reduce the counter  by one until it is one and then displays end
+            public void actionPerformed(ActionEvent e) {       //after each second the timer will reduce the counter  by one until it is one and then displays end
                 if (count <= 0) {
                     textField.setText("end");
                     ((Timer) e.getSource()).stop();

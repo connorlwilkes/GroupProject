@@ -1,7 +1,6 @@
 package Client;
 
 import Server.ServerProtocol;
-
 import javax.swing.*;
 
 /**
@@ -17,6 +16,10 @@ public class LogInFrame extends JPanel {
     private JPasswordField enterPassword;
     private ClientGui gui;
 
+    /**
+     * LogInFrame is a constructor that creates the panel.
+     * @param guiConstructor
+     */
     public LogInFrame(ClientGui guiConstructor) {
         this.gui = guiConstructor;
         setLayout(null);
@@ -40,7 +43,7 @@ public class LogInFrame extends JPanel {
         enterPassword.setColumns(12);
         add(enterPassword);
 
-        JButton btnSignIn = new JButton("Sign In");
+        JButton btnSignIn = new JButton("Sign In");        
         btnSignIn.addActionListener(e -> {
             String username = enterUsername.getText();
             String password = enterPassword.getText();
@@ -85,5 +88,6 @@ public class LogInFrame extends JPanel {
         });
         btnSignUp.setBounds(175, 260, 91, 29);
         add(btnSignUp);
+       
     }
 }

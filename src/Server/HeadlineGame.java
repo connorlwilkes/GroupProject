@@ -1,13 +1,11 @@
 package Server;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -22,7 +20,7 @@ public class HeadlineGame extends Minigame {
 
     private Player questionMaster;
     private List<String> questions;
-    private HashMap<Player, String> answerMap;
+    private Map<String, Player> answerMap;
     private List<String> answers;
 
     public HeadlineGame(List<Player> players) {
@@ -37,8 +35,49 @@ public class HeadlineGame extends Minigame {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        for (Player player : players) {
-            answerMap.put(player, null);
+        for (Player player : getPlayers()) {
+            try {
+                ServerProtocol start = new ServerProtocol("start", "game is starting");
+                player.getOut().writeObject(start);
+                player.getOut().flush();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void nextRound() {
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        if (getRoundNumber() == 3) {
+            endGame();
+        }
+        setRoundNumber(getRoundNumber() + 1);
+        answerMap = new HashMap<>();
+        answers = new ArrayList<>();
+        try {
+            for (Player player : getPlayers()) {
+                ServerProtocol start = new ServerProtocol("start", "game is starting");
+                player.getOut().writeObject(start);
+                player.getOut().flush();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void endGame() {
+        try {
+            for (Player player : getPlayers()) {
+                ServerProtocol start = new ServerProtocol("end", "game is over");
+                player.getOut().writeObject(start);
+                player.getOut().flush();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -50,7 +89,7 @@ public class HeadlineGame extends Minigame {
         return questions.get(getRoundNumber() - 1);
     }
 
-    public HashMap<Player, String> getAnswerMap() {
+    public Map<String, Player> getAnswerMap() {
         return answerMap;
     }
 
@@ -61,7 +100,7 @@ public class HeadlineGame extends Minigame {
      * @param answer value
      */
     public synchronized void addAnswer(Player player, String answer) {
-        answerMap.put(player, answer);
+        answerMap.put(answer, player);
         answers.add(answer);
     }
 

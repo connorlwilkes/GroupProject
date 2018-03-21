@@ -71,6 +71,11 @@ public class User {
         return this.password.equals(password);
     }
 
+    @Override
+    public String toString() {
+        return username;
+    }
+
     /**
      * Equals method for the user class comparing username and password equality
      *

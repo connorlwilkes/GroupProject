@@ -17,6 +17,10 @@ public class LobbyFrame extends JPanel {
 
     private ClientGui gui;
 
+    /**
+     * LobbyFrame is a constructor that creates the panel.
+     * @param guiConstructor
+     */
     public LobbyFrame(ClientGui guiConstructor) {
         this.gui = guiConstructor;
         setLayout(null);

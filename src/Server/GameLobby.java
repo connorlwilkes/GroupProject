@@ -43,6 +43,16 @@ public class GameLobby implements Runnable {
         chatRoom = new ChatRoom(this);
         gameNumber = 1;
         answers = new HashMap<>();
+        Runnable checkingUsers = () -> {
+            while (isRunning) {
+                for (Player player : players) {
+                    if (player.getClient().connection.isClosed()) {
+                        removePlayer(player);
+                    }
+                }
+            }
+        };
+        new Thread(checkingUsers).start();
     }
 
     /**

@@ -19,7 +19,6 @@ public class LobbyFrame extends JPanel {
                 gui.setTitle("Lobby 1");
                 gui.chat.setRunning(true);
                 new Thread(gui.chat.chatThread).start();
-                gui.chat.setVisible(true);
                 gui.chat.displayFrame.setVisible(true);
             } else if (response.type.equals("false")) {
                 JOptionPane.showMessageDialog(gui,

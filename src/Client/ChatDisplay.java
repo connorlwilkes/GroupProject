@@ -51,7 +51,6 @@ public class ChatDisplay extends JFrame {
         btnSend.addActionListener(e -> {
             String chatMessage = messageBox.getText();
             if (chatMessage.length() != 0) {
-                System.out.println(chatMessage);
                 client.sendMessage(chatMessage);
                 messageBox.setText("");
             }

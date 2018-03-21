@@ -118,6 +118,15 @@ public class Server {
     }
 
     /**
+     * Getter for the activeusers list
+     *
+     * @return list of active users in the server
+     */
+    public List<ServerThread> getActiveUsers() {
+        return activeUsers;
+    }
+
+    /**
      * Starts the server
      */
     @SuppressWarnings("InfiniteLoopStatement")

@@ -175,7 +175,7 @@ public class Player {
             sendQuestion(game);
         } else if (type.startsWith("get-qm")) {
             sendQuestionMaster(game);
-        } else if (type.startsWith("getscores")) {
+        } else if (type.startsWith("get-scores")) {
             sendScores();
         } else {
             out.writeObject(new ServerProtocol("false", "invalid request"));

@@ -166,7 +166,14 @@ public class ServerThread implements Runnable {
      * @throws IOException
      */
     private synchronized void loginUser(String username, String password) throws IOException {
+        if (server.getActiveUsers().contains(this)) {
+            ServerProtocol response = new ServerProtocol("false", "user already logged in");
+            outputStream.writeObject(response);
+            outputStream.flush();
+            return;
+        }
         ServerProtocol response = LoginUser.CheckLogin(new User(username, password));
+        currentUser = new User(username, password);
         if (response.type.equals("true")) {
             currentUser = new User(username, password);
             server.addActiveUser(this);
@@ -187,9 +194,6 @@ public class ServerThread implements Runnable {
             response = RegisterUser.checkUser(currentUser);
         } catch (InvalidKeySpecException | NoSuchAlgorithmException e) {
             e.printStackTrace();
-        }
-        if (response.type.equals("true")) {
-            server.addActiveUser(this);
         }
         outputStream.writeObject(response);
         outputStream.flush();

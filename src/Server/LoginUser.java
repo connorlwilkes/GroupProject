@@ -38,6 +38,7 @@ public class LoginUser {
         ServerProtocol b = new ServerProtocol("false", "Invalid Input");
         ServerProtocol c = new ServerProtocol("false", "User does not exist");
         ServerProtocol d = new ServerProtocol("false", "Failure");
+
         /**
          * this string is used to construct the Prepared Statement which is used to check whether
          * the login credentials are valid and if the user exists
@@ -88,6 +89,7 @@ public class LoginUser {
 
                 return c;
             }
+
 
         } catch (SQLException ex) {
             err.println(ex);

@@ -57,37 +57,36 @@ public class RegisterUser {
              * */
         } else if (!checkUsername(user)) {
             return c;
-        }
-        /**
-         * this string is used in the next method to create a prepared statement and to query the database userdb
-         */
-        String query = "INSERT INTO userdbtest (username, password, salt) VALUES (?, ?, ?)";
-        /**
-         * here the connection method is called in order to connect to the database
-         */
-        byte[] encryptedPassword = EncryptPassword(password,salt);
-
-        try (Connection connection = connect()) {
-            PreparedStatement pmst = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+        } else {
             /**
-             * creation of a prepared statement and the specification of the two parameters username and password
-             * which have been inputted into the gui. These are then added to the database userdb.
+             * this string is used in the next method to create a prepared statement and to query the database userdb
              */
-            pmst.setString(1, username);
-            pmst.setBytes(2, encryptedPassword);
-            pmst.setBytes(3, salt);
-            pmst.execute();
-            return a;
+            String query = "INSERT INTO userdbtest (username, password, salt) VALUES (?, ?, ?)";
             /**
-             * if the connection fails then server protocol for failure is returned
+             * here the connection method is called in order to connect to the database
              */
-        } catch (SQLException ex) {
-            System.err.println(ex);
-            return d;
-        }
+            byte[] encryptedPassword = EncryptPassword(password, salt);
+            try (Connection connection = connect()) {
+                PreparedStatement pmst = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+                /**
+                 * creation of a prepared statement and the specification of the two parameters username and password
+                 * which have been inputted into the gui. These are then added to the database userdb.
+                 */
+                pmst.setString(1, username);
+                pmst.setBytes(2, encryptedPassword);
+                pmst.setBytes(3, salt);
+                pmst.execute();
+                return a;
+                /**
+                 * if the connection fails then server protocol for failure is returned
+                 */
+            } catch (SQLException ex) {
+                System.err.println(ex);
+                return d;
+            }
 
+        }
     }
-
 }
 
 

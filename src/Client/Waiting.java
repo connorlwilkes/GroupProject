@@ -5,11 +5,9 @@ import Server.ServerProtocol;
 import javax.swing.*;
 
 /**
- * LogInFrame is the class for the log in page GUI where the user enters their account details to log in. 
- * It extends JPanel and is added to a JFrame in ClientGui
+ * Waiting displays the waiting page that users are sent to whilst waiting for the lobby to become full
  * @author Florence
- * @version 14/03/18
- *
+ * @version 21/03/18
  */
 
 public class Waiting extends JPanel{

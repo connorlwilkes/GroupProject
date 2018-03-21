@@ -3,6 +3,12 @@ package Client;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * AnswerPanel displays each users answer to the question
+ * @author Florence
+ * @version 14/03/18
+ *
+ */
 public class AnswerPanel extends JPanel {
     public JTextArea txtrQuestion = new JTextArea();
     public JTextArea txtrPlayerAnswer = new JTextArea();

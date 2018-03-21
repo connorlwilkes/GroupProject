@@ -3,6 +3,11 @@ package Client;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * InstructionPanel displays the instructions of the game to the user
+ * @author Florence
+ * @version 14/03/18
+ */
 public class InstructionPanel extends JPanel {
 
     private ClientGui gui;

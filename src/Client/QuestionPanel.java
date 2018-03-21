@@ -7,6 +7,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+/**
+ * QuestionPanel displays the question for the round
+ * @author Florence
+ * @version 18/03/18
+ *
+ */
 public class QuestionPanel extends JPanel {
 
     public JTextArea txtrQuestion = new JTextArea();

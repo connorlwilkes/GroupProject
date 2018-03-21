@@ -3,6 +3,12 @@ package Client;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * QuestionMasterPanel randomly chooses a Question Master and displays which user it is
+ * @author Florence
+ * @version 17/03/18
+ *
+ */
 public class QuestionMasterPanel extends JPanel {
     public JLabel lblNewLabel = new JLabel();
     public JLabel lblNewLabel_1 = new JLabel();

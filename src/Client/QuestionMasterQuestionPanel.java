@@ -5,6 +5,12 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * QuestionMasterQuestionPanel LEWIS!!
+ * @author Florence
+ * @version 21/03/18
+ *
+ */
 public class QuestionMasterQuestionPanel extends JPanel {
 
     public JTextArea txtrQuestion = new JTextArea();

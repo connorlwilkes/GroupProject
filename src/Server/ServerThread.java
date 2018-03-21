@@ -189,14 +189,13 @@ public class ServerThread implements Runnable {
      */
     private synchronized void setUpAccount(String username, String password) throws IOException {
         currentUser = new User(username, password);
-        ServerProtocol response = null;
         try {
-            response = RegisterUser.checkUser(currentUser);
+            ServerProtocol response = RegisterUser.checkUser(currentUser);
+            outputStream.writeObject(response);
+            outputStream.flush();
         } catch (InvalidKeySpecException | NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
-        outputStream.writeObject(response);
-        outputStream.flush();
     }
 
     /**

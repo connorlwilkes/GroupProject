@@ -2,6 +2,7 @@ package Server;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -104,6 +105,9 @@ public class GameLobby implements Runnable {
     public synchronized void removePlayer(Player playerToRemove) {
         players.remove(playerToRemove);
         chatRoom.removePlayer(playerToRemove);
+        if (isFull) {
+            isFull = false;
+        }
     }
 
     /**
@@ -137,14 +141,12 @@ public class GameLobby implements Runnable {
      * @return the scores as an array of Strings
      */
     public synchronized String[] getScores() {
-        String[] toReturn = new String[players.size()];
-        StringBuilder string = new StringBuilder();
-        for (int i = 0; i < players.size(); i++) {
-            string.append(players.get(i).getUser().getUsername() + ": " + players.get(i).getScore());
-            toReturn[i] = string.toString();
-            string.setLength(0);
+        List<String> toReturn = new ArrayList<>();
+        toReturn.add("get-scores");
+        for (Player player: players) {
+            toReturn.add(player.getUser().getUsername() + ": " + player.getScore());
         }
-        return toReturn;
+        return toReturn.toArray(new String[toReturn.size()]);
     }
 
     /**
@@ -165,17 +167,6 @@ public class GameLobby implements Runnable {
         isRunning = true;
         HeadlineGame game = new HeadlineGame(players);
         games.add(game);
-        for (Player player : players) {
-            try {
-                ServerProtocol start = new ServerProtocol("start", "game is starting");
-                System.out.println("here");
-                player.getOut().writeObject(start);
-                player.getOut().flush();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
     }
 
 }

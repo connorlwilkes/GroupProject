@@ -30,6 +30,8 @@ public class RegisterUser {
      */
     public static ServerProtocol checkUser(User user) throws InvalidKeySpecException, NoSuchAlgorithmException {
 
+        System.out.println("her: start");
+
         String username = user.getUsername();
         String password = user.getPassword();
         byte[] salt = createSalt();
@@ -75,6 +77,7 @@ public class RegisterUser {
                 pmst.setBytes(3, salt);
                 pmst.execute();
                 pmst.close();
+                System.out.println("here: a");
                 return a;
                 /**
                  * if the connection fails then server protocol for failure is returned

@@ -38,7 +38,7 @@ public class ChatDisplay extends JFrame {
         displayFrame = new JFrame("Chat");                            // creates a new JFrame
         JPanel southPanel = new JPanel();                            // creates a new JPanel (southPanel)
         displayFrame.add(BorderLayout.SOUTH, southPanel);                    // adds southPanel to the bottom of JFrame
-        southPanel.setBackground(Color.BLACK);                        // sets background of southPanel to black
+        southPanel.setBackground(Color.DARK_GRAY);                        // sets background of southPanel to dark grey
         southPanel.setLayout(new GridBagLayout());                    // sets the layout of southPanel as GridBagLayout
 
         displayFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);            // closes the JFrame when the display is exitted
@@ -62,6 +62,7 @@ public class ChatDisplay extends JFrame {
         southPanel.add(btnSend, right);                            // adds the 'sendMessage' JButton to the southPanel with the 'right' constraint
 
         chatBox.setFont(new Font("Serif", Font.PLAIN, 15));                // sets the font for messages displayed in the chatBox to 'Serif', size 15
+        chatBox.setEditable(false);
         btnSend.addActionListener(e -> {
             String chatMessage = messageBox.getText();
             if (chatMessage.length() != 0) {
@@ -73,7 +74,7 @@ public class ChatDisplay extends JFrame {
                     messageBox.setText("");
                     BufferedImage img = new BufferedImage(displayFrame.getWidth(), displayFrame.getHeight(), BufferedImage.TYPE_INT_RGB);
                     displayFrame.paint(img.getGraphics());
-                    File outputfile = new File("NUDES.png");
+                    File outputfile = new File("chatroom.png");
                     try {
                         ImageIO.write(img, "png", outputfile);
                     } catch (IOException e1) {

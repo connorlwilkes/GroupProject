@@ -31,6 +31,8 @@ public class QuestionPanel extends JPanel {
         txtrQuestion.setFont(new Font("Showcard Gothic", Font.PLAIN, 15));
         txtrQuestion.setText("question");
         txtrQuestion.setBounds(20, 50, 450, 79);
+        txtrQuestion.setLineWrap(true);
+        txtrQuestion.setWrapStyleWord(true);
         add(txtrQuestion);
 
         JTextArea txtrAnswer = new JTextArea();

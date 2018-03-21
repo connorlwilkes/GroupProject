@@ -16,6 +16,7 @@ public class QuestionMasterAnswerPanel extends JPanel {
     public JTextArea txtrPlayerAnswer_1 = new JTextArea();
     public boolean voteCast = false;
     private ClientGui gui;
+    public String answer;
 
     /**
      * Create the panel.
@@ -33,7 +34,6 @@ public class QuestionMasterAnswerPanel extends JPanel {
 
         txtrQuestion = new JTextArea();
         txtrQuestion.setFont(new Font("Showcard Gothic", Font.PLAIN, 13));
-        txtrQuestion.setText("question");
         txtrQuestion.setBounds(20, 41, 450, 80);
         txtrQuestion.setLineWrap(true);
         txtrQuestion.setWrapStyleWord(true);
@@ -60,15 +60,8 @@ public class QuestionMasterAnswerPanel extends JPanel {
         btnNewButton.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
-                ServerProtocol sendAnswer = new ServerProtocol("qm-vote", txtrPlayerAnswer.getText(), "10");
-                try {
-                    gui.client.outputStream.writeObject(sendAnswer);
-                    gui.client.outputStream.flush();
-                    voteCast = true;
-                } catch (IOException e1) {
-                    // TODO Auto-generated catch block
-                    e1.printStackTrace();
-                }
+                voteCast = true;
+                answer = txtrPlayerAnswer.getText();
             }
         });
 
@@ -80,15 +73,8 @@ public class QuestionMasterAnswerPanel extends JPanel {
         btnNewButton_1.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
-                ServerProtocol sendAnswer = new ServerProtocol("qm-vote", txtrPlayerAnswer_1.getText(), "10");
-                try {
-                    gui.client.outputStream.writeObject(sendAnswer);
-                    gui.client.outputStream.flush();
-                    voteCast = true;
-                } catch (IOException e1) {
-                    // TODO Auto-generated catch block
-                    e1.printStackTrace();
-                }
+                voteCast = true;
+                answer = txtrPlayerAnswer_1.getText();
             }
         });
 

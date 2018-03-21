@@ -163,7 +163,6 @@ public class Player {
      */
     private void processHeadlineGameRequests(ServerProtocol request, String type) throws IOException {
         HeadlineGame game = (HeadlineGame) lobby.getCurrentGame();
-        System.out.println(request);
         if (type.startsWith("answer")) {
             answer(request, game);
         } else if (type.startsWith("qm-vote")) {
@@ -177,7 +176,7 @@ public class Player {
         } else if (type.startsWith("get-qm")) {
             sendQuestionMaster(game);
         } else if (type.startsWith("get-scores")) {
-            sendScores();
+            sendScores(game);
         } else {
             out.writeObject(new ServerProtocol("false", "invalid request"));
             out.flush();
@@ -193,9 +192,6 @@ public class Player {
      */
     private void answer(ServerProtocol request, HeadlineGame game) throws IOException {
         game.addAnswer(this, request.message[0]);
-//        ServerProtocol message = new ServerProtocol("true", "Answer added");
-//        out.writeObject(message);
-//        out.flush();
     }
 
     /**
@@ -207,19 +203,19 @@ public class Player {
      */
     private void vote(ServerProtocol request, HeadlineGame game) throws IOException {
         if (isQuestionMaster) {
-            String username = game.getAnswerMap().entrySet().stream()
-                    .filter(entry -> (request.message[0].equals(entry.getValue())))
-                    .findFirst()
-                    .map(Map.Entry::getKey).toString();
+            String sentAnswer = request.message[0];
+            String username = game.getAnswerMap().get(sentAnswer).getUser().getUsername();
             if (username == null) {
                 ServerProtocol message = new ServerProtocol("false", "invalid request");
                 out.writeObject(message);
                 out.flush();
             } else {
                 game.addScore(Integer.valueOf(request.message[1]), username);
-                ServerProtocol message = new ServerProtocol("qm-vote", "Vote accepted");
-                out.writeObject(message);
-                out.flush();
+                ServerProtocol message = new ServerProtocol(lobby.getScores());
+                for (Player player : game.getPlayers()) {
+                    player.getOut().writeObject(message);
+                    player.getOut().flush();
+                }
             }
         } else {
             ServerProtocol message = new ServerProtocol("false", "invalid request");
@@ -303,8 +299,9 @@ public class Player {
      *
      * @throws IOException
      */
-    private void sendScores() throws IOException {
+    private void sendScores(HeadlineGame game) throws IOException {
         ServerProtocol message = new ServerProtocol(lobby.getScores());
+        game.nextRound();
         out.writeObject(message);
         out.flush();
     }

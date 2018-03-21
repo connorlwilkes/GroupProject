@@ -6,6 +6,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
+/**
+ * QuestionPage class to generate the page which displays the question for each round.
+ * Has the fields frame, txtQuestion, txtRound and txtCountdown of the types JFrame, JTextArea and JTextField respectively.
+ * @author Florence
+ * @version 21/03/2018
+ *
+ */
 public class QuestionPage {
 
     JFrame frame;
@@ -14,9 +21,10 @@ public class QuestionPage {
     private JTextField txtCountdown;
 
     /**
-     * Create the application.
-     *
-     * @return
+     * Constructor to create the application. Uses the params question and i as arguments
+     * 
+     * @param question An array of questions for the game
+     * @param i The index of the question array
      * @throws ClassNotFoundException
      * @throws InterruptedException
      * @wbp.parser.entryPoint
@@ -56,8 +64,10 @@ public class QuestionPage {
 //    }
 
     /**
-     * Initialize the contents of the frame.
+     * method to initialize the contents of the frame.
      *
+     * @param question An array of questions for the game
+     * @param i The index of the question array
      * @throws ClassNotFoundException
      * @throws InterruptedException
      * @wbp.parser.entryPoint
@@ -97,6 +107,9 @@ public class QuestionPage {
         Timer timer = new Timer(1000, new ActionListener() {                            //creates a timer
             private int count = 5;
 
+            /**
+            * actionPerformed method to
+            */
             @Override
             public void actionPerformed(ActionEvent e) {                                //after each second the timer will reduce the counter  by one until it is one and then displays end
                 if (count <= 0) {

@@ -28,10 +28,16 @@ public class LobbyFrame extends JPanel {
         btnLobby1.addActionListener(e -> {
             ServerProtocol response = gui.client.serverRequest("join-lobby", "1");
             if (response.type.equals("true")) {
-                gui.setTitle("Lobby 1");
+            		gui.remove(this);
+                gui.setContentPane(gui.wait);
+                gui.revalidate();
+                gui.repaint();
+                gui.setTitle("Waiting for players");
+            	
+            		gui.setTitle("Lobby 1");
                 gui.chat.setRunning(true);
                 new Thread(gui.chat.chatThread).start();
-                gui.chat.displayFrame.setVisible(true);
+                gui.chat.displayFrame.setVisible(true); 
             } else if (response.type.equals("false")) {
                 JOptionPane.showMessageDialog(gui,
                         response.message[0],

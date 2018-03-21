@@ -106,7 +106,7 @@ public class LoginUser {
         return d;
     }
 
-    public static boolean logoutUser(ServerThread currentUserThread) {
+    public static ServerProtocol logoutUser(ServerThread currentUserThread) {
 
         List<ServerThread> activeUsers = currentUserThread.getServer().getActiveUsers();
 
@@ -114,10 +114,10 @@ public class LoginUser {
 
             if (currentUserThread.currentUser.equals(activeUsers.get(i))) {
                 currentUserThread.getServer().removeUser(currentUserThread.currentUser);
-                return true; //returns true if the user is currently logged in and needs to be
+                return new ServerProtocol("true","Successfully Logged out"); //returns true if the user is currently logged in and needs to be
                 // removed from the active user list to log them out
             }
-        } return false;//false if the user is not currently logged in
+        } return new ServerProtocol("false","Logout Failure");//false if the user is not currently logged in
 
     }
 

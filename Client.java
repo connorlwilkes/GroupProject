@@ -83,6 +83,10 @@ public class Client {
             if (o instanceof ServerProtocol) {
             	ServerProtocol message = (ServerProtocol)o;
             	if (message.type.startsWith("start")) {
+                    String questionMaster = message.message[0];
+            		gui.qm.lblNewLabel.setText(questionMaster);
+            		gui.qm.setVisible(true);
+            		Thread.sleep(5000);
             		ServerProtocol getQuestionMaster = new ServerProtocol("get-qm");
             		outputStream.writeObject(getQuestionMaster);
                     outputStream.flush();

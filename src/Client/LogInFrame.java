@@ -77,6 +77,8 @@ public class LogInFrame extends JPanel {
 
         JButton btnSignUp = new JButton("Sign Up");
         btnSignUp.addActionListener(e -> {
+        		enterUsername.setText("");
+        		enterPassword.setText("");
             gui.setContentPane(
                     gui.register);
             gui.setTitle("Sign up");

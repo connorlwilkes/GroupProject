@@ -48,7 +48,7 @@ public class ServerThread implements Runnable {
         this.connection = connection;
         this.server = server;
     }
-
+    public Server getServer(){ return server;}
     /**
      * Helper function to close the server
      *
@@ -181,6 +181,7 @@ public class ServerThread implements Runnable {
         outputStream.writeObject(response);
         outputStream.flush();
     }
+
 
     /**
      * Sets up an account

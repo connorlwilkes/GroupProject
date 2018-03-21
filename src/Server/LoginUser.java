@@ -6,11 +6,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 import static Server.DatabaseQueries.checkUsername;
 import static Server.DatabaseQueries.connect;
 import static Server.PasswordSecure.passwordCheck;
 import static java.lang.System.err;
+
 
 /**
  * LoginUser class for the Login process of the minigame
@@ -91,6 +93,10 @@ public class LoginUser {
             }
 
 
+
+
+
+
         } catch (SQLException ex) {
             err.println(ex);
         }
@@ -99,4 +105,20 @@ public class LoginUser {
          */
         return d;
     }
+
+    public static ServerProtocol logoutUser(ServerThread currentUserThread) {
+
+        List<ServerThread> activeUsers = currentUserThread.getServer().getActiveUsers();
+
+        for (int i = 0; i < activeUsers.size(); i++) {
+
+            if (currentUserThread.currentUser.equals(activeUsers.get(i))) {
+                currentUserThread.getServer().removeUser(currentUserThread.currentUser);
+                return new ServerProtocol("true","Successfully Logged out"); //returns true if the user is currently logged in and needs to be
+                // removed from the active user list to log them out
+            }
+        } return new ServerProtocol("false","Logout Failure");//false if the user is not currently logged in
+
+    }
+
 }

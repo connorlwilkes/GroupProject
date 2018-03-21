@@ -83,6 +83,9 @@ public class RegisterFrame extends JPanel {
 
         JButton back = new JButton("Back");
         back.addActionListener(e -> {
+        		enterUser.setText("");
+        		enterPass.setText("");
+        		reEnterPass.setText("");
             gui.setContentPane(
                     gui.login);
             gui.setTitle("Log In");

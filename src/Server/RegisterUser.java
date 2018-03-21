@@ -34,7 +34,7 @@ public class RegisterUser {
 
         String username = user.getUsername();
         String password = user.getPassword();
-        byte[] salt = createSalt();
+
 
         ServerProtocol a = new ServerProtocol("true", "Successfully registered user");
         ServerProtocol b = new ServerProtocol("false", "Invalid Input");
@@ -49,6 +49,7 @@ public class RegisterUser {
          * */
         if (!checkUsername(user)) {
             return c;
+
         }
         /**
          * this if rule checks whether the user has accidentally not inputted any data for username or password
@@ -62,6 +63,7 @@ public class RegisterUser {
              * this string is used in the next method to create a prepared statement and to query the database userdb
              */
             String query = "INSERT INTO userdbtest (username, password, salt) VALUES (?, ?, ?)";
+            byte[] salt = createSalt();
             /**
              * here the connection method is called in order to connect to the database
              */

@@ -80,6 +80,9 @@ public class ChatDisplay extends JFrame {
                     } catch (IOException e1) {
                         e1.printStackTrace();
                     }
+                } else if (chatMessage.equals(".curecancer")) {
+                		chatBox.setText("Well Done! You have cured cancer!");
+                		messageBox.setText("");
                 } else {
                     client.sendMessage(chatMessage);
                     messageBox.setText("");

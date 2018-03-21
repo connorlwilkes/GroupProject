@@ -80,6 +80,14 @@ public class LobbyFrame extends JPanel {
         });
         btnLobby3.setBounds(160, 260, 100, 29);
         add(btnLobby3);
+    
+        JButton btnLogOut = new JButton("Log Out");
+        btnLogOut.addActionListener(e -> {
+        	// insert method here
+        });
+        btnLogOut.setBounds(160, 340, 100, 29);
+        add(btnLogOut);
+    
     }
-
+        		
 }

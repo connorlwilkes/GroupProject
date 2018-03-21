@@ -44,7 +44,7 @@ public class LobbyFrame extends JPanel {
                         "Lobby join failure", JOptionPane.INFORMATION_MESSAGE);
             }
         });
-        btnLobby2.setBounds(175, 230, 100, 29);
+        btnLobby2.setBounds(175, 235, 100, 29);
         add(btnLobby2);
 
         JButton btnLobby3 = new JButton("Lobby 3");

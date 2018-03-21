@@ -11,7 +11,7 @@ public class RegisterUserTest {
 
     @Test
     public void test1() {
-        User a = new User("Klara", "wow");
+        User a = new User("1", "wow");
         ServerProtocol b = new ServerProtocol("true", "Successfully registered user");
         String expected = b.toString();
         String actual = null;
@@ -20,6 +20,7 @@ public class RegisterUserTest {
         } catch (InvalidKeySpecException | NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
+        System.out.print(actual);
         assertEquals(expected, actual);
     }//testing if you can register a new user
 

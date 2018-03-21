@@ -1,14 +1,23 @@
 package Client;
 
 import javax.swing.*;
+
+import Server.ServerProtocol;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.io.OutputStream;
 
 public class QuestionMasterAnswerPanel extends JPanel {
 
-    boolean voteCast = false;
+    
     private ClientGui gui;
+    public JTextArea txtrQuestion = new JTextArea();
+    public JTextArea txtrPlayerAnswer = new JTextArea();
+    public JTextArea txtrPlayerAnswer_1 = new JTextArea();
+    public boolean voteCast = false;
 
     /**
      * Create the panel.
@@ -24,7 +33,7 @@ public class QuestionMasterAnswerPanel extends JPanel {
         lblNewLabel.setBounds(20, 11, 80, 28);
         add(lblNewLabel);
 
-        JTextArea txtrQuestion = new JTextArea();
+        txtrQuestion = new JTextArea();
         txtrQuestion.setFont(new Font("Showcard Gothic", Font.PLAIN, 13));
         txtrQuestion.setText("question");
         txtrQuestion.setBounds(20, 41, 450, 80);
@@ -32,7 +41,7 @@ public class QuestionMasterAnswerPanel extends JPanel {
         txtrQuestion.setWrapStyleWord(true);
         add(txtrQuestion);
 
-        JTextArea txtrPlayerAnswer = new JTextArea();
+        txtrPlayerAnswer = new JTextArea();
         txtrPlayerAnswer.setFont(new Font("Tahoma", Font.PLAIN, 13));
         txtrPlayerAnswer.setText("player 1 answer");
         txtrPlayerAnswer.setBounds(20, 132, 450, 80);
@@ -40,7 +49,7 @@ public class QuestionMasterAnswerPanel extends JPanel {
         txtrPlayerAnswer.setWrapStyleWord(true);
         add(txtrPlayerAnswer);
 
-        JTextArea txtrPlayerAnswer_1 = new JTextArea();
+        txtrPlayerAnswer_1 = new JTextArea();
         txtrPlayerAnswer_1.setFont(new Font("Tahoma", Font.PLAIN, 13));
         txtrPlayerAnswer_1.setText("player 2 answer");
         txtrPlayerAnswer_1.setBounds(20, 224, 450, 80);
@@ -53,7 +62,15 @@ public class QuestionMasterAnswerPanel extends JPanel {
         btnNewButton.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
-                voteCast = true;
+                ServerProtocol sendAnswer = new ServerProtocol("qm-vote", txtrPlayerAnswer.getText() , "10");
+                 try {
+                	gui.client.outputStream.writeObject(sendAnswer);
+					gui.client.outputStream.flush();
+					voteCast = true;
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
             }
         });
 
@@ -65,7 +82,15 @@ public class QuestionMasterAnswerPanel extends JPanel {
         btnNewButton_1.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
-                voteCast = true;
+            	ServerProtocol sendAnswer = new ServerProtocol("qm-vote", txtrPlayerAnswer_1.getText() , "10");
+            	  try {
+                  	gui.client.outputStream.writeObject(sendAnswer);
+  					gui.client.outputStream.flush();
+  					voteCast = true;
+  				} catch (IOException e1) {
+  					// TODO Auto-generated catch block
+  					e1.printStackTrace();
+  				}
             }
         });
 
@@ -77,6 +102,10 @@ public class QuestionMasterAnswerPanel extends JPanel {
 
     public boolean getVoteCast() {
         return voteCast;
+    }
+    
+    public static void main(String[] args) {
+    	
     }
 
 }

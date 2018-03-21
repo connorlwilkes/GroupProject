@@ -10,6 +10,14 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * ChatDisplay is the class for the chat room GUI where the user can write messages to other users. 
+ * It contains aditional functions to clear the chat and to take a screen shot of the chat.
+ * It extends JFrame so it opens as a new frame when a lobby is chosen in LobbyFrame.
+ * @author Florence
+ * @version 14/03/18
+ *
+ */
 @SuppressWarnings("Duplicates")
 public class ChatDisplay extends JFrame {
 
@@ -21,13 +29,16 @@ public class ChatDisplay extends JFrame {
     public JFrame displayFrame;
     private JButton btnSend;
 
-
+    /**
+     * Constructor for ChatDisplay
+     * @param clientConstructor
+     */
     public ChatDisplay(Client clientConstructor) {
         this.client = clientConstructor;
         displayFrame = new JFrame("Chat");                            // creates a new JFrame
         JPanel southPanel = new JPanel();                            // creates a new JPanel (southPanel)
         displayFrame.add(BorderLayout.SOUTH, southPanel);                    // adds southPanel to the bottom of JFrame
-        southPanel.setBackground(Color.BLACK);                        // sets background of southPanel to black
+        southPanel.setBackground(Color.DARK_GRAY);                        // sets background of southPanel to dark grey
         southPanel.setLayout(new GridBagLayout());                    // sets the layout of southPanel as GridBagLayout
 
         displayFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);            // closes the JFrame when the display is exitted
@@ -51,25 +62,26 @@ public class ChatDisplay extends JFrame {
         southPanel.add(btnSend, right);                            // adds the 'sendMessage' JButton to the southPanel with the 'right' constraint
 
         chatBox.setFont(new Font("Serif", Font.PLAIN, 15));                // sets the font for messages displayed in the chatBox to 'Serif', size 15
+        chatBox.setEditable(false);
         btnSend.addActionListener(e -> {
             String chatMessage = messageBox.getText();
-            if (chatMessage.length() != 0) {
-                if (chatMessage.equals(".clear")) {
+            if (chatMessage.length() != 0) {              
+            		if (chatMessage.equals(".clear")) {
                     chatBox.setText("");
                     messageBox.setText("");
                 }
-                if (chatMessage.equals(".shot")) {
+            		else if (chatMessage.equals(".shot")) {
                     messageBox.setText("");
                     BufferedImage img = new BufferedImage(displayFrame.getWidth(), displayFrame.getHeight(), BufferedImage.TYPE_INT_RGB);
                     displayFrame.paint(img.getGraphics());
-                    File outputfile = new File("NUDES.png");
+                    File outputfile = new File("chatroom.png");
                     try {
                         ImageIO.write(img, "png", outputfile);
                     } catch (IOException e1) {
                         e1.printStackTrace();
                     }
-
-                } else {
+                } 
+                else {
                     client.sendMessage(chatMessage);
                     messageBox.setText("");
                 }
@@ -92,7 +104,10 @@ public class ChatDisplay extends JFrame {
         };
     }
 
-
+    /**
+     * setRunning method
+     * @param running
+     */
     public void setRunning(boolean running) {
         isRunning = running;
     }

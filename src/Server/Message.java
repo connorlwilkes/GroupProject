@@ -4,7 +4,8 @@ import java.io.Serializable;
 import java.util.Calendar;
 
 /**
- * Message class for the game. Can be sent across a network as a serialized object
+ * Message class for the game. Can be sent across a network as a serialized object. Has the fields message, time, sender 
+ * of type String
  *
  * @author Florence
  * @version 9/3/2018
@@ -16,7 +17,7 @@ public class Message implements Serializable {
     private String sender;
 
     /**
-     * Constructor for the message class
+     * Constructor for the message class, reuses the field variable message and variables sender of type User.
      *
      * @param message content of the message
      * @param sender  the user who is sending the message
@@ -26,7 +27,13 @@ public class Message implements Serializable {
         setUpTime();
         this.sender = sender.getUsername();
     }
-
+    
+ /**
+     * Another constructor for the message class, reuses the field variable message and sender as arguments.
+     *
+     * @param message content of the message
+     * @param sender  the user who is sending the message
+     */
     public Message(String message, String sender) {
         this.message = message;
         setUpTime();
@@ -34,7 +41,7 @@ public class Message implements Serializable {
     }
 
     /**
-     * Sets up the time the message was sent
+     * Method to set up the time at which the message was sent
      */
     private void setUpTime() {
         Calendar now = Calendar.getInstance();
@@ -44,7 +51,7 @@ public class Message implements Serializable {
     /**
      * toString method for the message class
      *
-     * @return
+     * @return The time, sender and content of the message in a sensible format
      */
     public String toString() {
         StringBuilder string = new StringBuilder();

@@ -4,13 +4,17 @@ import javax.swing.*;
 import java.awt.*;
 
 public class ScorePanel extends JPanel {
+	
+	private ClientGui gui;
     private JLabel txtAndTheWinner;
-    private JTextField txtPlayerName;
+    public JTextField txtPlayerName;
+    public JTextArea textArea = new JTextArea();
 
     /**
      * Create the panel.
      */
-    public ScorePanel() {
+    public ScorePanel(ClientGui guiConstructor) {
+    	this.gui = guiConstructor;
         setBackground(new Color(0, 255, 127));
         setLayout(null);
 
@@ -39,7 +43,7 @@ public class ScorePanel extends JPanel {
         lblNewLabel.setBounds(20, 147, 245, 30);
         add(lblNewLabel);
 
-        JTextArea textArea = new JTextArea("player 1: + getPlayer1Score\nplayer 2: + getPlayer2Score\nplayer 3: + getPlayer3Score");
+        textArea = new JTextArea();
         textArea.setBounds(20, 188, 232, 88);
         add(textArea);
 

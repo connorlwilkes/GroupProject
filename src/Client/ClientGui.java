@@ -17,6 +17,8 @@ public class ClientGui extends JFrame {
     public QuestionMasterAnswerPanel questionMasterAnswerPanel;
     public QuestionMasterQuestionPanel questionMasterQuestionPanel;
     public QuestionPanel questionPanel;
+    public AnswerPanel answerPanel;
+    public ScorePanel scorePanel;
     public User user;
 
     private ClientGui() {
@@ -24,30 +26,20 @@ public class ClientGui extends JFrame {
         setUp();
         setResizable(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setBounds(0, 0, 400, 400);
+        setBounds(0, 0, 450, 278);
         add(login);
         add(lobby);
         add(register);
+        add(chat);
         add(instructions);
         add(qm);
         add(questionMasterAnswerPanel);
         add(questionMasterQuestionPanel);
         add(questionPanel);
+        add(answerPanel);
+        add(scorePanel);
         setContentPane(login);
         setVisible(true);
-    }
-
-    public void setUp() {
-        client = new Client(this);
-        login = new LogInFrame(this);
-        lobby = new LobbyFrame(this);
-        register = new RegisterFrame(this);
-        chat = new ChatDisplay(client);
-        instructions = new InstructionPanel(this);
-        qm = new QuestionMasterPanel(this);
-        questionMasterAnswerPanel = new QuestionMasterAnswerPanel(this);
-        questionMasterQuestionPanel = new QuestionMasterQuestionPanel(this);
-        questionPanel = new QuestionPanel(this);
     }
 
     public static void main(String[] args) {
@@ -58,5 +50,20 @@ public class ClientGui extends JFrame {
                 System.err.println(e);
             }
         });
+    }
+
+    public void setUp() {
+        login = new LogInFrame(this);
+        lobby = new LobbyFrame(this);
+        register = new RegisterFrame(this);
+        chat = new ChatDisplay(this);
+        client = new Client(this);
+        instructions = new InstructionPanel(this);
+        qm = new QuestionMasterPanel(this);
+        questionMasterAnswerPanel = new QuestionMasterAnswerPanel(this);
+        questionMasterQuestionPanel = new QuestionMasterQuestionPanel(this);
+        questionPanel = new QuestionPanel(this);
+        answerPanel = new AnswerPanel(this);
+        scorePanel = new ScorePanel(this);
     }
 }

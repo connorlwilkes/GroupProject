@@ -65,12 +65,12 @@ public class ChatDisplay extends JFrame {
         chatBox.setEditable(false);
         btnSend.addActionListener(e -> {
             String chatMessage = messageBox.getText();
-            if (chatMessage.length() != 0) {
-                if (chatMessage.equals(".clear")) {
+            if (chatMessage.length() != 0) {              
+            		if (chatMessage.equals(".clear")) {
                     chatBox.setText("");
                     messageBox.setText("");
                 }
-                if (chatMessage.equals(".shot")) {
+            		else if (chatMessage.equals(".shot")) {
                     messageBox.setText("");
                     BufferedImage img = new BufferedImage(displayFrame.getWidth(), displayFrame.getHeight(), BufferedImage.TYPE_INT_RGB);
                     displayFrame.paint(img.getGraphics());
@@ -80,8 +80,8 @@ public class ChatDisplay extends JFrame {
                     } catch (IOException e1) {
                         e1.printStackTrace();
                     }
-
-                } else {
+                } 
+                else {
                     client.sendMessage(chatMessage);
                     messageBox.setText("");
                 }

@@ -3,8 +3,11 @@ package Client;
 
 import Server.Message;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 
 @SuppressWarnings("Duplicates")
@@ -33,7 +36,7 @@ public class ChatDisplay extends JFrame {
         messageBox = new JTextField(30);                                // creates a new JTextField with character limit of 30
         btnSend = new JButton("Send");                            // creates new JButton 'Send' to send messages
         chatBox = new JTextArea();                                    // creates a JTextArea 'chatBox' where messages will appear
-        chatBox.setEditable(false);                                    // makes chatBox uneditable by the user
+        //chatBox.setEditable(false);                                    // makes chatBox uneditable by the user
         displayFrame.add(new JScrollPane(chatBox), BorderLayout.CENTER);    // adds a scroll function to the chatBox through JScrollPane
 
         chatBox.setLineWrap(true);
@@ -49,11 +52,29 @@ public class ChatDisplay extends JFrame {
 
         chatBox.setFont(new Font("Serif", Font.PLAIN, 15));                // sets the font for messages displayed in the chatBox to 'Serif', size 15
         btnSend.addActionListener(e -> {
-            String chatMessage = messageBox.getText();
+            String chatMessage = messageBox.getText();            
             if (chatMessage.length() != 0) {
+            		if (chatMessage.equals(".clear")) {
+            		chatBox.setText("");
+            		messageBox.setText("");
+            		}
+            		if (chatMessage.equals(".shot")) {
+            			messageBox.setText("");
+            			BufferedImage img = new BufferedImage(displayFrame.getWidth(), displayFrame.getHeight(), BufferedImage.TYPE_INT_RGB);
+            			displayFrame.paint(img.getGraphics());
+            			File outputfile = new File("NUDES.png");
+            			try {
+							ImageIO.write(img, "png", outputfile);
+						} catch (IOException e1) {
+							e1.printStackTrace();
+						}
+                		
+                		}
+            		else {
                 System.out.println(chatMessage);
                 client.sendMessage(chatMessage);
                 messageBox.setText("");
+            		}
             }
         });
         southPanel.add(btnSend, right);

@@ -15,7 +15,7 @@ public class ServerProtocol implements Serializable {
     public String[] message;
 
     /**
-    * Constructor for ServerProtocol with the parameter
+    * Constructor for ServerProtocol with the parameter args.
     * @param args String of arguments to be passed
     */
     public ServerProtocol(String... args) {
@@ -29,6 +29,10 @@ public class ServerProtocol implements Serializable {
         }
     }
 
+    /**
+    *String toString method
+    *@return server protocol in sensible format
+    */
     @Override
     public String toString() {
         StringBuilder string = new StringBuilder();

@@ -208,7 +208,7 @@ public class Client implements Runnable {
             	}
             	
 
-            }
+            
 
                 } else if (o instanceof Message) {
                     Message message = (Message) o;

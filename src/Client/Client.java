@@ -85,6 +85,7 @@ public class Client implements Runnable {
             if (o instanceof ServerProtocol) {
             	ServerProtocol message = (ServerProtocol)o;
             	if (message.type.startsWith("start")) {
+            		gui.setBounds(0, 0, 900, 600);
             		gui.setContentPane(gui.instructions);
             		gui.revalidate();
                     gui.repaint();

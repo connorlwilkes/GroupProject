@@ -24,5 +24,14 @@ public class Waiting extends JPanel{
         JLabel waiting = new JLabel("Waiting for other players...");
         waiting.setBounds(110, 160, 200, 16);
         add(waiting);
+        
+        JButton back = new JButton("Back");
+        back.addActionListener(e -> {
+            gui.setContentPane(
+                    gui.lobby);
+            gui.setTitle("Lobby Room");
+        });
+        back.setBounds(140, 240, 91, 29);
+        add(back);
 	}
 }

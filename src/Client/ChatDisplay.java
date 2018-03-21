@@ -88,19 +88,21 @@ public class ChatDisplay extends JFrame {
         });
         southPanel.add(btnSend, right);
 
-        chatThread = () -> {
-            while (isRunning) {
-                try {
-                    Object o = client.inputStream.readObject();
-                    if (o instanceof Message) {
-                        Message message = (Message) o;
-                        chatBox.append(message.toString() + "\n");
-                    }
-                } catch (IOException | ClassNotFoundException e) {
-                    e.printStackTrace();
-                }
-            }
-        };
+//        chatThread = () -> {
+//            while (isRunning) {
+//                synchronized (client.inputStream) {
+//                    try {
+//                        Object o = client.inputStream.readObject();
+//                        if (o instanceof Message) {
+//                            Message message = (Message) o;
+//                            chatBox.append(message.toString() + "\n");
+//                        }
+//                    } catch (IOException | ClassNotFoundException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            }
+//        };
     }
 
     /**

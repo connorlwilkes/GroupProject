@@ -19,7 +19,6 @@ public class Minigame {
      * Constructor for the Minigame class which resuses the field variable players as an argument.
      *
      * @param players     the players in the game
-     * @param roundNumber The current round number
      */
     public Minigame(List<Player> players) {
         this.players = players;

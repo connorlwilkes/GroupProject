@@ -43,16 +43,17 @@ public class GameLobby implements Runnable {
         chatRoom = new ChatRoom(this);
         gameNumber = 1;
         answers = new HashMap<>();
-        Runnable checkingUsers = () -> {
-            while (isRunning) {
-                for (Player player : players) {
-                    if (player.getClient().connection.isClosed()) {
-                        removePlayer(player);
-                    }
-                }
-            }
-        };
-        new Thread(checkingUsers).start();
+
+//        Runnable checkingUsers = () -> {
+//            while (isRunning) {
+//                for (Player player : players) {
+//                    if (player.getClient().connection.isClosed()) {
+//                        removePlayer(player);
+//                    }
+//                }
+//            }
+//        };
+//        new Thread(checkingUsers).start();
     }
 
     /**
@@ -163,9 +164,11 @@ public class GameLobby implements Runnable {
     public void run() {
         isRunning = true;
         HeadlineGame game = new HeadlineGame(players);
+        games.add(game);
         for (Player player : players) {
             try {
                 ServerProtocol start = new ServerProtocol("start", "game is starting");
+                System.out.println("here");
                 player.getOut().writeObject(start);
                 player.getOut().flush();
             } catch (IOException e) {

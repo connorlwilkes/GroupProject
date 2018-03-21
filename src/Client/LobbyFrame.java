@@ -33,11 +33,11 @@ public class LobbyFrame extends JPanel {
                 gui.revalidate();
                 gui.repaint();
                 gui.setTitle("Waiting for players");
-            	
-            		gui.setTitle("Lobby 1");
+                gui.setTitle("Lobby 1");
                 gui.chat.setRunning(true);
-                new Thread(gui.chat.chatThread).start();
-                gui.chat.displayFrame.setVisible(true); 
+                // new Thread(gui.chat.chatThread).start();
+                gui.chat.displayFrame.setVisible(true);
+                new Thread(gui.client).start();
             } else if (response.type.equals("false")) {
                 JOptionPane.showMessageDialog(gui,
                         response.message[0],

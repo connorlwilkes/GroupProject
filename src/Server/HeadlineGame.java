@@ -75,7 +75,9 @@ public class HeadlineGame extends Minigame {
      * eligible to be question master again
      */
     public synchronized void chooseQuestionMaster() {
-        questionMaster.setHasBeenQuestionMaster(true);
+        if (getRoundNumber() != 1) {
+            questionMaster.setHasBeenQuestionMaster(true);
+        }
         if (getRoundNumber() == getPlayers().size()) {
             for (Player player : getPlayers()) {
                 player.setHasBeenQuestionMaster(false);
@@ -88,7 +90,9 @@ public class HeadlineGame extends Minigame {
             index = random.nextInt(getPlayers().size() - 1);
             player = getPlayers().get(index);
         }
-        questionMaster.setQuestionMaster(false);
+        if (getRoundNumber() != 1) {
+            questionMaster.setQuestionMaster(false);
+        }
         player.setQuestionMaster(true);
         questionMaster = player;
     }

@@ -135,7 +135,7 @@ public class Server {
         activeUsers = new ArrayList<>();
         threadPool = Executors.newFixedThreadPool(50);
         setUpGameLobbies();
-        monitorUsers();
+        // monitorUsers();
         try (ServerSocket server = new ServerSocket(port, 500, host)) {
             while (true) {
                 try {

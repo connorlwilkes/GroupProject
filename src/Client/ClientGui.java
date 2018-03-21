@@ -38,10 +38,10 @@ public class ClientGui extends JFrame {
     }
 
     public void setUp() {
+        client = new Client(this);
         login = new LogInFrame(this);
         lobby = new LobbyFrame(this);
         register = new RegisterFrame(this);
-        client = new Client(this);
         chat = new ChatDisplay(client);
         instructions = new InstructionPanel(this);
         qm = new QuestionMasterPanel(this);

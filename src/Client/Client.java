@@ -75,6 +75,7 @@ public class Client {
     public void sendMessage(String content) {
         try {
             Message message = new Message(content, user);
+            System.out.println("here");
             outputStream.writeObject(message);
             outputStream.flush();
         } catch (IOException ex) {

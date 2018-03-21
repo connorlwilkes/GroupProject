@@ -32,32 +32,30 @@ public class RegisterUser {
 
         String username = user.getUsername();
         String password = user.getPassword();
-        byte[] salt = new byte[0];
-        try {
-            salt = createSalt();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
+        byte[] salt = createSalt();
+
         ServerProtocol a = new ServerProtocol("true", "Successfully registered user");
         ServerProtocol b = new ServerProtocol("false", "Invalid Input");
         ServerProtocol c = new ServerProtocol("false", "User already exists");
         ServerProtocol d = new ServerProtocol("false", "Failure");
 
         /**
+         * this if rule calls the checkUsername method from the DatabaseQueries class and checks whether the
+         * user record already exists. Username is the primary key meaning that a non unique username will not
+         * be able to be inputted into the database, however this extra check will prevent an SQL error being thrown
+         * as well as the user being able to see why their request has failed
+         * */
+        if (!checkUsername(user)) {
+            return c;
+        }
+        /**
          * this if rule checks whether the user has accidentally not inputted any data for username or password
          */
-        if (username.equals("") || password.equals("")) {
+        else if (username.equals("") || password.equals("")) {
 
             return b;
-            /**
-             * this if rule calls the checkUsername method from the DatabaseQueries class and checks whether the
-             * user record already exists. Username is the primary key meaning that a non unique username will not
-             * be able to be inputted into the database, however this extra check will prevent an SQL error being thrown
-             * as well as the user being able to see why their request has failed
-             * */
-        } else if (!checkUsername(user)) {
-            return c;
-        } else {
+
+        }  else {
             /**
              * this string is used in the next method to create a prepared statement and to query the database userdb
              */
@@ -76,6 +74,7 @@ public class RegisterUser {
                 pmst.setBytes(2, encryptedPassword);
                 pmst.setBytes(3, salt);
                 pmst.execute();
+                pmst.close();
                 return a;
                 /**
                  * if the connection fails then server protocol for failure is returned

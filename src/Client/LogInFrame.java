@@ -13,23 +13,23 @@ public class LogInFrame extends JPanel {
     public LogInFrame(ClientGui guiConstructor) {
         this.gui = guiConstructor;
         setLayout(null);
-        this.setBounds(0, 0, 450, 278);
+        this.setBounds(0, 0, 400, 500);
 
         JLabel lblUser = new JLabel("Username: ");
-        lblUser.setBounds(110, 113, 79, 16);
+        lblUser.setBounds(90, 118, 79, 16);
         add(lblUser);
 
         enterUsername = new JTextField();
-        enterUsername.setBounds(190, 108, 130, 26);
+        enterUsername.setBounds(170, 113, 130, 26);
         enterUsername.setColumns(12);
         add(enterUsername);
 
         JLabel lblPass = new JLabel("Password: ");
-        lblPass.setBounds(110, 154, 79, 16);
+        lblPass.setBounds(90, 159, 79, 16);
         add(lblPass);
 
         enterPassword = new JPasswordField();
-        enterPassword.setBounds(190, 149, 130, 26);
+        enterPassword.setBounds(170, 154, 130, 26);
         enterPassword.setColumns(12);
         add(enterPassword);
 
@@ -61,11 +61,11 @@ public class LogInFrame extends JPanel {
                 }
             }
         });
-        btnSignIn.setBounds(175, 180, 91, 29);
+        btnSignIn.setBounds(175, 195, 91, 29);
         add(btnSignIn);
 
         JLabel lblNoAccount = new JLabel("Don't have an account?");
-        lblNoAccount.setBounds(150, 215, 180, 16);
+        lblNoAccount.setBounds(150, 240, 180, 16);
         add(lblNoAccount);
 
         JButton btnSignUp = new JButton("Sign Up");
@@ -74,7 +74,7 @@ public class LogInFrame extends JPanel {
                     gui.register);
             gui.setTitle("Sign up");
         });
-        btnSignUp.setBounds(175, 230, 91, 29);
+        btnSignUp.setBounds(175, 260, 91, 29);
         add(btnSignUp);
     }
 }

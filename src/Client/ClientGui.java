@@ -24,7 +24,7 @@ public class ClientGui extends JFrame {
         setUp();
         setResizable(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setBounds(0, 0, 400, 400);
+        setBounds(0, 0, 400, 500);
         add(login);
         add(lobby);
         add(register);

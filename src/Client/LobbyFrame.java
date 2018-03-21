@@ -11,7 +11,12 @@ public class LobbyFrame extends JPanel {
     public LobbyFrame(ClientGui guiConstructor) {
         this.gui = guiConstructor;
         setLayout(null);
+        this.setBounds(0, 0, 400, 500);
 
+        JLabel chooseLobby = new JLabel("Choose a lobby");
+        chooseLobby.setBounds(160, 120, 130, 16);
+        add(chooseLobby);
+       
         JButton btnLobby1 = new JButton("Lobby 1");
         btnLobby1.addActionListener(e -> {
             ServerProtocol response = gui.client.serverRequest("join-lobby", "1");
@@ -26,7 +31,7 @@ public class LobbyFrame extends JPanel {
                         "Lobby join failure", JOptionPane.INFORMATION_MESSAGE);
             }
         });
-        btnLobby1.setBounds(175, 200, 100, 29);
+        btnLobby1.setBounds(160, 160, 100, 29);
         add(btnLobby1);
 
         JButton btnLobby2 = new JButton("Lobby 2");
@@ -43,7 +48,7 @@ public class LobbyFrame extends JPanel {
                         "Lobby join failure", JOptionPane.INFORMATION_MESSAGE);
             }
         });
-        btnLobby2.setBounds(175, 235, 100, 29);
+        btnLobby2.setBounds(160, 210, 100, 29);
         add(btnLobby2);
 
         JButton btnLobby3 = new JButton("Lobby 3");
@@ -60,7 +65,7 @@ public class LobbyFrame extends JPanel {
                         "Lobby join failure", JOptionPane.INFORMATION_MESSAGE);
             }
         });
-        btnLobby3.setBounds(175, 270, 100, 29);
+        btnLobby3.setBounds(160, 260, 100, 29);
         add(btnLobby3);
     }
 

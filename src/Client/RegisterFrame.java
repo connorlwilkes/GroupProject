@@ -14,7 +14,7 @@ public class RegisterFrame extends JPanel {
     public RegisterFrame(ClientGui guiConstructor) {
         this.gui = guiConstructor;
         setLayout(null);
-        this.setBounds(0, 0, 450, 278);
+        this.setBounds(0, 0, 400, 500);
 
         JLabel lblUser = new JLabel("Username: ");
         lblUser.setBounds(120, 113, 79, 16);

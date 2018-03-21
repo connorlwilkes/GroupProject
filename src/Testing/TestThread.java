@@ -33,7 +33,7 @@ public class TestThread implements Runnable {
                     out.flush();
                 }
             }
-        } catch (IOException | ClassNotFoundException e){
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }

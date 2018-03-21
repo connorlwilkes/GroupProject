@@ -4,6 +4,7 @@ import java.util.Objects;
 
 /**
  * User class for the minigame game. Has the fields username and password of type String and thread of type ServerThread
+ *
  * @author Florence
  * @version 21/03/2018
  */

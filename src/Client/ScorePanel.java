@@ -4,17 +4,17 @@ import javax.swing.*;
 import java.awt.*;
 
 public class ScorePanel extends JPanel {
-	
-	private ClientGui gui;
-    private JLabel txtAndTheWinner;
+
     public JTextField txtPlayerName;
     public JTextArea textArea = new JTextArea();
+    private ClientGui gui;
+    private JLabel txtAndTheWinner;
 
     /**
      * Create the panel.
      */
     public ScorePanel(ClientGui guiConstructor) {
-    	this.gui = guiConstructor;
+        this.gui = guiConstructor;
         setBackground(new Color(0, 255, 127));
         setLayout(null);
 

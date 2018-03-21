@@ -38,16 +38,6 @@ public class Server {
     private List<ServerThread> activeUsers;
 
     /**
-     * Main method to begin the server
-     *
-     * @param args
-     */
-    public static void main(String[] args) {
-        Server testServer = new Server(args[0]);
-        testServer.start();
-    }
-
-    /**
      * Primary constructor for the Server class taking just portNumber and automatically binds to localhost
      *
      * @param portNumber port number
@@ -74,6 +64,16 @@ public class Server {
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Main method to begin the server
+     *
+     * @param args
+     */
+    public static void main(String[] args) {
+        Server testServer = new Server(args[0]);
+        testServer.start();
     }
 
     /**

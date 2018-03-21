@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class QuestionMasterPanel extends JPanel {
-	 public JLabel lblNewLabel = new JLabel();
+    public JLabel lblNewLabel = new JLabel();
 
     private ClientGui gui;
 

@@ -1,23 +1,21 @@
 package Client;
 
-import javax.swing.*;
-
 import Server.ServerProtocol;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.io.OutputStream;
 
 public class QuestionMasterAnswerPanel extends JPanel {
 
-    
-    private ClientGui gui;
+
     public JTextArea txtrQuestion = new JTextArea();
     public JTextArea txtrPlayerAnswer = new JTextArea();
     public JTextArea txtrPlayerAnswer_1 = new JTextArea();
     public boolean voteCast = false;
+    private ClientGui gui;
 
     /**
      * Create the panel.
@@ -62,15 +60,15 @@ public class QuestionMasterAnswerPanel extends JPanel {
         btnNewButton.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
-                ServerProtocol sendAnswer = new ServerProtocol("qm-vote", txtrPlayerAnswer.getText() , "10");
-                 try {
-                	gui.client.outputStream.writeObject(sendAnswer);
-					gui.client.outputStream.flush();
-					voteCast = true;
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+                ServerProtocol sendAnswer = new ServerProtocol("qm-vote", txtrPlayerAnswer.getText(), "10");
+                try {
+                    gui.client.outputStream.writeObject(sendAnswer);
+                    gui.client.outputStream.flush();
+                    voteCast = true;
+                } catch (IOException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
             }
         });
 
@@ -82,15 +80,15 @@ public class QuestionMasterAnswerPanel extends JPanel {
         btnNewButton_1.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
-            	ServerProtocol sendAnswer = new ServerProtocol("qm-vote", txtrPlayerAnswer_1.getText() , "10");
-            	  try {
-                  	gui.client.outputStream.writeObject(sendAnswer);
-  					gui.client.outputStream.flush();
-  					voteCast = true;
-  				} catch (IOException e1) {
-  					// TODO Auto-generated catch block
-  					e1.printStackTrace();
-  				}
+                ServerProtocol sendAnswer = new ServerProtocol("qm-vote", txtrPlayerAnswer_1.getText(), "10");
+                try {
+                    gui.client.outputStream.writeObject(sendAnswer);
+                    gui.client.outputStream.flush();
+                    voteCast = true;
+                } catch (IOException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
             }
         });
 
@@ -100,12 +98,12 @@ public class QuestionMasterAnswerPanel extends JPanel {
 
     }
 
+    public static void main(String[] args) {
+
+    }
+
     public boolean getVoteCast() {
         return voteCast;
-    }
-    
-    public static void main(String[] args) {
-    	
     }
 
 }

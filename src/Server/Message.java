@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Calendar;
 
 /**
- * Message class for the game. Can be sent across a network as a serialized object. Has the fields message, time, sender 
+ * Message class for the game. Can be sent across a network as a serialized object. Has the fields message, time, sender
  * of type String
  *
  * @author Florence
@@ -27,8 +27,8 @@ public class Message implements Serializable {
         setUpTime();
         this.sender = sender.getUsername();
     }
-    
- /**
+
+    /**
      * Another constructor for the message class, reuses the field variable message and sender as arguments.
      *
      * @param message content of the message

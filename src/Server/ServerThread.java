@@ -20,12 +20,12 @@ public class ServerThread implements Runnable {
     private final static Logger auditLogger = Logger.getLogger("requests");
     private final static Logger errorLogger = Logger.getLogger("errors");
     public Socket connection;
+    public User currentUser;
     private Server server;
     private BufferedReader reader;
     private BufferedWriter writer;
     private ObjectOutputStream outputStream;
     private ObjectInputStream inputStream;
-    public User currentUser;
     private Player player;
 
 

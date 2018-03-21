@@ -11,26 +11,27 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * ChatDisplay is the class for the chat room GUI where the user can write messages to other users. 
+ * ChatDisplay is the class for the chat room GUI where the user can write messages to other users.
  * It contains aditional functions to clear the chat and to take a screen shot of the chat.
  * It extends JFrame so it opens as a new frame when a lobby is chosen in LobbyFrame.
+ *
  * @author Florence
  * @version 14/03/18
- *
  */
 @SuppressWarnings("Duplicates")
 public class ChatDisplay extends JFrame {
 
     public JTextArea chatBox;
+    public Runnable chatThread;
+    public JFrame displayFrame;
     private JTextField messageBox;
     private Client client;
-    public Runnable chatThread;
     private boolean isRunning;
-    public JFrame displayFrame;
     private JButton btnSend;
 
     /**
      * Constructor for ChatDisplay
+     *
      * @param clientConstructor
      */
     public ChatDisplay(Client clientConstructor) {
@@ -65,12 +66,11 @@ public class ChatDisplay extends JFrame {
         chatBox.setEditable(false);
         btnSend.addActionListener(e -> {
             String chatMessage = messageBox.getText();
-            if (chatMessage.length() != 0) {              
-            		if (chatMessage.equals(".clear")) {
+            if (chatMessage.length() != 0) {
+                if (chatMessage.equals(".clear")) {
                     chatBox.setText("");
                     messageBox.setText("");
-                }
-            		else if (chatMessage.equals(".shot")) {
+                } else if (chatMessage.equals(".shot")) {
                     messageBox.setText("");
                     BufferedImage img = new BufferedImage(displayFrame.getWidth(), displayFrame.getHeight(), BufferedImage.TYPE_INT_RGB);
                     displayFrame.paint(img.getGraphics());
@@ -80,8 +80,7 @@ public class ChatDisplay extends JFrame {
                     } catch (IOException e1) {
                         e1.printStackTrace();
                     }
-                } 
-                else {
+                } else {
                     client.sendMessage(chatMessage);
                     messageBox.setText("");
                 }
@@ -106,6 +105,7 @@ public class ChatDisplay extends JFrame {
 
     /**
      * setRunning method
+     *
      * @param running
      */
     public void setRunning(boolean running) {

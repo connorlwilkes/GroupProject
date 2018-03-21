@@ -1,11 +1,11 @@
 package Server;
 
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Arrays;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.PBEKeySpec;
 
 /**
  * PasswordSecure class for the registration and Login processes of the minigame
@@ -16,9 +16,10 @@ import javax.crypto.spec.PBEKeySpec;
 
 public class PasswordSecure {
     /**
-     *this generates a random value for salt which is unique for every user
-     * @returna byte array which is unique for each new user
+     * this generates a random value for salt which is unique for every user
+     *
      * @throws NoSuchAlgorithmException
+     * @returna byte array which is unique for each new user
      */
 
     public static byte[] createSalt() throws NoSuchAlgorithmException {
@@ -32,9 +33,10 @@ public class PasswordSecure {
     }
 
     /**
-     *this class encrypts a password inputted as a string using a unique salt value and PBKDF2 with SHA-1 as the hashing algorithm
+     * this class encrypts a password inputted as a string using a unique salt value and PBKDF2 with SHA-1 as the hashing algorithm
+     *
      * @param password the password inputted by the user into the gui for the registration process
-     * @param salt the unique byte array used to encrypt the user password
+     * @param salt     the unique byte array used to encrypt the user password
      * @return a byte array which is stored in the userdatabase as their password
      * @throws NoSuchAlgorithmException
      * @throws InvalidKeySpecException
@@ -56,24 +58,24 @@ public class PasswordSecure {
     }
 
     /**
-     *this method checks an inputted password in the string format against the password saved as a byte array in the database and its respective salt value
+     * this method checks an inputted password in the string format against the password saved as a byte array in the database and its respective salt value
+     *
      * @param attemptedPassword te string inputted to the gui when the user is logging in- this is to be checked
      * @param encryptedPassword the password stored in the database as a byte[]
-     * @param salt the unique byte array stored in the database with the user record
+     * @param salt              the unique byte array stored in the database with the user record
      * @return a boolean true or false, true if the password entered is correct and false if the password is incorrect
      * @throws NoSuchAlgorithmException
      * @throws InvalidKeySpecException
      */
 
     public static boolean passwordCheck(String attemptedPassword, byte[] encryptedPassword,
-                                 byte[] salt) throws NoSuchAlgorithmException, InvalidKeySpecException {
+                                        byte[] salt) throws NoSuchAlgorithmException, InvalidKeySpecException {
 
         byte[] encryptedAttemptedPassword = EncryptPassword(attemptedPassword, salt);
 
         return Arrays.equals(encryptedPassword, encryptedAttemptedPassword);
 
     }
-
 
 
 }

@@ -7,9 +7,9 @@ import java.awt.event.ActionListener;
 
 public class QuestionMasterQuestionPanel extends JPanel {
 
+    public JTextArea txtrQuestion = new JTextArea();
     private JTextField textField;
     private ClientGui gui;
-    public JTextArea txtrQuestion = new JTextArea();
 
     /**
      * Create the panel.

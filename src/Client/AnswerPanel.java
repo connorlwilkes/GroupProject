@@ -4,11 +4,11 @@ import javax.swing.*;
 import java.awt.*;
 
 public class AnswerPanel extends JPanel {
-	private ClientGui gui;
-    private JTextField textField;
     public JTextArea txtrQuestion = new JTextArea();
     public JTextArea txtrPlayerAnswer = new JTextArea();
     public JTextArea txtrPlayerAnswer_1 = new JTextArea();
+    private ClientGui gui;
+    private JTextField textField;
 
     /**
      * Create the panel.

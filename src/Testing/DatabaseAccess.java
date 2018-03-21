@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class DatabaseAccess  {
+public class DatabaseAccess {
 
     private final String url = "jdbc:postgresql://mod-msc-sw1.cs.bham.ac.uk:5432/florence";
     private final String user = "florence";

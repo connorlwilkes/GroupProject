@@ -15,10 +15,10 @@ public class TestClient {
 
     final private int port = 6000;
     final private String host = "localhost";
+    public String username;
     private Socket connection;
     private ObjectInputStream inputStream;
     private ObjectOutputStream outputStream;
-    public String username;
     private JFrame frame = new JFrame("Chatter");
     private JTextField textField = new JTextField(40);
     private JTextArea messageArea = new JTextArea(8, 40);
@@ -47,6 +47,14 @@ public class TestClient {
         });
     }
 
+    public static void main(String[] args) {
+        TestClient client = new TestClient();
+        client.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        client.frame.setVisible(true);
+        client.connect();
+
+    }
+
     private String getName() {
         return JOptionPane.showInputDialog(
                 frame,
@@ -67,13 +75,5 @@ public class TestClient {
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
-    }
-
-    public static void main(String[] args) {
-        TestClient client = new TestClient();
-        client.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        client.frame.setVisible(true);
-        client.connect();
-
     }
 }

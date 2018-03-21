@@ -3,7 +3,7 @@ package Server;
 import java.util.List;
 
 /**
- * Minigame class for the minigame game with the fields players, scores and roundNumber of type List<Player>, List<Integer> 
+ * Minigame class for the minigame game with the fields players, scores and roundNumber of type List<Player>, List<Integer>
  * and int respectively.
  *
  * @author Florence
@@ -18,7 +18,7 @@ public class Minigame {
     /**
      * Constructor for the Minigame class which resuses the field variable players as an argument.
      *
-     * @param players the players in the game
+     * @param players     the players in the game
      * @param roundNumber The current round number
      */
     public Minigame(List<Player> players) {
@@ -49,7 +49,7 @@ public class Minigame {
      *
      * @param roundNumber number to set the round too
      */
-    public void setRoundNumber (int roundNumber) {
+    public void setRoundNumber(int roundNumber) {
         this.roundNumber = roundNumber;
     }
 

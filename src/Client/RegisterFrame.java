@@ -5,11 +5,11 @@ import Server.ServerProtocol;
 import javax.swing.*;
 
 /**
- * RegisterFrame is the class for the register page GUI where the user can create a new account. 
+ * RegisterFrame is the class for the register page GUI where the user can create a new account.
  * It extends JPanel and is added to a JFrame in ClientGui.
+ *
  * @author Florence
  * @version 14/03/18
- *
  */
 public class RegisterFrame extends JPanel {
 

@@ -9,10 +9,10 @@ import java.awt.event.MouseEvent;
 
 public class QuestionPanel extends JPanel {
 
-    private JTextField textField;
-    private ClientGui gui;
     public JTextArea txtrQuestion = new JTextArea();
     public String playerAnswer;
+    private JTextField textField;
+    private ClientGui gui;
 
     /**
      * Create the panel.
@@ -49,9 +49,9 @@ public class QuestionPanel extends JPanel {
         btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 13));
         btnNewButton.setBounds(165, 254, 152, 35);
         btnNewButton.addActionListener(e -> {
-        	playerAnswer  = txtrAnswer.getText(); 
-        	txtrAnswer.setEditable(false);
-        	txtrAnswer.setText("");
+            playerAnswer = txtrAnswer.getText();
+            txtrAnswer.setEditable(false);
+            txtrAnswer.setText("");
         });
         add(btnNewButton);
 

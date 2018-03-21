@@ -3,7 +3,9 @@ package Server;
 import java.util.Objects;
 
 /**
- * User class for the minigame game.
+ * User class for the minigame game. Has the fields username and password of type String and thread of type ServerThread
+ * @author Florence
+ * @version 21/03/2018
  */
 public class User {
 
@@ -12,10 +14,10 @@ public class User {
     private ServerThread thread;
 
     /**
-     * Constructor for the user class
+     * Constructor for the user class, reuses the field variables user and password as its parameters
      *
-     * @param username
-     * @param password
+     * @param username The username of the User
+     * @param password The password of the User
      */
     public User(String username, String password) {
         this.username = username;
@@ -34,7 +36,7 @@ public class User {
     /**
      * Setter for the username
      *
-     * @param username username to set to
+     * @param username The new username to be set
      */
     public void setUsername(String username) {
         this.username = username;
@@ -52,16 +54,16 @@ public class User {
     /**
      * Setter for the password
      *
-     * @param password password to set
+     * @param password The new password to be set
      */
     public void setPassword(String password) {
         this.password = password;
     }
 
     /**
-     * Verifies the password of a user
+     * Method to verify the password of a user
      *
-     * @param password password to check
+     * @param password Password to check
      * @return true if password matches, false otherwise
      */
     public boolean verifyPassword(String password) {

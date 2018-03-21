@@ -99,7 +99,7 @@ public class Server {
      *
      * @param client client to add
      */
-    public void addActiveUser(ServerThread client) {
+    public synchronized void addActiveUser(ServerThread client) {
         activeUsers.add(client);
     }
 
@@ -108,13 +108,15 @@ public class Server {
      *
      * @param userToRemove the user to remove
      */
-    public void removeUser(User userToRemove) {
+    public synchronized void removeUser(User userToRemove) {
         String toRemove = userToRemove.getUsername();
-        for (ServerThread connection : activeUsers) {
-            if (connection.currentUser.getUsername().equals(toRemove)) {
-                activeUsers.remove(connection);
+        List<ServerThread> list = activeUsers;
+            for (ServerThread connection : list) {
+                if (connection.currentUser.getUsername().equals(toRemove)) {
+                    list.remove(connection);
+                }
             }
-        }
+        activeUsers = list;
     }
 
     /**
@@ -135,7 +137,7 @@ public class Server {
         activeUsers = new ArrayList<>();
         threadPool = Executors.newFixedThreadPool(50);
         setUpGameLobbies();
-        // monitorUsers();
+        //monitorUsers();
         try (ServerSocket server = new ServerSocket(port, 500, host)) {
             while (true) {
                 try {
@@ -183,17 +185,16 @@ public class Server {
     /**
      * Keeps up to date all active threads
      */
-    private void monitorUsers() {
-        Runnable monitor = () -> {
-            while (true) {
-                for (ServerThread connection : activeUsers) {
-                    if (connection.connection.isClosed()) {
-                        activeUsers.remove(connection);
-                    }
-                }
-            }
-        };
-        new Thread(monitor).start();
-    }
-
+//    private void monitorUsers() {
+//        Runnable monitor = () -> {
+//            while (true) {
+//                for (ServerThread connection : activeUsers) {
+//                    if (connection.connection.isClosed()) {
+//                        activeUsers.remove(connection);
+//                    }
+//                }
+//            }
+//        };
+//        new Thread(monitor).start();
+//    }
 }

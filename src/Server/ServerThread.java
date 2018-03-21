@@ -233,11 +233,17 @@ public class ServerThread implements Runnable {
      * @throws IOException
      */
     private synchronized void logOut() throws IOException {
-        server.removeUser(currentUser);
         ServerProtocol message = new ServerProtocol("true", "logged out successfully");
         outputStream.writeObject(message);
         outputStream.flush();
-        connection.close();
+        try {
+            Thread.sleep(500);
+            connection.close();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+            connection.close();
+        }
     }
 }
 

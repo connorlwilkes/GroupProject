@@ -139,7 +139,7 @@ public class GameLobby implements Runnable {
         String[] toReturn = new String[players.size()];
         StringBuilder string = new StringBuilder();
         for (int i = 0; i < players.size(); i++) {
-            string.append(players.get(i).getUser().getUsername() + " " + players.get(i).getScore());
+            string.append(players.get(i).getUser().getUsername() + ": " + players.get(i).getScore());
             toReturn[i] = string.toString();
             string.setLength(0);
         }

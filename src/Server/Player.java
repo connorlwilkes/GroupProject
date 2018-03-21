@@ -163,6 +163,7 @@ public class Player {
      */
     private void processHeadlineGameRequests(ServerProtocol request, String type) throws IOException {
         HeadlineGame game = (HeadlineGame) lobby.getCurrentGame();
+        System.out.println(request);
         if (type.startsWith("answer")) {
             answer(request, game);
         } else if (type.startsWith("qm-vote")) {
@@ -192,9 +193,9 @@ public class Player {
      */
     private void answer(ServerProtocol request, HeadlineGame game) throws IOException {
         game.addAnswer(this, request.message[0]);
-        ServerProtocol message = new ServerProtocol("true", "Answer added");
-        out.writeObject(message);
-        out.flush();
+//        ServerProtocol message = new ServerProtocol("true", "Answer added");
+//        out.writeObject(message);
+//        out.flush();
     }
 
     /**

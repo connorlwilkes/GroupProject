@@ -9,6 +9,7 @@ public class QuestionMasterQuestionPanel extends JPanel {
 
     private JTextField textField;
     private ClientGui gui;
+    public JTextArea txtrQuestion = new JTextArea();
 
     /**
      * Create the panel.
@@ -23,9 +24,8 @@ public class QuestionMasterQuestionPanel extends JPanel {
         lblNewLabel.setBounds(10, 11, 80, 28);
         add(lblNewLabel);
 
-        JTextArea txtrQuestion = new JTextArea();
+        txtrQuestion = new JTextArea();
         txtrQuestion.setFont(new Font("Showcard Gothic", Font.PLAIN, 15));
-        txtrQuestion.setText("question");
         txtrQuestion.setBounds(20, 50, 450, 150);
         add(txtrQuestion);
 

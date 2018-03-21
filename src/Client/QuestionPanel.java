@@ -11,6 +11,8 @@ public class QuestionPanel extends JPanel {
 
     private JTextField textField;
     private ClientGui gui;
+    public JTextArea txtrQuestion = new JTextArea();
+    public String playerAnswer;
 
     /**
      * Create the panel.
@@ -25,7 +27,7 @@ public class QuestionPanel extends JPanel {
         lblNewLabel.setBounds(10, 11, 80, 28);
         add(lblNewLabel);
 
-        JTextArea txtrQuestion = new JTextArea();
+        txtrQuestion = new JTextArea();
         txtrQuestion.setFont(new Font("Showcard Gothic", Font.PLAIN, 15));
         txtrQuestion.setText("question");
         txtrQuestion.setBounds(20, 50, 450, 79);
@@ -46,9 +48,11 @@ public class QuestionPanel extends JPanel {
         JButton btnNewButton = new JButton("Send Answer!");
         btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 13));
         btnNewButton.setBounds(165, 254, 152, 35);
-        //btnNewButton.addActionListener(e -> {
-
-        //});
+        btnNewButton.addActionListener(e -> {
+        	playerAnswer  = txtrAnswer.getText(); 
+        	txtrAnswer.setEditable(false);
+        	txtrAnswer.setText("");
+        });
         add(btnNewButton);
 
         textField = new JTextField();

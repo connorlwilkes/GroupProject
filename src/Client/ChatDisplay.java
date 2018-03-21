@@ -10,6 +10,14 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * ChatDisplay is the class for the chat room GUI where the user can write messages to other users. 
+ * It contains aditional functions to clear the chat and to take a screen shot of the chat.
+ * It extends JFrame so it opens as a new frame when a lobby is chosen in LobbyFrame.
+ * @author Florence
+ * @version 14/03/18
+ *
+ */
 @SuppressWarnings("Duplicates")
 public class ChatDisplay extends JFrame {
 
@@ -21,7 +29,10 @@ public class ChatDisplay extends JFrame {
     public JFrame displayFrame;
     private JButton btnSend;
 
-
+    /**
+     * Constructor for ChatDisplay
+     * @param clientConstructor
+     */
     public ChatDisplay(Client clientConstructor) {
         this.client = clientConstructor;
         displayFrame = new JFrame("Chat");                            // creates a new JFrame
@@ -92,7 +103,10 @@ public class ChatDisplay extends JFrame {
         };
     }
 
-
+    /**
+     * setRunning method
+     * @param running
+     */
     public void setRunning(boolean running) {
         isRunning = running;
     }

@@ -4,6 +4,13 @@ import Server.ServerProtocol;
 
 import javax.swing.*;
 
+/**
+ * LogInFrame is the class for the log in page GUI where the user enters their account details to log in. 
+ * It extends JPanel and is added to a JFrame in ClientGui
+ * @author Florence
+ * @version 14/03/18
+ *
+ */
 public class LogInFrame extends JPanel {
 
     private JTextField enterUsername;

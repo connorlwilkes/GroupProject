@@ -4,6 +4,13 @@ import Server.ServerProtocol;
 
 import javax.swing.*;
 
+/**
+ * LobbyFrame is the class for the lobby page GUI where the user can choose which lobby to enter. 
+ * It extends JPanel and is added to a JFrame in ClientGui.
+ * @author Florence
+ * @version 14/03/18
+ *
+ */
 public class LobbyFrame extends JPanel {
 
     private ClientGui gui;

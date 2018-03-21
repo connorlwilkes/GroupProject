@@ -9,6 +9,7 @@ public class ClientGui extends JFrame {
 
     public LogInFrame login;
     public LobbyFrame lobby;
+    public Waiting wait;
     public RegisterFrame register;
     public ChatDisplay chat;
     public Client client;
@@ -27,6 +28,7 @@ public class ClientGui extends JFrame {
         setBounds(0, 0, 400, 500);
         add(login);
         add(lobby);
+        add(wait);
         add(register);
         add(instructions);
         add(qm);
@@ -41,6 +43,7 @@ public class ClientGui extends JFrame {
         client = new Client(this);
         login = new LogInFrame(this);
         lobby = new LobbyFrame(this);
+        wait = new Waiting(this);
         register = new RegisterFrame(this);
         chat = new ChatDisplay(client);
         instructions = new InstructionPanel(this);

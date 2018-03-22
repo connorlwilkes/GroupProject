@@ -169,5 +169,67 @@ public class MinigameTest {
 		assertNotEquals(expected, m1.getPlayers());
 		
 	}
+	
+		@Test
+	public void TestWinner1() {
+		GameLobby g1 = new GameLobby(1);
+		Socket sock1 = new Socket();
+		ServerThread s1 = new ServerThread(sock1);
+		List<Player> players = new ArrayList<>();
+		Minigame m1 = new Minigame(players);
+		
+		User u1 = new User("qxr","password1");
+		Player p1 = new Player(s1, g1, u1);
+		
+		User u2 = new User("yxh","password2");
+		Player p2 = new Player(s1, g1, u2);
+		
+		User u3 = new User("fxd","password3");
+		Player p3 = new Player(s1, g1, u3);
+		
+		players.add(p1);
+		players.add(p3);
+		players.add(p2);
+		
+		p1.setScore(10);
+		
+		List<Player> expectedWinners = new ArrayList<>();
+		expectedWinners.add(p1);
+		
+		assertNotEquals(expectedWinners, m1.winner());
+		
+	}
+	
+	@Test
+	public void TestWinner2() {
+		GameLobby g1 = new GameLobby(1);
+		Socket sock1 = new Socket();
+		ServerThread s1 = new ServerThread(sock1);
+		List<Player> players = new ArrayList<>();
+		Minigame m1 = new Minigame(players);
+		
+		User u1 = new User("qxr","password1");
+		Player p1 = new Player(s1, g1, u1);
+		
+		User u2 = new User("yxh","password2");
+		Player p2 = new Player(s1, g1, u2);
+		
+		User u3 = new User("fxd","password3");
+		Player p3 = new Player(s1, g1, u3);
+		
+		players.add(p1);
+		players.add(p3);
+		players.add(p2);
+		
+		p1.setScore(10);
+		p2.setScore(10);
+		
+		List<Player> expectedWinners = new ArrayList<>();
+		expectedWinners.add(p1);
+		expectedWinners.add(p2);
+		
+		assertNotEquals(expectedWinners, m1.winner());
+		
+	}
 
 }

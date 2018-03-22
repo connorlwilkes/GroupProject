@@ -46,7 +46,7 @@ public class RegisterFrame extends JPanel {
         add(enterPass);
 
         JLabel lblReEnterPass = new JLabel("Re-enter Password: ");
-        lblReEnterPass.setBounds(60, 195, 150, 16);
+        lblReEnterPass.setBounds(50, 195, 150, 16);
         add(lblReEnterPass);
 
         reEnterPass = new JPasswordField();
@@ -94,7 +94,7 @@ public class RegisterFrame extends JPanel {
                     gui.login);
             gui.setTitle("Log In");
         });
-        back.setBounds(125, 240, 91, 29);
+        back.setBounds(110, 240, 91, 29);
         add(back);
 
 

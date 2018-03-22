@@ -77,7 +77,7 @@ public class ChatDisplay extends JFrame {
                         e1.printStackTrace();
                     }
                 } else if (chatMessage.equals(".curecancer")) {
-                		chatBox.setText("Well Done! You have cured cancer!");
+                		chatBox.setText("Well Done! You have cured cancer! \n");
                 		messageBox.setText("");
                 } else {
                     client.sendMessage(chatMessage);

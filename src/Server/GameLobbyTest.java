@@ -146,8 +146,8 @@ public class GameLobbyTest {
 		p2.setScore(2);
 		p3.setScore(3);
 		
-		String[] expected = {"get-scores", "qxr: 1","yxh: 2","fxd: 3"};
-		String[] actual = g1.getScores();
+		String[] expected = {"get-scores", "test", "qxr: 1","yxh: 2","fxd: 3"};
+		String[] actual = g1.getScores("test");
 		
 		assertEquals(expected,actual);
 	}
@@ -173,8 +173,8 @@ public class GameLobbyTest {
 		g1.addPlayer(p3);
 		
 		
-		String[] expected = {"get-scores", "qxr: 0","yxh: 0","fxd: 0"}; //before any points are earned, all players have zero score.
-		String[] actual = g1.getScores();
+		String[] expected = {"get-scores","test", "qxr: 0","yxh: 0","fxd: 0"}; //before any points are earned, all players have zero score.
+		String[] actual = g1.getScores("test");
 		
 		assertEquals(expected,actual);
 	}

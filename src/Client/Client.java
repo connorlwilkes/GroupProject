@@ -34,7 +34,7 @@ public class Client implements Runnable {
      */
     public Client(ClientGui gui) {
         this.gui = gui;
-        this.port = 5000;
+        this.port = 6000;
         try {
             this.host = InetAddress.getLocalHost();
         } catch (UnknownHostException e) {
@@ -222,6 +222,7 @@ public class Client implements Runnable {
         if (message.message[0].startsWith("qm")) {
             String question = message.message[1];
             gui.questionMasterQuestionPanel.txtrQuestion.setText(question);
+            gui.questionMasterAnswerPanel.txtrQuestion.setText(question);
             revalidateRepaintRenameResize("Question Master: Question", gui.questionMasterQuestionPanel, 900, 600);
             Thread.sleep(waitTime);
             Thread.sleep(500);
@@ -259,18 +260,11 @@ public class Client implements Runnable {
             gui.questionMasterAnswerPanel.txtrPlayerAnswer_1.setText(player2Answer);
             gui.chat.chatBox.setText("Make your decision on your own!");
             revalidateRepaintRenameResize("Question Master: Answers", gui.questionMasterAnswerPanel, 900, 600);
-            while (!(gui.questionMasterAnswerPanel.voteCast)) {
-            }
-            ServerProtocol sendAnswer = new ServerProtocol("qm-vote", gui.questionMasterAnswerPanel.answer, "10");
-            outputStream.writeObject(sendAnswer);
-            outputStream.flush();
         } else if (message.message[0].startsWith("notqm")) {
             gui.remove(gui.questionPanel);
             String playerAnswer = message.message[1];
             String player2Answer = message.message[2];
             gui.answerPanel.txtrQuestion.setText(gui.questionPanel.txtrQuestion.getText());
-            gui.questionPanel.timer.stop();
-            gui.questionPanel.timer.restart();
             gui.answerPanel.txtrPlayerAnswer.setText(playerAnswer);
             gui.answerPanel.txtrPlayerAnswer_1.setText(player2Answer);
             revalidateRepaintRenameResize("Answers", gui.answerPanel, 900, 600);
@@ -290,6 +284,7 @@ public class Client implements Runnable {
         String player1Score = message.message[1];
         String player2Score = message.message[2];
         String player3Score = message.message[3];
+        gui.instructions.welcome.setText("Next round!");
         gui.scorePanel.textArea.setText(player1Score + "\n" + player2Score + "\n" + player3Score);
         gui.scorePanel.txtPlayerName.setText(roundWinner);
         revalidateRepaintRenameResize("Scores on the doors", gui.scorePanel, 900, 600);

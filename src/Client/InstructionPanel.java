@@ -11,6 +11,7 @@ import java.awt.*;
 public class InstructionPanel extends JPanel {
 
     private ClientGui gui;
+    public JLabel welcome;
 
     /**
      * InstructionPanel is a constructor that creates the panel.
@@ -24,10 +25,10 @@ public class InstructionPanel extends JPanel {
         setBackground(Color.PINK);
         setLayout(null);
 
-        JLabel lblNewLabel = new JLabel("Welcome to the game! ");
-        lblNewLabel.setFont(new Font("Showcard Gothic", Font.PLAIN, 15));
-        lblNewLabel.setBounds(330, 40, 185, 19);
-        add(lblNewLabel);
+        welcome = new JLabel("Welcome to the game! ");
+        welcome.setFont(new Font("Showcard Gothic", Font.PLAIN, 15));
+        welcome.setBounds(330, 40, 185, 19);
+        add(welcome);
 
         JTextArea txtArea = new JTextArea();
         txtArea.setFont(new Font("Tahoma", Font.PLAIN, 14));
@@ -35,7 +36,7 @@ public class InstructionPanel extends JPanel {
                 + " a question for you to answer. You can type your answer to the question"
                 + "and once the time is up you will be able to see all the answers. The "
                 + "player who is question master that round will then get a chance to vote"
-                + "for which ever answer they like the most and that player will win that "
+                + " for which ever answer they like the most and that player will win that "
                 + "round. Each round a new question master will be chosen.");
         txtArea.setBounds(250, 96, 407, 136);
         txtArea.setLineWrap(true);

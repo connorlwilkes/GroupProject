@@ -1,11 +1,14 @@
 package Client;
 
+import Server.ServerProtocol;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 
 /**
@@ -64,27 +67,11 @@ public class QuestionPanel extends JPanel {
         btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 13));
         btnNewButton.setBounds(165, 254, 152, 35);
         btnNewButton.addActionListener(e -> {
-            playerAnswer = txtrAnswer.getText();
+            playerAnswer =txtrAnswer.getText();
             txtrAnswer.setEditable(false);
             txtrAnswer.setText("Answer Sent!");
         });
         add(btnNewButton);
-
-//        timerOutput = new JLabel();
-//        timerOutput.setBounds(20, 254, 44, 35);
-//        add(timerOutput);
-//
-//        timer = new Timer(10, new ActionListener() {
-//            public void actionPerformed(ActionEvent e) {
-//                timeLeft -= 100;
-//                SimpleDateFormat df = new SimpleDateFormat("mm:ss:S");
-//                timerOutput.setText(df.format(timeLeft));
-//                if (timeLeft <= 0) {
-//                    timer.stop();
-//                }
-//            }
-//        });
-        //timer.start();
     }
 
 //        Timer timer = new Timer(1000, new ActionListener() {                            //creates a timer

@@ -303,6 +303,7 @@ public class Player {
      */
     private void sendScores(HeadlineGame game) throws IOException {
         ServerProtocol message = new ServerProtocol(lobby.getScores("lobby-request"));
+        System.out.println(message);
         out.writeObject(message);
         out.flush();
     }

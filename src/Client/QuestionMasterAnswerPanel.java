@@ -11,9 +11,9 @@ import java.io.IOException;
 /**
  * QuestionMasterAnswerPanel displays the other players answers to the Question Master so they
  * can choose the winning answer
+ *
  * @author Florence
  * @version 16/03/18
- *
  */
 public class QuestionMasterAnswerPanel extends JPanel {
 
@@ -26,6 +26,7 @@ public class QuestionMasterAnswerPanel extends JPanel {
 
     /**
      * QuestionMasterAnswerPanel is a constructor that creates the panel.
+     *
      * @param guiConstructor
      */
     public QuestionMasterAnswerPanel(ClientGui guiConstructor) {
@@ -64,11 +65,13 @@ public class QuestionMasterAnswerPanel extends JPanel {
 
 
         JButton btnNewButton = new JButton("Choose Answer");
-        btnNewButton.addActionListener(new ActionListener() {
-
-            public void actionPerformed(ActionEvent e) {
-                voteCast = true;
-                answer = txtrPlayerAnswer.getText();
+        btnNewButton.addActionListener(e -> {
+            try {
+                ServerProtocol sendAnswer = new ServerProtocol("qm-vote", txtrPlayerAnswer.getText(), "10");
+                gui.client.outputStream.writeObject(sendAnswer);
+                gui.client.outputStream.flush();
+            } catch (IOException e1) {
+                e1.printStackTrace();
             }
         });
 
@@ -80,8 +83,15 @@ public class QuestionMasterAnswerPanel extends JPanel {
         btnNewButton_1.addActionListener(new ActionListener() {
 
             public void actionPerformed(ActionEvent e) {
-                voteCast = true;
-                answer = txtrPlayerAnswer_1.getText();
+                synchronized (gui.client.outputStream) {
+                    try {
+                        ServerProtocol sendAnswer = new ServerProtocol("qm-vote", txtrPlayerAnswer_1.getText(), "10");
+                        gui.client.outputStream.writeObject(sendAnswer);
+                        gui.client.outputStream.flush();
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+                }
             }
         });
 

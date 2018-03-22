@@ -179,7 +179,7 @@ public class Client implements Runnable {
             } else if (message.type.startsWith("get-scores")) {
                 scores(message);
             } else if (message.type.startsWith("end")) {
-                end(message);
+                end(message, 3000);
             }
         } catch (RuntimeException e) {
             JOptionPane.showMessageDialog(gui, "Server connection lost", "Error", JOptionPane.ERROR_MESSAGE);
@@ -276,7 +276,6 @@ public class Client implements Runnable {
             gui.questionMasterAnswerPanel.txtrQuestion.setText(gui.questionMasterAnswerPanel.txtrQuestion.getText());
             gui.questionMasterAnswerPanel.txtrPlayerAnswer.setText(player1Answer);
             gui.questionMasterAnswerPanel.txtrPlayerAnswer_1.setText(player2Answer);
-            gui.chat.chatBox.setText("Make your decision on your own!");
             revalidateRepaintRenameResize("Question Master: Answers", gui.questionMasterAnswerPanel, 900, 600);
         } else if (message.message[0].startsWith("notqm")) {
             gui.remove(gui.questionPanel);
@@ -314,18 +313,26 @@ public class Client implements Runnable {
     /**
      * Processes an end request for the game
      */
-    private void end(ServerProtocol message) {
+    private void end(ServerProtocol message, int timeout) throws InterruptedException {
         StringBuilder string = new StringBuilder();
         for (int i = 1; i < message.message.length; i++) {
             string.append(" " + message.message[i]);
         }
         gui.finalScores.txtPlayerName.setText(string.toString());
         revalidateRepaintRenameResize("Final scores on the doors", gui.finalScores, 900, 600);
-        resetGui();
+        Thread.sleep(timeout);
         revalidateRepaintRenameResize("Lobby", gui.lobby, 400, 500);
+        gui.chat.setVisible(false);
         inLobby = false;
     }
 
+    /**
+     * Updates the gui
+     * @param title title of the new screen
+     * @param toSet panel to set
+     * @param width width of the new screen
+     * @param height height of the new screen
+     */
     private void revalidateRepaintRenameResize(String title, JPanel toSet, int width, int height) {
         gui.setBounds(0, 0, width, height);
         gui.setContentPane(toSet);
@@ -334,6 +341,9 @@ public class Client implements Runnable {
         gui.setTitle(title);
     }
 
+    /**
+     * Resets all gui elements
+     */
     private void resetGui() {
         gui.chat = new ChatDisplay(gui.client);
         gui.instructions = new InstructionPanel(gui);

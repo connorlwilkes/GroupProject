@@ -176,7 +176,7 @@ public class MinigameTest {
 		Socket sock1 = new Socket();
 		ServerThread s1 = new ServerThread(sock1);
 		List<Player> players = new ArrayList<>();
-		Minigame m1 = new Minigame(players);
+		Minigame m1 = new Minigame(null, players);
 		
 		User u1 = new User("qxr","password1");
 		Player p1 = new Player(s1, g1, u1);
@@ -206,7 +206,7 @@ public class MinigameTest {
 		Socket sock1 = new Socket();
 		ServerThread s1 = new ServerThread(sock1);
 		List<Player> players = new ArrayList<>();
-		Minigame m1 = new Minigame(players);
+		Minigame m1 = new Minigame(null,players);
 		
 		User u1 = new User("qxr","password1");
 		Player p1 = new Player(s1, g1, u1);

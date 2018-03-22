@@ -9,6 +9,7 @@ public class FinalScoresPanel extends JPanel {
     public JTextArea textArea;
     private ClientGui gui;
     private JLabel txtAndTheWinner;
+    public boolean done = false;
 
     public FinalScoresPanel(ClientGui guiConstructor) {
         this.gui = guiConstructor;
@@ -40,4 +41,5 @@ public class FinalScoresPanel extends JPanel {
         add(textArea);
 
     }
+
 }

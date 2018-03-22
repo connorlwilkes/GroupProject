@@ -25,13 +25,12 @@ public class InstructionPanel extends JPanel {
 
         JTextArea txtArea = new JTextArea();
         txtArea.setFont(new Font("Tahoma", Font.PLAIN, 14));
-        txtArea.setText("In the game there will be 4 rounds. In each round there will be"
+        txtArea.setText("In the game there will be 5 rounds. In each round there will be"
                 + " a question for you to answer. You can type your answer to the question"
                 + "and once the time is up you will be able to see all the answers. The "
                 + "player who is question master that round will then get a chance to vote"
                 + "for which ever answer they like the most and that player will win that "
-                + "round. In the first round player 1 will be question master, in the "
-                + "second player two will be and so on.");
+                + "round. Each round a new question master will be chosen.");
         txtArea.setBounds(250, 96, 407, 136);
         txtArea.setLineWrap(true);
         txtArea.setWrapStyleWord(true);

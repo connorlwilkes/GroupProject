@@ -140,9 +140,10 @@ public class GameLobby implements Runnable {
      *
      * @return the scores as an array of Strings
      */
-    public synchronized String[] getScores() {
+    public synchronized String[] getScores(String roundWinner) {
         List<String> toReturn = new ArrayList<>();
         toReturn.add("get-scores");
+        toReturn.add(roundWinner);
         for (Player player: players) {
             toReturn.add(player.getUser().getUsername() + ": " + player.getScore());
         }

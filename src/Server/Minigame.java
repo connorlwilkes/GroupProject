@@ -1,9 +1,10 @@
 package Server;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Minigame class for the minigame game with the fields players, scores and roundNumber of type List<Player>, List<Integer>
+ * Minigame class for the minigame game with the fields players, scores and questionMaster of type List<Player>, List<Integer>
  * and int respectively.
  *
  * @author Florence
@@ -64,6 +65,24 @@ public class Minigame {
                 gamePlayer.setScore(gamePlayer.getScore() + scoreToAdd);
             }
         }
+    }
+
+    public List<String> winner() {
+        List<String> winners = new ArrayList<>();
+        int highScore = 0;
+        for (Player player : players) {
+            if (highScore == 0) {
+                highScore = player.getScore();
+                winners.add(player.getUser().getUsername());
+            } else if (player.getScore() > highScore) {
+                winners = new ArrayList<>();
+                winners.add(player.getUser().getUsername());
+                highScore = player.getScore();
+            } else if (player.getScore() ==  highScore) {
+                winners.add(player.getUser().getUsername());
+            }
+        }
+        return winners;
     }
 
 

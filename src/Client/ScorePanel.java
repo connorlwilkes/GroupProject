@@ -6,9 +6,10 @@ import java.awt.*;
 public class ScorePanel extends JPanel {
 
     public JTextField txtPlayerName;
-    public JTextArea textArea = new JTextArea();
+    public JTextArea textArea;
     private ClientGui gui;
     private JLabel txtAndTheWinner;
+    public JLabel lblRound;
 
     /**
      * Create the panel.
@@ -18,7 +19,7 @@ public class ScorePanel extends JPanel {
         setBackground(new Color(0, 255, 127));
         setLayout(null);
 
-        JLabel lblRound = new JLabel("Round ");
+        lblRound = new JLabel("Round ");
         lblRound.setFont(new Font("Tahoma", Font.PLAIN, 15));
         lblRound.setBounds(20, 11, 78, 23);
         add(lblRound);

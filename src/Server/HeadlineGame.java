@@ -22,6 +22,7 @@ public class HeadlineGame extends Minigame {
     private List<String> questions;
     private Map<String, Player> answerMap;
     private List<String> answers;
+    public int nextCounter;
 
     public HeadlineGame(List<Player> players) {
         super(players);
@@ -30,6 +31,7 @@ public class HeadlineGame extends Minigame {
         answerMap = new HashMap<>();
         answers = new ArrayList<>();
         questions = new ArrayList<>();
+        nextCounter = 0;
         try {
             setQuestions();
         } catch (SQLException e) {
@@ -37,7 +39,7 @@ public class HeadlineGame extends Minigame {
         }
         for (Player player : getPlayers()) {
             try {
-                ServerProtocol start = new ServerProtocol("start", "game is starting");
+                ServerProtocol start = new ServerProtocol("start", "game is starting", String.valueOf(getRoundNumber()));
                 player.getOut().writeObject(start);
                 player.getOut().flush();
             } catch (IOException e) {
@@ -46,6 +48,12 @@ public class HeadlineGame extends Minigame {
         }
     }
 
+    public synchronized void addToNextCounter() {
+        nextCounter++;
+        if (nextCounter == getPlayers().size()) {
+            nextRound();
+        }
+    }
     public void nextRound() {
         try {
             Thread.sleep(5000);
@@ -55,12 +63,13 @@ public class HeadlineGame extends Minigame {
         if (getRoundNumber() == 3) {
             endGame();
         }
+        nextCounter = 0;
         setRoundNumber(getRoundNumber() + 1);
         answerMap = new HashMap<>();
         answers = new ArrayList<>();
         try {
             for (Player player : getPlayers()) {
-                ServerProtocol start = new ServerProtocol("start", "game is starting");
+                ServerProtocol start = new ServerProtocol("start", "game is starting", String.valueOf(getRoundNumber()));
                 player.getOut().writeObject(start);
                 player.getOut().flush();
             }
@@ -71,8 +80,12 @@ public class HeadlineGame extends Minigame {
 
     public void endGame() {
         try {
+            List<String> toReturn = new ArrayList<>();
+            toReturn.add("end");
+            toReturn.add("game is over");
+            toReturn.addAll(winner());
             for (Player player : getPlayers()) {
-                ServerProtocol start = new ServerProtocol("end", "game is over");
+                ServerProtocol start = new ServerProtocol(toReturn.toArray(new String[toReturn.size()]));
                 player.getOut().writeObject(start);
                 player.getOut().flush();
             }

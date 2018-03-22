@@ -4,16 +4,22 @@ import Server.Message;
 import Server.ServerProtocol;
 import Server.User;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
+/**
+ * Client class for the minigame game. Takes input from the client gui and sends protocol to the server in addition
+ * to processing protocol from the server
+ */
 public class Client implements Runnable {
 
-    final private int port = 5000;
+    private int port;
     private InetAddress host;
     public ObjectInputStream inputStream;
     public ObjectOutputStream outputStream;
@@ -21,14 +27,46 @@ public class Client implements Runnable {
     private User user;
     private ClientGui gui;
 
+    /**
+     * Constructor for the Client class
+     *
+     * @param gui gui associated with the client
+     */
     public Client(ClientGui gui) {
         this.gui = gui;
+        this.port = 5000;
+        try {
+            this.host = InetAddress.getLocalHost();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
     }
 
+    /**
+     * Alternative constructor for the client class, called in normal circumstances o connect to a host other than
+     * locahost
+     *
+     * @param gui  gui associated with the client
+     * @param port port to connect to
+     * @param host host to connect to
+     */
+    public Client(ClientGui gui, String port, String host) {
+        this.gui = gui;
+        try {
+            this.host = InetAddress.getByName(host);
+            this.port = Integer.parseInt(port);
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
+     * Connects the client to the server
+     */
     public void connect() {
         try {
-            connection = new Socket(InetAddress.getLocalHost(), port);
-            host = InetAddress.getLocalHost();
+            connection = new Socket(host, port);
             outputStream = new ObjectOutputStream(connection.getOutputStream());
             outputStream.flush();
             inputStream = new ObjectInputStream(connection.getInputStream());
@@ -50,6 +88,12 @@ public class Client implements Runnable {
         }
     }
 
+    /**
+     * Sends a request to the server and waits for a reply
+     *
+     * @param args list of strings to construct the protocol with
+     * @return the response from the server
+     */
     public ServerProtocol serverRequest(String... args) {
         try {
             ServerProtocol message = new ServerProtocol(args);
@@ -68,6 +112,11 @@ public class Client implements Runnable {
         return new ServerProtocol("false", "Server error");
     }
 
+    /**
+     * Sends a message object to the server
+     *
+     * @param content content of the message
+     */
     public void sendMessage(String content) {
         try {
             Message message = new Message(content, user);
@@ -78,140 +127,195 @@ public class Client implements Runnable {
         }
     }
 
+    /**
+     * Run method for the thread, is called when a game starts. The thread processes protocol to and from the server
+     */
     public void run() {
         while (true) {
             try {
                 Object o = inputStream.readObject();
                 if (o instanceof ServerProtocol) {
                     ServerProtocol message = (ServerProtocol) o;
-                    System.out.println(message);
-                    if (message.type.startsWith("start")) {
-                        gui.setBounds(0, 0, 900, 600);
-                        gui.setContentPane(gui.instructions);
-                        gui.revalidate();
-                        gui.repaint();
-                        gui.setTitle("instructions");
-                        Thread.sleep(5000);
-                        ServerProtocol getQuestionMaster = new ServerProtocol("get-qm");
-                        outputStream.writeObject(getQuestionMaster);
-                        outputStream.flush();
-
-                    } else if (message.type.startsWith("get-qm")) {
-                        gui.remove(gui.instructions);
-
-                        String questionMaster = message.message[0];
-                        gui.qm.lblNewLabel_1 .setText( questionMaster);
-                        gui.setContentPane(gui.qm);
-                        gui.revalidate();
-                        gui.repaint();
-                        gui.setTitle("Question Master");
-
-                        Thread.sleep(5000);
-
-                        ServerProtocol getQuestion = new ServerProtocol("question");
-                        outputStream.writeObject(getQuestion);
-                        outputStream.flush();
-                    } else if (message.type.startsWith("question")) {
-                        gui.remove(gui.qm);
-                        if (message.message[0].startsWith("qm")) {
-                            String question = message.message[1];
-                            gui.questionMasterQuestionPanel.txtrQuestion.setText(question);
-                            gui.setContentPane(gui.questionMasterQuestionPanel);
-                            gui.revalidate();
-                            gui.repaint();
-                            gui.setTitle("Question Master: Question");
-
-                            Thread.sleep(5000);
-
-                            Thread.sleep(500);
-                            ServerProtocol getAnswer = new ServerProtocol("get-answers");
-                            outputStream.writeObject(getAnswer);
-                            outputStream.flush();
-                        } else if (message.message[0].startsWith("notqm")) {
-                            String question = message.message[1];
-                            gui.questionPanel.txtrQuestion.setText(question);
-                            gui.setContentPane(gui.questionPanel);
-                            gui.revalidate();
-                            gui.repaint();
-                            gui.setTitle("Question");
-
-                            Thread.sleep(5000);
-
-                            ServerProtocol sendAnswer = new ServerProtocol("answer", gui.questionPanel.playerAnswer);
-                            outputStream.writeObject(sendAnswer);
-                            outputStream.flush();
-
-                            Thread.sleep(500);
-                            ServerProtocol getAnswer = new ServerProtocol("get-answers");
-                            outputStream.writeObject(getAnswer);
-                            outputStream.flush();
-                        }
-                    } else if (message.type.startsWith("get-answer")) {
-
-                        if (message.message[0].startsWith("qm")) {
-                            gui.remove(gui.questionMasterQuestionPanel);
-
-                            String player1Answer = message.message[1];
-                            String player2Answer = message.message[2];
-                            gui.questionMasterAnswerPanel.txtrQuestion.setText(gui.questionMasterAnswerPanel.txtrQuestion.getText());
-                            gui.questionMasterAnswerPanel.txtrPlayerAnswer.setText(player1Answer);
-                            gui.questionMasterAnswerPanel.txtrPlayerAnswer_1.setText(player2Answer);
-                            gui.setContentPane(gui.questionMasterAnswerPanel);
-                            gui.revalidate();
-                            gui.repaint();
-                            gui.setTitle("Question Master: Answers");
-                            gui.chat.chatBox.setText("Make your decision on your own!");
-                            while (!(gui.questionMasterAnswerPanel.voteCast)) {
-                            }
-                            ServerProtocol sendAnswer = new ServerProtocol("qm-vote", gui.questionMasterAnswerPanel.answer, "10");
-                            outputStream.writeObject(sendAnswer);
-                            outputStream.flush();
-                        } else if (message.message[0].startsWith("notqm")) {
-                            gui.remove(gui.questionPanel);
-                            String playerAnswer = message.message[1];
-                            String player2Answer = message.message[2];
-                            gui.answerPanel.txtrQuestion.setText(gui.questionPanel.txtrQuestion.getText());
-                            gui.answerPanel.txtrPlayerAnswer.setText(playerAnswer);
-                            gui.answerPanel.txtrPlayerAnswer_1.setText(player2Answer);
-                            gui.setContentPane(gui.answerPanel);
-                            gui.revalidate();
-                            gui.repaint();
-                            gui.setTitle("Answers");
-                            outputStream.flush();
-
-                        }
-                    } else if (message.type.startsWith("get-scores")) {
-                        gui.remove(gui.questionMasterAnswerPanel);
-                        gui.remove(gui.answerPanel);
-
-                        String player1Score = message.message[0];
-                        String player2Score = message.message[1];
-                        String player3Score = message.message[2];
-                        gui.scorePanel.textArea.setText(player1Score + "\n" + player2Score + "\n" + player3Score);
-
-                        gui.setContentPane(gui.scorePanel);
-                        gui.revalidate();
-                        gui.repaint();
-                        gui.setTitle("Scores on the doors");
-
-                    } else if (message.type.startsWith("end")) {
-                        gui.setContentPane(gui.scorePanel);
-                        gui.revalidate();
-                        gui.repaint();
-                        gui.setTitle("Final scores on the doors");
-
-
-                    }
-
-
+                    processGameRequests(message);
                 } else if (o instanceof Message) {
                     Message message = (Message) o;
                     gui.chat.chatBox.append(message.toString() + "\n");
                 }
-
             } catch (IOException | ClassNotFoundException | InterruptedException e) {
                 e.printStackTrace();
             }
         }
     }
+
+    /**
+     * Processes input for the Headline game
+     *
+     * @param message protocol from the server
+     * @throws IOException
+     * @throws InterruptedException
+     */
+    private void processGameRequests(ServerProtocol message) throws IOException, InterruptedException {
+        System.out.println(message);
+        if (message.type.startsWith("start")) {
+            start(message, 5000);
+        } else if (message.type.startsWith("get-qm")) {
+            getQm(message, 5000);
+        } else if (message.type.startsWith("question")) {
+            question(message, 5000);
+        } else if (message.type.startsWith("get-answer")) {
+            answer(message);
+        } else if (message.type.startsWith("get-scores")) {
+            scores(message);
+        } else if (message.type.startsWith("end")) {
+            end(message);
+        }
+    }
+
+    /**
+     * Processes a start request
+     *
+     * @param message  protocol
+     * @param waitTime time to wait
+     * @throws InterruptedException
+     * @throws IOException
+     */
+    private void start(ServerProtocol message, int waitTime) throws InterruptedException, IOException {
+        revalidateRepaintRenameResize("Instructions", gui.instructions, 900, 600);
+        gui.qm.lblRound.setText("Round: " + message.message[1]);
+        gui.scorePanel.lblRound.setText("Round: " + message.message[1]);
+        gui.questionPanel.roundNumber.setText("Round: " + message.message[1]);
+        Thread.sleep(waitTime);
+        ServerProtocol getQuestionMaster = new ServerProtocol("get-qm");
+        outputStream.writeObject(getQuestionMaster);
+        outputStream.flush();
+    }
+
+    /**
+     * Gets the question master for the current round of the game
+     *
+     * @param message  protocol from server
+     * @param waitTime time to wait
+     * @throws IOException
+     * @throws InterruptedException
+     */
+    private void getQm(ServerProtocol message, int waitTime) throws IOException, InterruptedException {
+        gui.remove(gui.instructions);
+        revalidateRepaintRenameResize("Question Master", gui.qm, 900, 600);
+        String questionMaster = message.message[0];
+        gui.qm.questionMaster.setText(questionMaster);
+        Thread.sleep(waitTime);
+        ServerProtocol getQuestion = new ServerProtocol("question");
+        outputStream.writeObject(getQuestion);
+        outputStream.flush();
+    }
+
+    /**
+     * Gets the question from the server
+     *
+     * @param message  protocol from the server
+     * @param waitTime time to wait
+     * @throws InterruptedException
+     * @throws IOException
+     */
+    private void question(ServerProtocol message, int waitTime) throws InterruptedException, IOException {
+        gui.remove(gui.qm);
+        if (message.message[0].startsWith("qm")) {
+            String question = message.message[1];
+            gui.questionMasterQuestionPanel.txtrQuestion.setText(question);
+            revalidateRepaintRenameResize("Question Master: Question", gui.questionMasterQuestionPanel, 900, 600);
+            Thread.sleep(waitTime);
+            Thread.sleep(500);
+            ServerProtocol getAnswer = new ServerProtocol("get-answers");
+            outputStream.writeObject(getAnswer);
+            outputStream.flush();
+        } else if (message.message[0].startsWith("notqm")) {
+            String question = message.message[1];
+            gui.questionPanel.txtrQuestion.setText(question);
+            revalidateRepaintRenameResize("Question", gui.questionPanel, 900, 600);
+            Thread.sleep(waitTime);
+            ServerProtocol sendAnswer = new ServerProtocol("answer", gui.questionPanel.playerAnswer);
+            outputStream.writeObject(sendAnswer);
+            outputStream.flush();
+            Thread.sleep(500);
+            ServerProtocol getAnswer = new ServerProtocol("get-answers");
+            outputStream.writeObject(getAnswer);
+            outputStream.flush();
+        }
+    }
+
+    /***
+     * Gets the answers from the server
+     *
+     * @param message server protocol
+     * @throws IOException
+     */
+    private void answer(ServerProtocol message) throws IOException {
+        if (message.message[0].startsWith("qm")) {
+            gui.remove(gui.questionMasterQuestionPanel);
+            String player1Answer = message.message[1];
+            String player2Answer = message.message[2];
+            gui.questionMasterAnswerPanel.txtrQuestion.setText(gui.questionMasterAnswerPanel.txtrQuestion.getText());
+            gui.questionMasterAnswerPanel.txtrPlayerAnswer.setText(player1Answer);
+            gui.questionMasterAnswerPanel.txtrPlayerAnswer_1.setText(player2Answer);
+            gui.chat.chatBox.setText("Make your decision on your own!");
+            revalidateRepaintRenameResize("Question Master: Answers", gui.questionMasterAnswerPanel, 900, 600);
+            while (!(gui.questionMasterAnswerPanel.voteCast)) {
+            }
+            ServerProtocol sendAnswer = new ServerProtocol("qm-vote", gui.questionMasterAnswerPanel.answer, "10");
+            outputStream.writeObject(sendAnswer);
+            outputStream.flush();
+        } else if (message.message[0].startsWith("notqm")) {
+            gui.remove(gui.questionPanel);
+            String playerAnswer = message.message[1];
+            String player2Answer = message.message[2];
+            gui.answerPanel.txtrQuestion.setText(gui.questionPanel.txtrQuestion.getText());
+            gui.questionPanel.timer.stop();
+            gui.questionPanel.timer.restart();
+            gui.answerPanel.txtrPlayerAnswer.setText(playerAnswer);
+            gui.answerPanel.txtrPlayerAnswer_1.setText(player2Answer);
+            revalidateRepaintRenameResize("Answers", gui.answerPanel, 900, 600);
+        }
+    }
+
+    /**
+     * Gets the scores from the server
+     *
+     * @param message server protocol
+     * @throws IOException
+     */
+    private void scores(ServerProtocol message) throws IOException {
+        gui.remove(gui.questionMasterAnswerPanel);
+        gui.remove(gui.answerPanel);
+        String roundWinner = message.message[0];
+        String player1Score = message.message[1];
+        String player2Score = message.message[2];
+        String player3Score = message.message[3];
+        gui.scorePanel.textArea.setText(player1Score + "\n" + player2Score + "\n" + player3Score);
+        gui.scorePanel.txtPlayerName.setText(roundWinner);
+        revalidateRepaintRenameResize("Scores on the doors", gui.scorePanel, 900, 600);
+        ServerProtocol nextRound = new ServerProtocol("next-round");
+        outputStream.writeObject(nextRound);
+        outputStream.flush();
+    }
+
+    /**
+     * Processes an end request for the game
+     */
+    private void end(ServerProtocol message) {
+        StringBuilder string = new StringBuilder();
+        for (int i = 1; i < message.message.length; i++) {
+            string.append(" " + message.message[i]);
+        }
+        gui.finalScores.txtPlayerName.setText(string.toString());
+        revalidateRepaintRenameResize("Final scores on the doors", gui.finalScores, 900, 600);
+    }
+
+    private void revalidateRepaintRenameResize(String title, JPanel toSet, int width, int height) {
+        gui.setBounds(0, 0, width, height);
+        gui.setContentPane(toSet);
+        gui.revalidate();
+        gui.repaint();
+        gui.setTitle(title);
+    }
+
 }

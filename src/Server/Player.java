@@ -177,6 +177,8 @@ public class Player {
             sendQuestionMaster(game);
         } else if (type.startsWith("get-scores")) {
             sendScores(game);
+        } else if (type.startsWith("next-round")) {
+            game.addToNextCounter();
         } else {
             out.writeObject(new ServerProtocol("false", "invalid request"));
             out.flush();
@@ -211,7 +213,7 @@ public class Player {
                 out.flush();
             } else {
                 game.addScore(Integer.valueOf(request.message[1]), username);
-                ServerProtocol message = new ServerProtocol(lobby.getScores());
+                ServerProtocol message = new ServerProtocol(lobby.getScores(username));
                 for (Player player : game.getPlayers()) {
                     player.getOut().writeObject(message);
                     player.getOut().flush();
@@ -300,8 +302,7 @@ public class Player {
      * @throws IOException
      */
     private void sendScores(HeadlineGame game) throws IOException {
-        ServerProtocol message = new ServerProtocol(lobby.getScores());
-        game.nextRound();
+        ServerProtocol message = new ServerProtocol(lobby.getScores("lobby-request"));
         out.writeObject(message);
         out.flush();
     }

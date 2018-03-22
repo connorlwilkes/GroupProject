@@ -20,6 +20,7 @@ public class ClientGui extends JFrame {
     public QuestionPanel questionPanel;
     public AnswerPanel answerPanel;
     public ScorePanel scorePanel;
+    public FinalScoresPanel finalScores;
     public User user;
 
     private ClientGui() {
@@ -39,6 +40,7 @@ public class ClientGui extends JFrame {
         add(questionPanel);
         add(answerPanel);
         add(scorePanel);
+        add(finalScores);
         setContentPane(login);
         setVisible(true);
     }
@@ -67,5 +69,6 @@ public class ClientGui extends JFrame {
         questionPanel = new QuestionPanel(this);
         answerPanel = new AnswerPanel(this);
         scorePanel = new ScorePanel(this);
+        finalScores = new FinalScoresPanel(this);
     }
 }

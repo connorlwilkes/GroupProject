@@ -5,6 +5,7 @@ import Server.ServerProtocol;
 import Server.User;
 
 import javax.swing.*;
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -123,7 +124,7 @@ public class Client implements Runnable {
             outputStream.writeObject(message);
             outputStream.flush();
         } catch (IOException ex) {
-            System.err.println(ex);
+            ex.printStackTrace();
         }
     }
 
@@ -141,8 +142,15 @@ public class Client implements Runnable {
                     Message message = (Message) o;
                     gui.chat.chatBox.append(message.toString() + "\n");
                 }
-            } catch (IOException | ClassNotFoundException | InterruptedException e) {
+            } catch (EOFException ex) {
+                JOptionPane.showMessageDialog(gui, "Server connection lost", "Error", JOptionPane.ERROR_MESSAGE);
+                System.exit(0);
+                throw new RuntimeException("Connection broken " + ex);
+            } catch (IOException ex) {
+                throw new RuntimeException("Connection broken " + ex);
+            } catch (ClassNotFoundException | InterruptedException e) {
                 e.printStackTrace();
+                throw new RuntimeException("Connection broken " + e);
             }
         }
     }
@@ -155,19 +163,23 @@ public class Client implements Runnable {
      * @throws InterruptedException
      */
     private void processGameRequests(ServerProtocol message) throws IOException, InterruptedException {
-        System.out.println(message);
-        if (message.type.startsWith("start")) {
-            start(message, 5000);
-        } else if (message.type.startsWith("get-qm")) {
-            getQm(message, 5000);
-        } else if (message.type.startsWith("question")) {
-            question(message, 5000);
-        } else if (message.type.startsWith("get-answer")) {
-            answer(message);
-        } else if (message.type.startsWith("get-scores")) {
-            scores(message);
-        } else if (message.type.startsWith("end")) {
-            end(message);
+        try {
+            System.out.println(message);
+            if (message.type.startsWith("start")) {
+                start(message, 5000);
+            } else if (message.type.startsWith("get-qm")) {
+                getQm(message, 5000);
+            } else if (message.type.startsWith("question")) {
+                question(message, 5000);
+            } else if (message.type.startsWith("get-answer")) {
+                answer(message);
+            } else if (message.type.startsWith("get-scores")) {
+                scores(message);
+            } else if (message.type.startsWith("end")) {
+                end(message);
+            }
+        } catch (RuntimeException e) {
+            JOptionPane.showMessageDialog(gui, "Server connection lost", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -287,6 +299,9 @@ public class Client implements Runnable {
         gui.instructions.welcome.setText("Next round!");
         gui.scorePanel.textArea.setText(player1Score + "\n" + player2Score + "\n" + player3Score);
         gui.scorePanel.txtPlayerName.setText(roundWinner);
+        gui.questionPanel.txtrAnswer.setText("Write Answer here!");
+        gui.questionPanel.txtrAnswer.setEditable(true);
+        gui.questionPanel.playerAnswer = null;
         revalidateRepaintRenameResize("Scores on the doors", gui.scorePanel, 900, 600);
         ServerProtocol nextRound = new ServerProtocol("next-round");
         outputStream.writeObject(nextRound);

@@ -67,6 +67,7 @@ public class HeadlineGame extends Minigame {
         setRoundNumber(getRoundNumber() + 1);
         answerMap = new HashMap<>();
         answers = new ArrayList<>();
+        chooseQuestionMaster();
         try {
             for (Player player : getPlayers()) {
                 ServerProtocol start = new ServerProtocol("start", "game is starting", String.valueOf(getRoundNumber()));

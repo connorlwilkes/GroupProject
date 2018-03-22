@@ -19,11 +19,12 @@ import java.text.SimpleDateFormat;
  */
 public class QuestionPanel extends JPanel {
 
-    public JTextArea txtrQuestion = new JTextArea();
+    public JTextArea txtrQuestion;
     public String playerAnswer;
     private JLabel timerOutput;
     private ClientGui gui;
     public JLabel roundNumber;
+    public JTextArea txtrAnswer;
     public Timer timer;
     private long startTime = -1;
     private long timeLeft = 5000;
@@ -52,9 +53,9 @@ public class QuestionPanel extends JPanel {
         txtrQuestion.setEditable(false);
         add(txtrQuestion);
 
-        JTextArea txtrAnswer = new JTextArea();
+        txtrAnswer = new JTextArea();
         txtrAnswer.setFont(new Font("Tahoma", Font.PLAIN, 13));
-        txtrAnswer.setText("answer");
+        txtrAnswer.setText("Write Answer here!");
         txtrAnswer.setBounds(20, 140, 450, 103);
         txtrAnswer.addMouseListener(new MouseAdapter() {
             @Override
@@ -68,7 +69,7 @@ public class QuestionPanel extends JPanel {
         btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 13));
         btnNewButton.setBounds(165, 254, 152, 35);
         btnNewButton.addActionListener(e -> {
-            playerAnswer =txtrAnswer.getText();
+            playerAnswer = txtrAnswer.getText();
             txtrAnswer.setEditable(false);
             txtrAnswer.setText("Answer Sent!");
         });

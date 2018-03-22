@@ -6,7 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * QuestionMasterQuestionPanel LEWIS!!
+ * QuestionMasterQuestionPanel displays the question for the Question Master while others players write their answer.
  * @author Florence
  * @version 21/03/18
  *

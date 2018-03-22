@@ -8,7 +8,7 @@ import java.util.List;
  * and int respectively.
  *
  * @author Florence
- * @version 9/3/2018
+ * @version 21/3/2018
  */
 public class Minigame {
 
@@ -54,10 +54,10 @@ public class Minigame {
     }
 
     /**
-     * Adds score to a player in the game
+     * method to add a score to a player in the game
      *
      * @param scoreToAdd the score to add
-     * @param username   the username of the player to whome the core willl be added
+     * @param username   the username of the player to whom the score will be added
      */
     public void addScore(int scoreToAdd, String username) {
         for (Player gamePlayer : players) {
@@ -67,6 +67,10 @@ public class Minigame {
         }
     }
 
+    /**
+     * method to return a list of winners
+     *
+     */
     public List<String> winner() {
         List<String> winners = new ArrayList<>();
         int highScore = 0;

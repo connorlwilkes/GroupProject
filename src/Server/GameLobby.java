@@ -86,10 +86,20 @@ public class GameLobby implements Runnable {
         return chatRoom;
     }
 
+    /**
+     * Getter for the Id
+     *
+     * @return the id of the chatRoom
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * Setter for the Id
+     *
+     * @return the new id of the chatRoom
+     */
     public void setId(int id) {
         this.id = id;
     }
@@ -104,7 +114,7 @@ public class GameLobby implements Runnable {
     }
 
     /**
-     * Removes a player from the game lobby
+     * Method to remove a player from the game lobby
      *
      * @param playerToRemove the player to be removed
      */
@@ -117,7 +127,7 @@ public class GameLobby implements Runnable {
     }
 
     /**
-     * Adds a player to the players list
+     * Method to add a player to the players list
      *
      * @param playerToAdd the player to be added
      */

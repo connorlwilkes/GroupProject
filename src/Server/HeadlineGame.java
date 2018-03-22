@@ -24,8 +24,8 @@ public class HeadlineGame extends Minigame {
     private List<String> answers;
     public int nextCounter;
 
-    public HeadlineGame(List<Player> players) {
-        super(players);
+    public HeadlineGame(GameLobby lobby, List<Player> players) {
+        super(lobby, players);
         chooseQuestionMaster();
         this.questions = questions;
         answerMap = new HashMap<>();
@@ -51,9 +51,13 @@ public class HeadlineGame extends Minigame {
     public synchronized void addToNextCounter() {
         nextCounter++;
         if (nextCounter == getPlayers().size()) {
+            if (getRoundNumber() == 4) {
+                endGame();
+            }
             nextRound();
         }
     }
+
     public void nextRound() {
         try {
             Thread.sleep(5000);
@@ -62,6 +66,7 @@ public class HeadlineGame extends Minigame {
         }
         if (getRoundNumber() == 3) {
             endGame();
+            return;
         }
         nextCounter = 0;
         setRoundNumber(getRoundNumber() + 1);
@@ -86,8 +91,8 @@ public class HeadlineGame extends Minigame {
             toReturn.add("game is over");
             toReturn.addAll(winner());
             for (Player player : getPlayers()) {
-                ServerProtocol start = new ServerProtocol(toReturn.toArray(new String[toReturn.size()]));
-                player.getOut().writeObject(start);
+                ServerProtocol end = new ServerProtocol(toReturn.toArray(new String[toReturn.size()]));
+                player.getOut().writeObject(end);
                 player.getOut().flush();
             }
         } catch (IOException e) {
@@ -128,26 +133,13 @@ public class HeadlineGame extends Minigame {
      * eligible to be question master again
      */
     public synchronized void chooseQuestionMaster() {
-        if (getRoundNumber() != 1) {
-            questionMaster.setHasBeenQuestionMaster(true);
-        }
-        if (getRoundNumber() == getPlayers().size()) {
-            for (Player player : getPlayers()) {
-                player.setHasBeenQuestionMaster(false);
+        questionMaster = getPlayers().get(getRoundNumber() - 1);
+        getPlayers().get(getRoundNumber() - 1).setQuestionMaster(true);
+        for (Player player: getPlayers()) {
+            if(!(player.equals(questionMaster))) {
+                player.setQuestionMaster(false);
             }
         }
-        Random random = new Random();
-        int index = random.nextInt(getPlayers().size() - 1);
-        Player player = getPlayers().get(index);
-        while (player.isHasBeenQuestionMaster()) {
-            index = random.nextInt(getPlayers().size() - 1);
-            player = getPlayers().get(index);
-        }
-        if (getRoundNumber() != 1) {
-            questionMaster.setQuestionMaster(false);
-        }
-        player.setQuestionMaster(true);
-        questionMaster = player;
     }
 
     /**

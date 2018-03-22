@@ -15,15 +15,19 @@ public class Minigame {
     private List<Player> players;
     private List<Integer> scores;
     private int roundNumber;
+    private GameLobby lobby;
+    public Boolean running;
 
     /**
      * Constructor for the Minigame class which resuses the field variable players as an argument.
      *
      * @param players     the players in the game
      */
-    public Minigame(List<Player> players) {
+    public Minigame(GameLobby lobby, List<Player> players) {
+        this.lobby = lobby;
         this.players = players;
         this.roundNumber = 1;
+        running = true;
     }
 
     /**
@@ -65,6 +69,14 @@ public class Minigame {
                 gamePlayer.setScore(gamePlayer.getScore() + scoreToAdd);
             }
         }
+    }
+
+    public GameLobby getLobby() {
+        return lobby;
+    }
+
+    public void setLobby(GameLobby lobby) {
+        this.lobby = lobby;
     }
 
     public List<String> winner() {

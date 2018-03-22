@@ -137,6 +137,7 @@ public class Server {
         activeUsers = new ArrayList<>();
         threadPool = Executors.newFixedThreadPool(50);
         setUpGameLobbies();
+        monitorLobby();
         try (ServerSocket server = new ServerSocket(port, 500, host)) {
             while (true) {
                 try {
@@ -182,18 +183,20 @@ public class Server {
     }
 
     /**
-     * Keeps up to date all active threads
+     * Keeps up to date all active lobbies
      */
-//    private void monitorUsers() {
-//        Runnable monitor = () -> {
-//            while (true) {
-//                for (ServerThread connection : activeUsers) {
-//                    if (connection.connection.isClosed()) {
-//                        activeUsers.remove(connection);
-//                    }
-//                }
-//            }
-//        };
-//        new Thread(monitor).start();
-//    }
+    private void monitorLobby() {
+        Runnable monitor = () -> {
+            while (true) {
+                for (GameLobby lobby : lobbies) {
+                    if (lobby.gameIsOver) {
+                         int lobbyNumber = lobby.getId();
+                         lobbies.remove(lobby);
+                         lobbies.add(new GameLobby(lobbyNumber));
+                    }
+                }
+            }
+        };
+        new Thread(monitor).start();
+    }
 }

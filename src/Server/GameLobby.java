@@ -29,6 +29,7 @@ public class GameLobby implements Runnable {
     private boolean isFull;
     private boolean isRunning;
     private HashMap<Player, String> answers;
+    public boolean gameIsOver = false;
 
     /**
      * Constructor for the GameLobby class, reuses the field id as an argument.
@@ -46,17 +47,6 @@ public class GameLobby implements Runnable {
         chatRoom = new ChatRoom(this);
         gameNumber = 1;
         answers = new HashMap<>();
-
-//        Runnable checkingUsers = () -> {
-//            while (isRunning) {
-//                for (Player player : players) {
-//                    if (player.getClient().connection.isClosed()) {
-//                        removePlayer(player);
-//                    }
-//                }
-//            }
-//        };
-//        new Thread(checkingUsers).start();
     }
 
     /**
@@ -94,6 +84,14 @@ public class GameLobby implements Runnable {
      */
     public ChatRoom getChatRoom() {
         return chatRoom;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     /**
@@ -174,8 +172,10 @@ public class GameLobby implements Runnable {
     @Override
     public void run() {
         isRunning = true;
-        HeadlineGame game = new HeadlineGame(players);
+        HeadlineGame game = new HeadlineGame(this, players);
         games.add(game);
+        while (game.running) {}
+        gameIsOver = true;
     }
 
 }

@@ -147,6 +147,8 @@ public class Player {
                 ServerProtocol request = (ServerProtocol) o;
                 String type = request.type;
                 processHeadlineGameRequests(request, type);
+            } else if (lobby.gameIsOver) {
+                return;
             } else {
                 out.writeObject(new ServerProtocol("invalid request"));
                 out.flush();

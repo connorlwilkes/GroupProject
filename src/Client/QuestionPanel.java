@@ -20,14 +20,10 @@ import java.text.SimpleDateFormat;
 public class QuestionPanel extends JPanel {
 
     public JTextArea txtrQuestion;
-    public String playerAnswer;
-    private JLabel timerOutput;
+    public String playerAnswer = "";
     private ClientGui gui;
     public JLabel roundNumber;
     public JTextArea txtrAnswer;
-    public Timer timer;
-    private long startTime = -1;
-    private long timeLeft = 5000;
 
 
     /**

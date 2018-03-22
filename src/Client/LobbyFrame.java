@@ -41,8 +41,8 @@ public class LobbyFrame extends JPanel {
                 gui.setTitle("Waiting for players");
                 gui.setTitle("Lobby 1");
                 gui.chat.setRunning(true);
-                // new Thread(gui.chat.chatThread).start();
                 gui.chat.displayFrame.setVisible(true);
+                gui.client.inLobby = true;
                 new Thread(gui.client).start();
             } else if (response.type.equals("false")) {
                 JOptionPane.showMessageDialog(gui,
@@ -57,10 +57,14 @@ public class LobbyFrame extends JPanel {
         btnLobby2.addActionListener(e -> {
             ServerProtocol response = gui.client.serverRequest("join-lobby", "2");
             if (response.type.equals("true")) {
+                gui.setContentPane(gui.wait);
+                gui.revalidate();
+                gui.repaint();
                 gui.setTitle("Lobby 2");
-                gui.chat.displayFrame.setVisible(true);
                 gui.chat.setRunning(true);
-                new Thread(gui.chat.chatThread).start();
+                gui.chat.displayFrame.setVisible(true);
+                gui.client.inLobby = true;
+                new Thread(gui.client).start();
             } else if (response.type.equals("false")) {
                 JOptionPane.showMessageDialog(gui,
                         response.message[0],
@@ -74,10 +78,14 @@ public class LobbyFrame extends JPanel {
         btnLobby3.addActionListener(e -> {
             ServerProtocol response = gui.client.serverRequest("join-lobby", "3");
             if (response.type.equals("true")) {
+                gui.setContentPane(gui.wait);
+                gui.revalidate();
+                gui.repaint();
                 gui.setTitle("Lobby 3");
                 gui.chat.setRunning(true);
-                new Thread(gui.chat.chatThread).start();
                 gui.chat.displayFrame.setVisible(true);
+                gui.client.inLobby = true;
+                new Thread(gui.client).start();
             } else if (response.type.equals("false")) {
                 JOptionPane.showMessageDialog(gui,
                         response.message[0],
@@ -95,8 +103,11 @@ public class LobbyFrame extends JPanel {
                 JOptionPane.showMessageDialog(gui,
                         "Logged Out " ,
                         "Log out success", JOptionPane.INFORMATION_MESSAGE);
+                gui.setContentPane(gui.login);
+                gui.revalidate();
+                gui.repaint();
+                gui.setTitle("Log in");
                 gui.client.stop();
-
             } else if (response.type.equals("false")) {
                 JOptionPane.showMessageDialog(gui,
                         "Logout Failure",

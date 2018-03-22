@@ -27,6 +27,7 @@ public class Client implements Runnable {
     private Socket connection;
     private User user;
     private ClientGui gui;
+    public boolean inLobby;
 
     /**
      * Constructor for the Client class
@@ -36,6 +37,7 @@ public class Client implements Runnable {
     public Client(ClientGui gui) {
         this.gui = gui;
         this.port = 6000;
+        inLobby = false;
         try {
             this.host = InetAddress.getLocalHost();
         } catch (UnknownHostException e) {
@@ -53,6 +55,7 @@ public class Client implements Runnable {
      */
     public Client(ClientGui gui, String port, String host) {
         this.gui = gui;
+        inLobby = false;
         try {
             this.host = InetAddress.getByName(host);
             this.port = Integer.parseInt(port);
@@ -132,7 +135,7 @@ public class Client implements Runnable {
      * Run method for the thread, is called when a game starts. The thread processes protocol to and from the server
      */
     public void run() {
-        while (true) {
+        while (inLobby) {
             try {
                 Object o = inputStream.readObject();
                 if (o instanceof ServerProtocol) {
@@ -166,11 +169,11 @@ public class Client implements Runnable {
         try {
             System.out.println(message);
             if (message.type.startsWith("start")) {
-                start(message, 5000);
+                start(message, 2000);
             } else if (message.type.startsWith("get-qm")) {
-                getQm(message, 5000);
+                getQm(message, 2000);
             } else if (message.type.startsWith("question")) {
-                question(message, 5000);
+                question(message, 1000);
             } else if (message.type.startsWith("get-answer")) {
                 answer(message);
             } else if (message.type.startsWith("get-scores")) {
@@ -196,6 +199,9 @@ public class Client implements Runnable {
         gui.qm.lblRound.setText("Round: " + message.message[1]);
         gui.scorePanel.lblRound.setText("Round: " + message.message[1]);
         gui.questionPanel.roundNumber.setText("Round: " + message.message[1]);
+        gui.questionPanel.txtrAnswer.setText("Write answer here!");
+        gui.questionPanel.txtrAnswer.setEditable(true);
+        gui.questionPanel.playerAnswer = "";
         Thread.sleep(waitTime);
         ServerProtocol getQuestionMaster = new ServerProtocol("get-qm");
         outputStream.writeObject(getQuestionMaster);
@@ -299,9 +305,6 @@ public class Client implements Runnable {
         gui.instructions.welcome.setText("Next round!");
         gui.scorePanel.textArea.setText(player1Score + "\n" + player2Score + "\n" + player3Score);
         gui.scorePanel.txtPlayerName.setText(roundWinner);
-        gui.questionPanel.txtrAnswer.setText("Write Answer here!");
-        gui.questionPanel.txtrAnswer.setEditable(true);
-        gui.questionPanel.playerAnswer = null;
         revalidateRepaintRenameResize("Scores on the doors", gui.scorePanel, 900, 600);
         ServerProtocol nextRound = new ServerProtocol("next-round");
         outputStream.writeObject(nextRound);
@@ -318,6 +321,9 @@ public class Client implements Runnable {
         }
         gui.finalScores.txtPlayerName.setText(string.toString());
         revalidateRepaintRenameResize("Final scores on the doors", gui.finalScores, 900, 600);
+        resetGui();
+        revalidateRepaintRenameResize("Lobby", gui.lobby, 400, 500);
+        inLobby = false;
     }
 
     private void revalidateRepaintRenameResize(String title, JPanel toSet, int width, int height) {
@@ -326,6 +332,18 @@ public class Client implements Runnable {
         gui.revalidate();
         gui.repaint();
         gui.setTitle(title);
+    }
+
+    private void resetGui() {
+        gui.chat = new ChatDisplay(gui.client);
+        gui.instructions = new InstructionPanel(gui);
+        gui.qm = new QuestionMasterPanel(gui);
+        gui.questionMasterAnswerPanel = new QuestionMasterAnswerPanel(gui);
+        gui.questionMasterQuestionPanel = new QuestionMasterQuestionPanel(gui);
+        gui.questionPanel = new QuestionPanel(gui);
+        gui.answerPanel = new AnswerPanel(gui);
+        gui.scorePanel = new ScorePanel(gui);
+        gui.finalScores = new FinalScoresPanel(gui);
     }
 
 }

@@ -8,10 +8,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Player class for the game. A player object is created when a User class enters a lobby
- *
+ * Player class for the game. A player object is created when an instance of the User class enters a lobby
+ * Has the fields thread of type ServerThread; user of type User; score of type int; isQuestionMaster and 
+ * hasBeenQuestionMaster of type boolean; out of type ObjectOutputStream; and in of typeObjectInputStream.
+ * 
  * @author Florence
- * @version 15/3/2018
+ * @version 22/3/2018
  */
 public class Player {
 
@@ -25,7 +27,7 @@ public class Player {
     private ObjectInputStream in;
 
     /**
-     * Constructor for the player class
+     * Constructor for the player class which reuses the fields thread, lobby and user as arguments.
      *
      * @param thread client associated with the player
      * @param lobby  lobby the player is a part of
@@ -44,7 +46,7 @@ public class Player {
     /**
      * Getter for the client variable
      *
-     * @return client
+     * @return client thread
      */
     public ServerThread getClient() {
         return thread;
@@ -53,7 +55,7 @@ public class Player {
     /**
      * Getter for the score variable
      *
-     * @return the score
+     * @return the score of a player
      */
     public int getScore() {
         return score;
@@ -62,7 +64,7 @@ public class Player {
     /**
      * Setter for the score variable
      *
-     * @param score score to set
+     * @param score the score to set the player
      */
     public void setScore(int score) {
         this.score = score;
@@ -71,7 +73,7 @@ public class Player {
     /**
      * Getter for the questionMaster boolean
      *
-     * @return the questionMaster boolean
+     * @return true if a player is the Question Master, false if not
      */
     public boolean getQuestionMaster() {
         return isQuestionMaster;
@@ -80,7 +82,7 @@ public class Player {
     /**
      * Setter for the questionMaster boolean
      *
-     * @param questionMaster the state to set the questionMaster boolean to
+     * @param questionMaster the boolean state to set the questionMaster boolean to
      */
     public void setQuestionMaster(boolean questionMaster) {
         isQuestionMaster = questionMaster;
@@ -89,7 +91,7 @@ public class Player {
     /**
      * Getter for the lobby
      *
-     * @return lobby associated with this user
+     * @return the lobby in which the user resides
      */
     public GameLobby getLobby() {
         return lobby;
@@ -98,7 +100,7 @@ public class Player {
     /**
      * Getter for the hasBeenQuestionMaster boolean
      *
-     * @return the hasBeenQuestionMaster boolean
+     * @return true if the user has been the Question Master previously
      */
     public boolean isHasBeenQuestionMaster() {
         return hasBeenQuestionMaster;
@@ -107,7 +109,7 @@ public class Player {
     /**
      * Setter for the hasBeenQuestionMaster boolean
      *
-     * @param hasBeenQuestionMaster the
+     * @param hasBeenQuestionMaster a boolean to represent whether the user has been the Question Master previously
      */
     public void setHasBeenQuestionMaster(boolean hasBeenQuestionMaster) {
         this.hasBeenQuestionMaster = hasBeenQuestionMaster;
@@ -116,7 +118,7 @@ public class Player {
     /**
      * Getter for the user
      *
-     * @return the user
+     * @return the user associated with a player
      */
     public User getUser() {
         return user;
@@ -132,7 +134,7 @@ public class Player {
     }
 
     /**
-     * Processes requests from the client during the game
+     * Method to process requests from the client during the game
      *
      * @throws IOException
      * @throws ClassNotFoundException
@@ -157,7 +159,7 @@ public class Player {
     }
 
     /**
-     * Processes requests for the HeadlineGame
+     * Method to process requests for the HeadlineGame
      *
      * @param request request to process
      * @param type    type of the request
@@ -188,7 +190,7 @@ public class Player {
     }
 
     /**
-     * Gets an answer from a client
+     * Method to get an answer from a client
      *
      * @param request the protocol from the client
      * @param game    the headline game instance
@@ -199,7 +201,7 @@ public class Player {
     }
 
     /**
-     * Gets a vote from a client
+     * Method to get a vote from a client
      *
      * @param request the protocol from the client
      * @param game    the headline game instance
@@ -229,7 +231,7 @@ public class Player {
     }
 
     /**
-     * Sends answers to the client
+     * Method to send answers to the client
      *
      * @param game the instance of the headline game
      * @throws IOException
@@ -257,7 +259,7 @@ public class Player {
     }
 
     /**
-     * Lets the client leave the game
+     * Method to let the client leave the game
      *
      * @throws IOException
      */
@@ -269,7 +271,7 @@ public class Player {
     }
 
     /**
-     * Sends the current question to the client
+     * Method to send the current question to the client
      *
      * @param game the headline game instance
      * @throws IOException
@@ -287,7 +289,7 @@ public class Player {
     }
 
     /**
-     * Sends the current question master to the clients
+     * Method to send the current question master to the clients
      *
      * @param game the instance of the headline game
      * @throws IOException
@@ -299,7 +301,7 @@ public class Player {
     }
 
     /**
-     * Sends the current scores to the client
+     * Method to send the current scores to the client
      *
      * @throws IOException
      */

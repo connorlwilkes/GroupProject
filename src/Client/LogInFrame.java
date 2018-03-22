@@ -26,16 +26,16 @@ public class LogInFrame extends JPanel {
         this.setBounds(0, 0, 400, 500);
 
         JLabel lblUser = new JLabel("Username: ");
-        lblUser.setBounds(90, 118, 79, 16);
+        lblUser.setBounds(70, 118, 100, 16);
         add(lblUser);
 
         enterUsername = new JTextField();
-        enterUsername.setBounds(170, 113, 130, 26);
+        enterUsername.setBounds(130, 113, 130, 26);
         enterUsername.setColumns(12);
         add(enterUsername);
 
         JLabel lblPass = new JLabel("Password: ");
-        lblPass.setBounds(90, 159, 79, 16);
+        lblPass.setBounds(70, 159, 100, 16);
         add(lblPass);
 
         enterPassword = new JPasswordField();

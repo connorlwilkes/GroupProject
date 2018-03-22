@@ -28,7 +28,7 @@ public class RegisterFrame extends JPanel {
         this.setBounds(0, 0, 400, 500);
 
         JLabel lblUser = new JLabel("Username: ");
-        lblUser.setBounds(120, 113, 79, 16);
+        lblUser.setBounds(100, 113, 100, 16);
         add(lblUser);
 
         enterUser = new JTextField();
@@ -37,7 +37,7 @@ public class RegisterFrame extends JPanel {
         add(enterUser);
 
         JLabel lblPass = new JLabel("Password: ");
-        lblPass.setBounds(120, 154, 79, 16);
+        lblPass.setBounds(100, 154, 100, 16);
         add(lblPass);
 
         enterPass = new JPasswordField();
@@ -46,7 +46,7 @@ public class RegisterFrame extends JPanel {
         add(enterPass);
 
         JLabel lblReEnterPass = new JLabel("Re-enter Password: ");
-        lblReEnterPass.setBounds(80, 195, 130, 16);
+        lblReEnterPass.setBounds(60, 195, 150, 16);
         add(lblReEnterPass);
 
         reEnterPass = new JPasswordField();

@@ -44,6 +44,7 @@ public class QuestionMasterAnswerPanel extends JPanel {
         txtrQuestion.setBounds(20, 41, 450, 80);
         txtrQuestion.setLineWrap(true);
         txtrQuestion.setWrapStyleWord(true);
+        txtrQuestion.setEditable(false);
         add(txtrQuestion);
 
         txtrPlayerAnswer = new JTextArea();
@@ -52,6 +53,7 @@ public class QuestionMasterAnswerPanel extends JPanel {
         txtrPlayerAnswer.setBounds(20, 132, 450, 80);
         txtrPlayerAnswer.setLineWrap(true);
         txtrPlayerAnswer.setWrapStyleWord(true);
+        txtrPlayerAnswer.setEditable(false);
         add(txtrPlayerAnswer);
 
         txtrPlayerAnswer_1 = new JTextArea();
@@ -60,6 +62,7 @@ public class QuestionMasterAnswerPanel extends JPanel {
         txtrPlayerAnswer_1.setBounds(20, 224, 450, 80);
         txtrPlayerAnswer_1.setLineWrap(true);
         txtrPlayerAnswer_1.setWrapStyleWord(true);
+        txtrPlayerAnswer_1.setEditable(false);
         add(txtrPlayerAnswer_1);
 
 

@@ -49,6 +49,7 @@ public class QuestionPanel extends JPanel {
         txtrQuestion.setBounds(20, 50, 450, 79);
         txtrQuestion.setLineWrap(true);
         txtrQuestion.setWrapStyleWord(true);
+        txtrQuestion.setEditable(false);
         add(txtrQuestion);
 
         JTextArea txtrAnswer = new JTextArea();

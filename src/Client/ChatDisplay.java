@@ -28,7 +28,7 @@ public class ChatDisplay extends JFrame {
 
     /**
      * ChatDisplay is a constructor that creates the panel
-     * @param clientConstructor
+     * @param clientConstructor - client associated with this gui
      */
     public ChatDisplay(Client clientConstructor) {
         this.client = clientConstructor;

@@ -12,7 +12,8 @@ import java.util.concurrent.ThreadLocalRandom;
  * Class for the HeadlineGame. Sends the players in the lobby a headline with a missing word, Players submit what they
  * think is the funniest word to complete the headline. The question master of that particular round then chooses the
  * best answer. The winner then scores a point.
- *
+ * Has the fields questionMaster of type Player; questions of type List<String>; answerMap of type Map<String,Player>; 
+ * and nextCounter of type int
  * @author Florence
  * @version 9/3/2018
  */
@@ -24,6 +25,10 @@ public class HeadlineGame extends Minigame {
     private List<String> answers;
     public int nextCounter;
 
+    /**
+     * Contructor for HeadlineGame, reuses the field players as an argument
+     * @param players The players in the game
+     */
     public HeadlineGame(List<Player> players) {
         super(players);
         chooseQuestionMaster();
@@ -48,12 +53,19 @@ public class HeadlineGame extends Minigame {
         }
     }
 
+    /**
+     * Method to increase the counter
+     */
     public synchronized void addToNextCounter() {
         nextCounter++;
         if (nextCounter == getPlayers().size()) {
             nextRound();
         }
     }
+    
+    /**
+     * Method to cyle through the game rounds
+     */
     public void nextRound() {
         try {
             Thread.sleep(5000);
@@ -79,6 +91,9 @@ public class HeadlineGame extends Minigame {
         }
     }
 
+    /**
+     * Method to end the game
+     */
     public void endGame() {
         try {
             List<String> toReturn = new ArrayList<>();
@@ -95,20 +110,32 @@ public class HeadlineGame extends Minigame {
         }
     }
 
+    /**
+     * Getter for the QuestionMaster
+     * @return true if a player is the QuestionMaster for the round, false is not
+     */
     public Player getQuestionMaster() {
         return questionMaster;
     }
 
+    /**
+     * Getter for the CurrentQuestion
+     * @return the question for the current round of the game
+     */
     public String getCurrentQuestion() {
         return questions.get(getRoundNumber() - 1);
     }
-
+ 
+    /**
+     * Getter for the AnswerMap
+     * @return a hashMap containing all players in the game and their answers for the current question. 
+     */
     public Map<String, Player> getAnswerMap() {
         return answerMap;
     }
 
     /**
-     * Adds an answer to the answerMap hashmap and list of answerss
+     * Method to add an answer to the answerMap hashmap and list of answers
      *
      * @param player key
      * @param answer value
@@ -118,6 +145,10 @@ public class HeadlineGame extends Minigame {
         answers.add(answer);
     }
 
+    /**
+     * Getter for the Answers
+     * @return the answers provided by players to the current question
+     */
     public synchronized List<String> getAnswers() {
         return answers;
     }
@@ -151,7 +182,7 @@ public class HeadlineGame extends Minigame {
     }
 
     /**
-     * Sets the questions for the round
+     * Seter for the question for each round
      *
      * @throws SQLException
      */

@@ -8,8 +8,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
+/**
+ * QuestionMasterAnswerPanel displays the other players answers to the Question Master so they
+ * can choose the winning answer
+ * @author Florence
+ * @version 16/03/18
+ *
+ */
 public class QuestionMasterAnswerPanel extends JPanel {
-
 
     public JTextArea txtrQuestion = new JTextArea();
     public JTextArea txtrPlayerAnswer = new JTextArea();
@@ -19,7 +25,8 @@ public class QuestionMasterAnswerPanel extends JPanel {
     public String answer;
 
     /**
-     * Create the panel.
+     * QuestionMasterAnswerPanel is a constructor that creates the panel.
+     * @param guiConstructor
      */
     public QuestionMasterAnswerPanel(ClientGui guiConstructor) {
         this.gui = guiConstructor;

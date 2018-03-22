@@ -3,15 +3,21 @@ package Client;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * AnswerPanel displays each users answer to the question
+ * @author Florence
+ * @version 14/03/18
+ *
+ */
 public class AnswerPanel extends JPanel {
     public JTextArea txtrQuestion = new JTextArea();
     public JTextArea txtrPlayerAnswer = new JTextArea();
     public JTextArea txtrPlayerAnswer_1 = new JTextArea();
     private ClientGui gui;
-    private JTextField textField;
 
     /**
-     * Create the panel.
+     * AnswerPanel is a constructor that creates the panel
+     * @param guiConstructor
      */
     public AnswerPanel(ClientGui guiConstructor) {
         this.gui = guiConstructor;

@@ -3,6 +3,11 @@ package Client;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * ScorePanel displays the game scoreboard once three rounds have been played
+ * @author Florence
+ * @version 21/03/18
+ */
 public class ScorePanel extends JPanel {
 
     public JTextField txtPlayerName;
@@ -12,7 +17,8 @@ public class ScorePanel extends JPanel {
     public JLabel lblRound;
 
     /**
-     * Create the panel.
+     * ScorePanel is a constructor that creates the panel.
+     * @param guiConstructor
      */
     public ScorePanel(ClientGui guiConstructor) {
         this.gui = guiConstructor;

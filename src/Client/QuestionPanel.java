@@ -8,6 +8,12 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
 
+/**
+ * QuestionPanel displays the question for the round
+ * @author Florence
+ * @version 18/03/18
+ *
+ */
 public class QuestionPanel extends JPanel {
 
     public JTextArea txtrQuestion = new JTextArea();
@@ -21,7 +27,8 @@ public class QuestionPanel extends JPanel {
 
 
     /**
-     * Create the panel.
+     * QuestionPanel is a constructor that creates the panel.
+     * @param guiConstructor
      */
     public QuestionPanel(ClientGui guiConstructor) {
         this.gui = guiConstructor;

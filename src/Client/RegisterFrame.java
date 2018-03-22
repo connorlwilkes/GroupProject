@@ -17,7 +17,11 @@ public class RegisterFrame extends JPanel {
     private JPasswordField enterPass;
     private JPasswordField reEnterPass;
     private ClientGui gui;
-
+    
+    /**
+     * RegisterFrame is a constructor that creates the panel.
+     * @param guiConstructor
+     */
     public RegisterFrame(ClientGui guiConstructor) {
         this.gui = guiConstructor;
         setLayout(null);

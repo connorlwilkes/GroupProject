@@ -10,9 +10,11 @@ import java.util.stream.Collectors;
 /**
  * GameLobby class for the game. Players enter the lobby and play rounds of minigames. The GameLobby class keeps track
  * of the scores and moderates user input.
+ * Has the fields: maxPlayers, id, totalScore, gameNumber of type int; lobbyName of type String; players and games of type List;
+ * chatRoom of type ChatRoom; isFull and isRunning of type boolean; answers of type HashMap.
  *
  * @author Florence
- * @version 9/3/2018
+ * @version 21/3/2018
  */
 public class GameLobby implements Runnable {
 
@@ -29,9 +31,9 @@ public class GameLobby implements Runnable {
     private HashMap<Player, String> answers;
 
     /**
-     * Constructor for the GameLobby class
+     * Constructor for the GameLobby class, reuses the field id as an argument.
      *
-     * @param id id of the GameLobby
+     * @param id The id of the GameLobby
      */
     public GameLobby(int id) {
         this.id = id;
@@ -60,7 +62,7 @@ public class GameLobby implements Runnable {
     /**
      * Getter for the isFull boolean
      *
-     * @return true if lobby is full or false if not
+     * @return true if lobby is full and false if not
      */
     public boolean isFull() {
         return isFull;
@@ -69,7 +71,7 @@ public class GameLobby implements Runnable {
     /**
      * Getter for the isRunning boolean
      *
-     * @return isRunning if the game is in progress
+     * @return true if the game is in progress and false if not
      */
     public boolean isRunning() {
         return isRunning;
@@ -78,18 +80,24 @@ public class GameLobby implements Runnable {
     /**
      * Getter for the players
      *
-     * @return the players
+     * @return the players in the game lobby
      */
     public List<Player> getPlayers() {
         return players;
     }
 
+    
+     /**
+     * Getter for the chatRoom
+     *
+     * @return the chatroom in use
+     */
     public ChatRoom getChatRoom() {
         return chatRoom;
     }
 
     /**
-     * toString method for the class
+     * toString method
      *
      * @return String interpretation of the class
      */
@@ -98,9 +106,9 @@ public class GameLobby implements Runnable {
     }
 
     /**
-     * Removes a player from the game
+     * Removes a player from the game lobby
      *
-     * @param playerToRemove the player to remove
+     * @param playerToRemove the player to be removed
      */
     public synchronized void removePlayer(Player playerToRemove) {
         players.remove(playerToRemove);
@@ -113,7 +121,7 @@ public class GameLobby implements Runnable {
     /**
      * Adds a player to the players list
      *
-     * @param playerToAdd the player to add
+     * @param playerToAdd the player to be added
      */
     public synchronized void addPlayer(Player playerToAdd) {
         players.add(playerToAdd);
@@ -127,7 +135,7 @@ public class GameLobby implements Runnable {
 
 
     /**
-     * Gets the current game being played in the lobby
+     * Method to get the current game being played in the lobby
      *
      * @return current game being played
      */
@@ -136,9 +144,9 @@ public class GameLobby implements Runnable {
     }
 
     /**
-     * Gets the scores for the game
+     * Method to get the scores of the players in the game
      *
-     * @return the scores as an array of Strings
+     * @return the players' scores as an array of Strings
      */
     public synchronized String[] getScores(String roundWinner) {
         List<String> toReturn = new ArrayList<>();
@@ -151,7 +159,7 @@ public class GameLobby implements Runnable {
     }
 
     /**
-     * Gets the player/players with the highest score
+     * method to get the player/players with the highest score
      *
      * @return a list of the players with the highest scores
      */
@@ -161,7 +169,7 @@ public class GameLobby implements Runnable {
     }
 
     /**
-     * Runs a new GameLobby on a new thread
+     * Method to run a new GameLobby on a new thread
      */
     @Override
     public void run() {

@@ -1,6 +1,8 @@
 package Client;
 
 import Server.ServerProtocol;
+import Server.ServerThread;
+import Server.User;
 
 import javax.swing.*;
 
@@ -15,6 +17,10 @@ public class LobbyFrame extends JPanel {
 
     private ClientGui gui;
 
+    /**
+     * LobbyFrame is a constructor that creates the panel.
+     * @param guiConstructor
+     */
     public LobbyFrame(ClientGui guiConstructor) {
         this.gui = guiConstructor;
         setLayout(null);
@@ -83,6 +89,18 @@ public class LobbyFrame extends JPanel {
     
         JButton btnLogOut = new JButton("Log Out");
         btnLogOut.addActionListener(e -> {
+            ServerProtocol response = gui.client.serverRequest("logout");
+            if (response.type.equals("true")) {
+                gui.setTitle("Logged Out");
+                JOptionPane.showMessageDialog(gui,
+                        "Logged Out " ,
+                        "Log out success", JOptionPane.INFORMATION_MESSAGE);
+                gui.client.stop();
+
+            } else if (response.type.equals("false")) {
+                JOptionPane.showMessageDialog(gui,
+                        "Logout Failure",
+                        "Log out failure", JOptionPane.INFORMATION_MESSAGE);}
         	// insert method here
         });
         btnLogOut.setBounds(160, 340, 100, 29);

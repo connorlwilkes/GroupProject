@@ -80,7 +80,7 @@ public class QuestionMasterAnswerPanel extends JPanel {
         });
 
         btnNewButton.setHorizontalAlignment(SwingConstants.LEFT);
-        btnNewButton.setBounds(480, 145, 125, 50);
+        btnNewButton.setBounds(480, 145, 200, 50);
         add(btnNewButton);
 
         JButton btnNewButton_1 = new JButton("Choose Answer");
@@ -100,7 +100,7 @@ public class QuestionMasterAnswerPanel extends JPanel {
         });
 
         btnNewButton_1.setHorizontalAlignment(SwingConstants.LEFT);
-        btnNewButton_1.setBounds(480, 242, 125, 50);
+        btnNewButton_1.setBounds(480, 242, 200, 50);
         add(btnNewButton_1);
 
     }

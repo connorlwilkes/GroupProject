@@ -34,7 +34,7 @@ public class ScorePanel extends JPanel {
         txtAndTheWinner.setBackground(new Color(255, 255, 255));
         txtAndTheWinner.setFont(new Font("Tahoma", Font.PLAIN, 15));
         txtAndTheWinner.setText("And the winner of this round! ");
-        txtAndTheWinner.setBounds(20, 49, 202, 38);
+        txtAndTheWinner.setBounds(20, 49, 280, 38);
         add(txtAndTheWinner);
 
 
@@ -47,7 +47,7 @@ public class ScorePanel extends JPanel {
 
         JLabel lblNewLabel = new JLabel("The overall score board looks like this: ");
         lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 13));
-        lblNewLabel.setBounds(20, 147, 245, 30);
+        lblNewLabel.setBounds(20, 147, 350, 30);
         add(lblNewLabel);
 
         textArea = new JTextArea();

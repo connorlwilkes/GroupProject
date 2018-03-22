@@ -19,9 +19,9 @@ public class ChatRoom {
     private GameLobby lobby;
 
     /**
-     * Constructor for the ChatRoom class
+     * Constructor for the ChatRoom class, reuses the field lobby as an argument.
      *
-     * @param lobby lobby associated with the chat
+     * @param lobby The lobby associated with the chat
      */
     public ChatRoom(GameLobby lobby) {
         messages = new ArrayList<>();
@@ -31,9 +31,9 @@ public class ChatRoom {
     }
 
     /**
-     * Adds a player to the chatroom
+     * Method to add a player to the chatroom
      *
-     * @param player player to add
+     * @param player The player to add
      */
     public synchronized void addPlayer(Player player) {
         players.add(player);
@@ -41,7 +41,7 @@ public class ChatRoom {
     }
 
     /**
-     * Removes a player from the chatroom, also removes the player's outputstream
+     * Method to remove a player from the chatroom, also removes the player's outputstream
      *
      * @param playerToRemove player to remove
      */
@@ -53,7 +53,7 @@ public class ChatRoom {
     /**
      * Setter for the list of players
      *
-     * @param players
+     * @param players The players in the chatRoom
      */
     public synchronized void setPlayers(List<Player> players) {
         this.players = players;
@@ -61,7 +61,7 @@ public class ChatRoom {
     }
 
     /**
-     * Updates the active output streams
+     * Method to update the active output streams
      */
     public synchronized void updateStreams() {
         objectOutputStreams.clear();
@@ -70,10 +70,18 @@ public class ChatRoom {
         }
     }
 
+    /**
+     * Method to add a message to the chatRoom
+     * @param message The message to be added
+     */
     public synchronized void addMessage(Message message) {
         messages.add(message);
     }
 
+    /**
+     * Method to broadcast the message to make it viewable
+     * @param message The message to be broadcast
+     */
     public synchronized void broadcastMessage(Message message) {
         for (ObjectOutputStream out : objectOutputStreams) {
             try {

@@ -14,6 +14,7 @@ public class AnswerPanel extends JPanel {
     public JTextArea txtrPlayerAnswer = new JTextArea();
     public JTextArea txtrPlayerAnswer_1 = new JTextArea();
     private ClientGui gui;
+    public JLabel round;
 
     /**
      * AnswerPanel is a constructor that creates the panel
@@ -24,10 +25,10 @@ public class AnswerPanel extends JPanel {
         setBackground(new Color(211, 211, 211));
         setLayout(null);
 
-        JLabel lblNewLabel = new JLabel("Round ");
-        lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
-        lblNewLabel.setBounds(20, 11, 80, 28);
-        add(lblNewLabel);
+        round = new JLabel("Round ");
+        round.setFont(new Font("Tahoma", Font.PLAIN, 15));
+        round.setBounds(20, 11, 80, 28);
+        add(round);
 
         txtrQuestion = new JTextArea();
         txtrQuestion.setFont(new Font("Showcard Gothic", Font.PLAIN, 13));

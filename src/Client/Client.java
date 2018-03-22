@@ -199,6 +199,9 @@ public class Client implements Runnable {
         gui.qm.lblRound.setText("Round: " + message.message[1]);
         gui.scorePanel.lblRound.setText("Round: " + message.message[1]);
         gui.questionPanel.roundNumber.setText("Round: " + message.message[1]);
+        gui.questionMasterQuestionPanel.roundNumber.setText(("Round: " + message.message[1]));
+        gui.questionMasterAnswerPanel.round.setText("Round: " + message.message[1]);
+        gui.answerPanel.round.setText("Round " + message.message[1]);
         gui.questionPanel.txtrAnswer.setText("Write answer here!");
         gui.questionPanel.txtrAnswer.setEditable(true);
         gui.questionPanel.playerAnswer = "";

@@ -23,6 +23,7 @@ public class QuestionMasterAnswerPanel extends JPanel {
     public boolean voteCast = false;
     private ClientGui gui;
     public String answer;
+    public JLabel round;
 
     /**
      * QuestionMasterAnswerPanel is a constructor that creates the panel.
@@ -35,10 +36,10 @@ public class QuestionMasterAnswerPanel extends JPanel {
         setLayout(null);
 
 
-        JLabel lblNewLabel = new JLabel("Round");
-        lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
-        lblNewLabel.setBounds(20, 11, 80, 28);
-        add(lblNewLabel);
+        round = new JLabel("Round");
+        round.setFont(new Font("Tahoma", Font.PLAIN, 15));
+        round.setBounds(20, 11, 80, 28);
+        add(round);
 
         txtrQuestion = new JTextArea();
         txtrQuestion.setFont(new Font("Showcard Gothic", Font.PLAIN, 13));

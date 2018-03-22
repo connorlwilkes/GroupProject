@@ -16,6 +16,7 @@ public class QuestionMasterQuestionPanel extends JPanel {
     public JTextArea txtrQuestion = new JTextArea();
     private JTextField textField;
     private ClientGui gui;
+    public JLabel roundNumber;
 
     /**
      * QuestionMasterQuestionPanel is a constructor that creates the panel.
@@ -26,10 +27,10 @@ public class QuestionMasterQuestionPanel extends JPanel {
         setBackground(new Color(135, 206, 250));
         setLayout(null);
 
-        JLabel lblNewLabel = new JLabel("Round ");
-        lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
-        lblNewLabel.setBounds(10, 11, 80, 28);
-        add(lblNewLabel);
+        roundNumber = new JLabel("Round ");
+        roundNumber.setFont(new Font("Tahoma", Font.PLAIN, 15));
+        roundNumber.setBounds(10, 11, 80, 28);
+        add(roundNumber);
 
         txtrQuestion = new JTextArea();
         txtrQuestion.setFont(new Font("Showcard Gothic", Font.PLAIN, 15));

@@ -191,6 +191,7 @@ public class Server {
                 for (GameLobby lobby : lobbies) {
                     if (lobby.gameIsOver) {
                          int lobbyNumber = lobby.getId();
+                        System.out.println(lobbyNumber);
                          lobbies.remove(lobby);
                          lobbies.add(new GameLobby(lobbyNumber));
                     }

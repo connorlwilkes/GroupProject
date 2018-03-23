@@ -25,6 +25,11 @@ public class HeadlineGame extends Minigame {
     private List<String> answers;
     public int nextCounter;
 
+    /**
+     * Constructor for HeadlineGame, reuses fields lobby and players as arguments
+     * @param lobby The lobby which the game resides in
+     * @param players The players in the game
+     */
     public HeadlineGame(GameLobby lobby, List<Player> players) {
         super(lobby, players);
         chooseQuestionMaster();

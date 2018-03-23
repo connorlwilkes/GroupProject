@@ -169,17 +169,17 @@ public class Client implements Runnable {
         try {
             System.out.println(message);
             if (message.type.startsWith("start")) {
-                start(message, 2000);
+                start(message, 20000);
             } else if (message.type.startsWith("get-qm")) {
-                getQm(message, 2000);
+                getQm(message, 5000);
             } else if (message.type.startsWith("question")) {
-                question(message, 1000);
+                question(message, 15000);
             } else if (message.type.startsWith("get-answer")) {
                 answer(message);
             } else if (message.type.startsWith("get-scores")) {
                 scores(message);
             } else if (message.type.startsWith("end")) {
-                end(message, 3000);
+                end(message, 7000);
             }
         } catch (RuntimeException e) {
             JOptionPane.showMessageDialog(gui, "Server connection lost", "Error", JOptionPane.ERROR_MESSAGE);
@@ -308,6 +308,7 @@ public class Client implements Runnable {
         gui.scorePanel.textArea.setText(player1Score + "\n" + player2Score + "\n" + player3Score);
         gui.scorePanel.txtPlayerName.setText(roundWinner);
         revalidateRepaintRenameResize("Scores on the doors", gui.scorePanel, 900, 600);
+        Thread.sleep(5000)
         ServerProtocol nextRound = new ServerProtocol("next-round");
         outputStream.writeObject(nextRound);
         outputStream.flush();

@@ -40,6 +40,16 @@ public class ServerThread implements Runnable {
     }
     
     /**
+     * Constructor for the ServerThread class, reuses the field connection as an argument
+     *
+     * @param connection Socket associated with the Thread
+     */
+      public ServerThread(Socket connection) {
+        this.connection = connection;
+    }
+   
+    
+    /**
      * Getter for server
      * 
      * @return the server

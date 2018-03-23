@@ -1,10 +1,3 @@
-/**
- * Server class for the minigame game. Server accepts clients on port 4000 that have been authenticated and assigns
- * them a new thread.
- *
- * @author Connor Wilkes
- * @version 1/3/2018
- */
 
 package Server;
 
@@ -25,7 +18,7 @@ import java.util.logging.Logger;
  * Server class for the minigame game. Sets up a server on port 5000 on a host.
  *
  * @author Florence
- * @version 9/3/2018
+ * @version 22/3/2018
  */
 public class Server {
 
@@ -39,8 +32,8 @@ public class Server {
 
     /**
      * Primary constructor for the Server class taking just portNumber and automatically binds to localhost
-     *
-     * @param portNumber port number
+     * Reuses field portNumber as an argument
+     * @param portNumber portNumber
      */
     public Server(String portNumber) {
         port = Integer.valueOf(portNumber);
@@ -53,7 +46,7 @@ public class Server {
 
     /**
      * Secondary constructor for the Server class taking portNumber and address
-     *
+     * Reuses the fields portNumber and address as arguments
      * @param portNumber port number
      * @param address    address of the server
      */
@@ -86,25 +79,25 @@ public class Server {
     }
 
     /**
-     * Adds a lobby to the lobby list
+     * Method to add a lobby to the lobby list
      *
-     * @param lobby lobby to add
+     * @param lobby The lobby to add
      */
     public void addLobby(GameLobby lobby) {
         lobbies.add(lobby);
     }
 
     /**
-     * Adds a client to the active user list
+     * Method to add a client to the active user list
      *
-     * @param client client to add
+     * @param client The client to add
      */
     public synchronized void addActiveUser(ServerThread client) {
         activeUsers.add(client);
     }
 
     /**
-     * Removes a user from the currently active users list
+     * Method to remove a user from the currently active users list
      *
      * @param userToRemove the user to remove
      */
@@ -129,7 +122,7 @@ public class Server {
     }
 
     /**
-     * Starts the server
+     * Method to start the server
      */
     @SuppressWarnings("InfiniteLoopStatement")
     public void start() {
@@ -157,7 +150,7 @@ public class Server {
     }
 
     /**
-     * Stops the server safely
+     * Method to stop the server safely
      */
     public void stop() {
         threadPool.shutdown();
@@ -174,7 +167,7 @@ public class Server {
     }
 
     /**
-     * Sets up the lobbies for the server. Creating 3 lobbies with ids 1, 2 and 3 respectively.
+     * Method to set up the lobbies for the server. Creating 3 lobbies with ids 1, 2 and 3 respectively.
      */
     private void setUpGameLobbies() {
         for (int i = 1; i <= 3; i++) {
@@ -183,7 +176,7 @@ public class Server {
     }
 
     /**
-     * Keeps up to date all active lobbies
+     * Method to keep all active lobbies up to date
      */
     private void monitorLobby() {
         Runnable monitor = () -> {

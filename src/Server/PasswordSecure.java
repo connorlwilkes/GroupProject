@@ -11,17 +11,16 @@ import java.util.Arrays;
  * PasswordSecure class for the registration and Login processes of the minigame
  *
  * @author Florence
- * @version 9/3/2018
+ * @version 22/3/2018
  */
-
 public class PasswordSecure {
+    
     /**
-     * this generates a random value for salt which is unique for every user
+     * Method to generate a random value for salt which is unique for every user
      *
      * @throws NoSuchAlgorithmException
-     * @returna byte array which is unique for each new user
+     * @returns byte array which is unique for each new user
      */
-
     public static byte[] createSalt() throws NoSuchAlgorithmException {
 
         SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
@@ -33,7 +32,7 @@ public class PasswordSecure {
     }
 
     /**
-     * this class encrypts a password inputted as a string using a unique salt value and PBKDF2 with SHA-1 as the hashing algorithm
+     * This class encrypts a password inputted as a string using a unique salt value and PBKDF2 with SHA-1 as the hashing algorithm
      *
      * @param password the password inputted by the user into the gui for the registration process
      * @param salt     the unique byte array used to encrypt the user password
@@ -58,7 +57,7 @@ public class PasswordSecure {
     }
 
     /**
-     * this method checks an inputted password in the string format against the password saved as a byte array in the database and its respective salt value
+     * This method checks an inputted password in the string format against the password saved as a byte array in the database and its respective salt value
      *
      * @param attemptedPassword te string inputted to the gui when the user is logging in- this is to be checked
      * @param encryptedPassword the password stored in the database as a byte[]
@@ -67,7 +66,6 @@ public class PasswordSecure {
      * @throws NoSuchAlgorithmException
      * @throws InvalidKeySpecException
      */
-
     public static boolean passwordCheck(String attemptedPassword, byte[] encryptedPassword,
                                         byte[] salt) throws NoSuchAlgorithmException, InvalidKeySpecException {
 

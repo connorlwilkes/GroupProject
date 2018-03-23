@@ -28,18 +28,8 @@ public class ServerThread implements Runnable {
     private ObjectInputStream inputStream;
     private Player player;
 
-
     /**
-     * Constructor for testing purposes
-     *
-     * @param connection Socket associated with the Thread
-     */
-    public ServerThread(Socket connection) {
-        this.connection = connection;
-    }
-
-    /**
-     * Constructor for the ServerThread class
+     * Constructor for the ServerThread class, reuses the fields connection and server as arguments
      *
      * @param connection Socket associated with the Thread
      * @param server     server associated with this thread
@@ -48,7 +38,14 @@ public class ServerThread implements Runnable {
         this.connection = connection;
         this.server = server;
     }
+    
+    /**
+     * Getter for server
+     * 
+     * @return the server
+     */
     public Server getServer(){ return server;}
+    
     /**
      * Helper function to close the server
      *
@@ -107,7 +104,7 @@ public class ServerThread implements Runnable {
     }
 
     /**
-     * Sets up the server's variables
+     * Method to sets up the server's variables
      *
      * @throws IOException ClassNotFoundException
      */
@@ -121,7 +118,7 @@ public class ServerThread implements Runnable {
     }
 
     /**
-     * Processes log in or sign up requests
+     * Method to process log in or sign up requests
      *
      * @throws IOException ClassNotFoundException
      */
@@ -143,7 +140,8 @@ public class ServerThread implements Runnable {
     }
 
     /**
-     * Processes network requests
+     * Method to processes network requests
+     * @throws IOException ClassNotFoundException
      */
     private void processRequests() throws IOException, ClassNotFoundException {
         while (true) {
@@ -161,8 +159,10 @@ public class ServerThread implements Runnable {
     }
 
     /**
-     * Logs in a client
+     * Method to log in a client
      *
+     * @param username The username of the user
+     * @param password The password of the user
      * @throws IOException
      */
     private synchronized void loginUser(String username, String password) throws IOException {
@@ -184,8 +184,10 @@ public class ServerThread implements Runnable {
 
 
     /**
-     * Sets up an account
+     * Method to set up an account
      *
+     * @param username The username of the user
+     * @param password The password of the user
      * @throws IOException
      */
     private synchronized void setUpAccount(String username, String password) throws IOException {
@@ -200,9 +202,10 @@ public class ServerThread implements Runnable {
     }
 
     /**
-     * Joins a lobby
+     * Method to join a lobby
      *
-     * @throws IOException
+     * @param lobbyNumber The lobby id number
+     * @throws IOException ClassNotFoundException
      */
     private void joinLobby(int lobbyNumber) throws IOException, ClassNotFoundException {
         if (lobbyNumber > 4 || 1 > lobbyNumber) {
@@ -227,7 +230,7 @@ public class ServerThread implements Runnable {
     }
 
     /**
-     * Logs out a user
+     * Method to log out a user
      *
      * @throws IOException
      */

@@ -71,14 +71,28 @@ public class Minigame {
         }
     }
 
+    /**
+     * Getter for the lobby
+     *
+     * @return the gameLobby
+     */
     public GameLobby getLobby() {
         return lobby;
     }
 
+    /**
+     * Setter for the lobby
+     *
+     * @param the new gameLobby to set the lobby to
+     */
     public void setLobby(GameLobby lobby) {
         this.lobby = lobby;
     }
 
+    /**
+     * Method to return the winners of a game
+     * @return winners The player(s) who won the game
+     */
     public List<String> winner() {
         List<String> winners = new ArrayList<>();
         int highScore = 0;

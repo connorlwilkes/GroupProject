@@ -41,6 +41,7 @@ public class InstructionPanel extends JPanel {
         txtArea.setBounds(250, 96, 407, 136);
         txtArea.setLineWrap(true);
         txtArea.setWrapStyleWord(true);
+        txtArea.setEditable(false);
         add(txtArea);
 
     }

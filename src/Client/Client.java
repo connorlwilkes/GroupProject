@@ -296,8 +296,9 @@ public class Client implements Runnable {
      *
      * @param message server protocol
      * @throws IOException
+     * @throws InterruptedException 
      */
-    private void scores(ServerProtocol message) throws IOException {
+    private void scores(ServerProtocol message) throws IOException, InterruptedException {
         gui.remove(gui.questionMasterAnswerPanel);
         gui.remove(gui.answerPanel);
         String roundWinner = message.message[0];
@@ -308,7 +309,7 @@ public class Client implements Runnable {
         gui.scorePanel.textArea.setText(player1Score + "\n" + player2Score + "\n" + player3Score);
         gui.scorePanel.txtPlayerName.setText(roundWinner);
         revalidateRepaintRenameResize("Scores on the doors", gui.scorePanel, 900, 600);
-        Thread.sleep(5000)
+        Thread.sleep(5000);
         ServerProtocol nextRound = new ServerProtocol("next-round");
         outputStream.writeObject(nextRound);
         outputStream.flush();

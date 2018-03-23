@@ -18,18 +18,18 @@ import static java.lang.System.err;
  * LoginUser class for the Login process of the minigame
  *
  * @author Florence
- * @version 9/3/2018
+ * @version 22/3/2018
  */
 
 public class LoginUser {
+    
     /**
-     * method CheckLogin which checks whether the user is valid input and if the login credentials are valid
+     * method CheckLogin which checks whether the user is valid and if the login credentials are valid
      *
      * @param user the user inputted into the gui
      * @return a ServerProtocol which is dependent upon if the login has failed or succeeded and if a failure
      * on the reason for it failing
      */
-
     public static ServerProtocol CheckLogin(User user) {
 
         String username = user.getUsername();
@@ -45,8 +45,6 @@ public class LoginUser {
          * this string is used to construct the Prepared Statement which is used to check whether
          * the login credentials are valid and if the user exists
          */
-
-
         String query = "SELECT * FROM userdbtest WHERE username = ? ";
 
         try (Connection connection = connect();
@@ -85,7 +83,8 @@ public class LoginUser {
                 return b;
             }
             /**
-             * checks whether the user exists
+             * Method to check whether the user exists
+             * @return c Protocol which states if user exists
              */
             if (checkUsername(user)) {
 
@@ -105,7 +104,12 @@ public class LoginUser {
          */
         return d;
     }
-
+    
+    /**
+     * Method to log a user out
+     * @param currentUserThread The current thread a user is on
+     * @return ServerProtocol to state whether a uuser has been logged out
+     */
     public static ServerProtocol logoutUser(ServerThread currentUserThread) {
 
         List<ServerThread> activeUsers = currentUserThread.getServer().getActiveUsers();

@@ -16,12 +16,12 @@ import static Server.PasswordSecure.createSalt;
  * RegisterUser class for the registration process of the minigame
  *
  * @author Florence
- * @version 9/3/2018
+ * @version 22/3/2018
  */
-
 public class RegisterUser {
+    
     /**
-     * CheckUser method within the Register User class checks whether a
+     * Method to check within the Register User class whether a
      * new user is valid and therefore can be added to the user database
      *
      * @param user the new user to be created from the input from the GUI

@@ -71,6 +71,10 @@ public class User {
         return this.password.equals(password);
     }
 
+    /**
+     * String toString method for user class
+     * @return The username of the user
+     */
     @Override
     public String toString() {
         return username;

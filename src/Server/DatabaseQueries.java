@@ -20,9 +20,9 @@ public class DatabaseQueries {
         /**
          * specifies the location of the database as well as the login credentials
          */
-        String url = "jdbc:postgresql://mod-msc-sw1.cs.bham.ac.uk:5432/florence";
-        String user = "florence";
-        String password = "kx7t40vm7v";
+        String url = "db_link";
+        String user = "test";
+        String password = "pass";
 
         return DriverManager.getConnection(url, user, password);
 
